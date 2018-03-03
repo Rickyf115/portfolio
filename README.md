@@ -1,4 +1,3 @@
-# sitePortfolio
--
+# Websitefolio
 
-Website Portfolio for Ricardo Faure
+HTML,CSS, JS Practice
