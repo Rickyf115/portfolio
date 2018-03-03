@@ -1,3 +1,3 @@
 # Websitefolio
 
-HTML,CSS, JS Practice
+HTML, CSS, JS Practice
