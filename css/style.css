@@ -20,7 +20,7 @@ h2{
   color: lightcoral;
 }
 body{
-	background-color: aliceblue;
+	background-color: white;
 	padding: 0;
 	margin: 0;
 }
@@ -29,6 +29,20 @@ header{
 	background-color: lightcoral;
 	text-align: right;
 	border-bottom: black 1px solid;
+}
+
+#content{
+	text-align: center;
+	margin: 50px auto 50px auto;
+	width: 1000px;
+}
+
+#run{
+	margin-bottom: 50px;
+}
+
+#cybot{
+	margin-top: 50px;
 }
 
 #aboutcontent{
