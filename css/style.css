@@ -3,8 +3,11 @@
 }
 h1{
 	text-align: left;
+	padding-left: 10px;
 	font-family: Arial;
-  color:lightslategrey;
+  color:white;
+	margin: 0;
+	float: left;
 }
 h3,h4{
 	text-align: center;
@@ -18,29 +21,53 @@ h2{
 }
 body{
 	background-color: aliceblue;
+	padding: 0;
+	margin: 0;
 }
-#header{
+header{
+	padding-top:10px;
+	background-color: lightcoral;
 	text-align: right;
-	text-transform: uppercase;
+	border-bottom: black 1px solid;
 }
+
 #content{
 	text-align: center;
+	padding-bottom: 30px;
 }
-#footer{
+
+header nav li{
+	float: center;
+	display: inline;
+	text-transform: uppercase;
+	padding: 0 20px 0 20px;
+}
+
+footer{
 	text-align: center;
+	background-color: lightcoral;
+	padding-bottom: 50px;
+	border-top: black 1px solid;
 }
+
+footer li{
+	float: center;
+	display: inline;
+	padding: 0 20px 0 20px;
+}
+
 a:link{
 	text-decoration: none;
-	color:lightslategrey
+	color:black
 }
 a:visited{
 	text-decoration: none;
-	color:lightslategrey
+	color:black
 }
 a:hover{
-	color:lightcoral;
+	color:white;
 }
 a:active{
-	color:red;
+	color:lightslategrey;
 }
 
