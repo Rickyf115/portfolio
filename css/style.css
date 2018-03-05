@@ -1,12 +1,46 @@
-p{
+*{
   font-family: Arial;
 }
 h1{
+	text-align: left;
 	font-family: Arial;
-  color:red;
+  color:lightslategrey;
+}
+h3,h4{
+	text-align: center;
+	font-family: Arial;
+  color:lightslategrey;
+}
+h2{
+	text-align: center;
+  font-family: Arial;
+  color: lightcoral;
+}
+body{
+	background-color: aliceblue;
+}
+#header{
+	text-align: right;
+	text-transform: uppercase;
+}
+#content{
+	text-align: center;
+}
+#footer{
+	text-align: center;
+}
+a:link{
+	text-decoration: none;
+	color:lightslategrey
+}
+a:visited{
+	text-decoration: none;
+	color:lightslategrey
+}
+a:hover{
+	color:lightcoral;
+}
+a:active{
+	color:red;
 }
 
-h2,h3{
-  font-family: Arial;
-  color: darkgrey;
-}
