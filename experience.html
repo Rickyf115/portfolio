@@ -4,47 +4,77 @@
 
 <head>
   <title>Experience</title>
+  <meta name="description"
+    content="online portfolio for Ricardo Faure" />
+  <meta name="keywords"
+    content="Computer, Engineering, CprE, portfolio,
+      Ricardo, Faure, programming, java, python, css, html, developer" />
+  <meta name="robots"
+    content="nofollow" />
+  <meta http-equiv="author"
+    content="Ricardo Faure" />
+  <meta http-equiv="pragma"
+    content="no-cache" />
 </head>
 
 <body>
 
   <!-- Basic Page Layout -->
-  <h1> Ricky Faure's Web Portfolio</h1>
-  <hr />
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="about.html">About Me</a></li>
-    <li><a href="projects.html">Projects</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="experience.html">Experience</a></li>
-  </ul>
+  <div id="header">
+    <h1 id="title"> Ricky Faure's Web Portfolio</h1>
+    <hr />
+    <ul>
+      <li><a class="pagenav" href="index.html">Home</a></li>
+      <li><a class="pagenav" href="projects.html">Projects</a></li>
+      <li><a class="pagenav" href="contact.html">Contact</a></li>
+      <li><a class="pagenav" href="experience.html">Experience</a></li>
+    </ul>
+  </div>
 
   <!-- Iowa State University Experience -->
-  <h2>Iowa State University</h2>
-  <h3>Teaching Assistant</h3>
-  <h4>COMS 227: Introduction to Object Oriented Programming</h4>
-  <ul>
-    <li>Supervise labs for current COMS227 Students</li>
-    <li>Grade Assignments and code functionality for labs.</li>
-  </ul>
-  <!-- Optum Experience -->
-  <h2>Optum</h2>
-  <h3><acronym title="Technology Development Program">TDP</acronym> Application Development Intern</h3>
-  <ul>
-    <li>Work with a team of developers to develop and showcase applications.</li>
-    <li>Organize projects around an MVC structure.</li>
-    <li>Assist in managing a shared drive for large-scale projects.</li>
-  </ul>
-  <!-- Ofertas Auto PR Experience -->
-  <h2>Ofertas Auto PR</h2>
-  <h3><acronym title="Information Technology">IT</acronym> Support</h3>
-  <ul>
-    <li>Fix computer and network problems to ensure functionality.</li>
-    <li>Set up any necessary software or hardware.</li>
-    <li>Kept website updated with inventory and kept tabs on promotional pages.</li>
-  </ul>
-  <!-- Resume Copy for online use -->
-  <h2>Resume</h2>
+  <div id="content">
+    <div id="ISUExperience">
+      <h2>Iowa State University</h2>
+      <h3>Teaching Assistant</h3>
+      <h4>COMS 227: Introduction to Object Oriented Programming</h4>
+      <ul>
+        <li>Supervise labs for current COMS227 Students</li>
+        <li>Grade Assignments and code functionality for labs.</li>
+      </ul>
+    </div>
+    <!--End ISU Experience-->
+
+    <!-- Optum Experience -->
+    <div id="optumExperience">
+      <h2>Optum</h2>
+      <h3><acronym title="Technology Development Program">TDP</acronym> Application Development Intern</h3>
+      <ul>
+        <li>Work with a team of developers to develop and showcase applications.</li>
+        <li>Organize projects around an MVC structure.</li>
+        <li>Assist in managing a shared drive for large-scale projects.</li>
+      </ul>
+    </div>
+    <!--End Optum Experience-->
+
+    <!-- Ofertas Auto PR Experience -->
+    <div id="OAPRExperience">
+      <h2>Ofertas Auto PR</h2>
+      <h3><acronym title="Information Technology">IT</acronym> Support</h3>
+      <ul>
+        <li>Fix computer and network problems to ensure functionality.</li>
+        <li>Set up any necessary software or hardware.</li>
+        <li>Kept website updated with inventory and kept tabs on promotional pages.</li>
+      </ul>
+    </div>
+    <!--End OAPR Experience-->
+    <!-- Resume Copy for online use -->
+    <h2>Resume</h2>
+    <iframe id="iframeresume" src="resume.html"
+      width="400px" height="500px" frameborder="0"
+      scrolling="no" marginheight="0" marginwidth="0">
+    </iframe>
+  </div>
+  <!--End Content-->
 </body>
 
 </html>
