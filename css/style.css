@@ -2,12 +2,12 @@
   font-family: Arial;
 }
 h1{
-	text-align: left;
 	padding-left: 10px;
 	font-family: Arial;
   color:white;
 	margin: 0;
 	float: left;
+	font-size: 30px;
 }
 h3,h4{
 	text-align: center;
@@ -31,10 +31,48 @@ header{
 	border-bottom: black 1px solid;
 }
 
-#content{
+#aboutcontent{
 	text-align: center;
 	padding-bottom: 30px;
+	height: 720px;
 }
+
+#About{
+	float:left;
+	padding-left: 20px;
+	margin: 70px auto 50px auto;
+	width: 700px;
+}
+
+#Education{
+	float: left;
+	padding-left: 20px;
+	margin: 50px auto 50px auto;
+	width: 700px;
+}
+
+#aboutcontent img{
+	margin: 100px auto 50px auto;
+}
+
+#expcontent{
+	padding-bottom: 30px;
+	height: 700px;
+	text-align: center;
+}
+
+#exp{
+	margin: 30px auto 30px auto;
+	float: left;
+	text-align: center;
+	width: 700px;
+}
+
+#resume{
+	padding-right: 40px;
+	margin: 70px auto 100px auto;
+}
+
 
 header nav li{
 	float: center;
@@ -51,23 +89,33 @@ footer{
 }
 
 footer li{
-	float: center;
+	float: left;
 	display: inline;
 	padding: 0 20px 0 20px;
 }
 
+footer #copyright{
+	float: right;
+	padding-right: 20px;
+	color: white;
+}
+
 a:link{
 	text-decoration: none;
-	color:black
+	color:white
 }
 a:visited{
 	text-decoration: none;
-	color:black
+	color:white;
 }
 a:hover{
 	color:white;
 }
 a:active{
-	color:lightslategrey;
+	color:white;
+}
+
+ul{
+	list-style-type: none;
 }
 
