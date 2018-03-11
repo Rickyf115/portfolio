@@ -17,7 +17,7 @@ h3,h4{
 h2{
 	text-align: center;
   font-family: Arial;
-  color: lightcoral;
+  color: darkslategrey;
 }
 body{
 	background-color: white;
@@ -26,9 +26,9 @@ body{
 }
 header{
 	padding-top:10px;
-	background-color: lightcoral;
+	background-color: slategrey;
 	text-align: right;
-	border-bottom: black 1px solid;
+	border-bottom: lightcoral 2px solid;
 }
 
 #content{
@@ -48,7 +48,7 @@ header{
 #aboutcontent{
 	text-align: center;
 	padding-bottom: 30px;
-	height: 720px;
+	height: 765px;
 }
 
 #About{
@@ -97,9 +97,9 @@ header nav li{
 
 footer{
 	text-align: center;
-	background-color: lightcoral;
+	background-color: slategrey;
 	padding-bottom: 50px;
-	border-top: black 1px solid;
+	border-top: lightcoral 2px solid;
 }
 
 footer li{
