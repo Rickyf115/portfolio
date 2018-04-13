@@ -13,7 +13,7 @@ body{
 
 .nav-bar a{
   display: block;
-  float:right;
+  float:left;
   text-decoration: none;
   padding: 24px 22px;
   color: white;
@@ -35,12 +35,8 @@ body{
   display:none;
 }
 
-.nav-bar #logo:hover{
-  background-color: lightslategray;
-}
-
 @media screen and (max-width: 600px){
-  .nav-bar a:not(:first-child){
+  .nav-bar a{
     display: none;
   }
 
@@ -63,5 +59,9 @@ body{
     float:none;
     display:block;
     text-align:left;
+  }
+
+  .nav-bar.responsive #logo{
+    float:center;
   }
 }
