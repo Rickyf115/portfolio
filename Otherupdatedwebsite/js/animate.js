@@ -1,3 +1,3 @@
 function animate(dom){
-  dom.classList.toggle("change");
+  $(dom).toggleClass("change");
 }
