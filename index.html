@@ -9,6 +9,13 @@
     <script src="js/jquery-3.3.1.min.js"></script>
   </head>
   <body>
+    <script>
+      var isIE = false || !!document.documentMode;
+      var isEdge = !isIE && !!window.StyleMedia
+      if(isIE || isEdge) {
+        alert("Due to styling issues, it is recommended you view this page on chrome/firefox/safari. I apologize for the inconvenience.")
+      }
+    </script>
     <div class="big-wrapper">
       <header>
         <div class="hamburger" href="javascript:void(0);" onclick="animate(this);openNav();">
