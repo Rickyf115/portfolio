@@ -27,7 +27,7 @@
       grid-area: content-grid;
       display: grid;
       grid-template-columns: auto;
-      grid-template-rows: 1fr 0.1fr 1fr;
+      grid-template-rows: 1fr;
       grid-template-areas:
       "text-content";
     }
