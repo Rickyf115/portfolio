@@ -1,22 +1,10 @@
-.wrapper{
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 0.1fr 1fr 1fr 4fr 0.1fr;
-  grid-template-areas:
-  "hidden-nav"
-  "nav"
-  "cover-image"
-  "content-grid"
-  "foot";
-}
-
 .content-grid{
   padding-top: 50px;
   padding-bottom: 200px;
   background-color: white;
   grid-area: content-grid;
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 1fr 0.2fr;
+  grid-template-columns: 0.5fr 1fr 150px 1fr 0.5fr;
   grid-template-rows: auto;
   grid-template-areas:
   ". text-content . resume .";
@@ -36,23 +24,11 @@
     grid-area: content-grid;
     display: grid;
     grid-template-columns: 0.5fr 1fr 0.5fr;
-    grid-template-rows: 1fr 0.1fr 1fr;
+    grid-template-rows: 1fr 100px 1fr;
     grid-template-areas:
     "text-content text-content text-content"
     ". . ."
     ". resume .";
-  }
-
-  .wrapper{
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: 0.1fr 1fr 0.2fr 5fr 0.1fr;
-    grid-template-areas:
-    "hidden-nav"
-    "nav"
-    "cover-image"
-    "content-grid"
-    "foot";
   }
 }
 

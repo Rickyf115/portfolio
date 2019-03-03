@@ -1,12 +1,10 @@
 .big-wrapper{
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 1fr 1fr 0.2fr 1fr;
+  grid-template-rows: 1.5fr 1fr;
   grid-template-areas:
   "nav"
-  "."
-  "middle-wrap"
-  ".";
+  "middle-wrap";
 }
 
 * {
@@ -30,9 +28,10 @@ body{
   font-weight: 500;
   background-color: white;
   grid-template-rows: auto;
-  grid-template-columns: 3fr 3fr 4fr;
+  grid-template-columns: 0.1fr 1fr 0.1fr;
   grid-template-areas:
-  "page-title .  navs";
+  ". page-title ."
+  ".  navs .";
 }
 
 .middle-wrapper .page-title{
@@ -54,22 +53,6 @@ body{
   display: block;
   float: left;
   text-transform: uppercase;
-}
-
-/*
-Flexing content stuff.
-*/
-@media screen and (min-width: 1595px){
-  .middle-wrapper{
-    grid-template-columns: 400px 750px 510px;
-  }
-}
-
-@media screen and (max-width: 1250px){
-  .middle-wrapper{
-    grid-template-columns: 3fr 1fr 4fr;
-
-  }
 }
 
 @media screen and (max-width: 1100px){
