@@ -40,11 +40,13 @@
     background-color: white;
     grid-area: content-grid;
     display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 0.5fr 1fr 0.5fr;
+    grid-template-rows: 1fr 0.1fr 1fr 0.1fr 1fr;
     grid-template-areas:
-    "ethics"
-    "general"
-    "engineering";
+    ". ethics ."
+    " . . ."
+    ". general ."
+    " . . ."
+    ". engineering .";
   }
 }

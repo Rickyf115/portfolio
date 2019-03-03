@@ -9,6 +9,10 @@
   grid-area: image;
 }
 
+#pic-of-me {
+  border: 1px solid black;
+}
+
 .content-grid{
   padding-top: 50px;
   padding-bottom: 200px;
@@ -30,11 +34,11 @@
     background-color: white;
     grid-area: content-grid;
     display: grid;
-    grid-template-columns: auto;
+    grid-template-columns: 0.5fr 1fr 0.5fr;
     grid-template-rows: 1fr 0.1fr 1fr;
     grid-template-areas:
-    "image"
-    "."
-    "text-content";
+    ". image ."
+    ". . ."
+    "text-content text-content text-content";
   }
 }
