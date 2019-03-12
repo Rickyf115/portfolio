@@ -7,9 +7,11 @@
   grid-area: content-grid;
   display: grid;
   grid-template-columns: 0.1fr 1fr 0.1fr;
-  grid-template-rows: 50px 1fr 50px 0.2fr;
+  grid-template-rows: 50px 1fr 50px 0.8fr 50px 0.2fr;
   grid-template-areas:
   ". main ."
+  ". sheet ."
+  ". . ."
   ". samurai ."
   ". . ."
   ". cybot .";
@@ -17,6 +19,10 @@
 
 .content-grid #main{
   grid-area:main;
+}
+
+#sheet-vision{
+  grid-area: sheet;
 }
 
 #run-samurai{
@@ -32,23 +38,16 @@
     grid-template-columns: auto;
     grid-template-areas:
     "main"
+    "sheet"
+    "."
     "samurai"
     "."
     "cybot";
   }
 
-  #cybot {
-    grid-template-areas:
-    "cybot-text cybot-text cybot-text"
-    ". . ."
-    ". cybot-images .";
-  }
-
-  #run-samurai {
-    grid-template-areas:
-    "sam-text sam-text sam-text"
-    ". . ."
-    "sam-images sam-images sam-images";
+  #sheet-vision .image-content img {
+    height: 350px;
+    width: 600px;
   }
 }
 
