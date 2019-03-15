@@ -6,7 +6,7 @@
   background-color: white;
   grid-area: content-grid;
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.1fr;
+  grid-template-columns: 0.05fr 1fr 0.05fr;
   grid-template-rows: auto;
   grid-template-areas:
   ". main ."

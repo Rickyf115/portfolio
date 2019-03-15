@@ -2,6 +2,11 @@
   font-family: 'Century Gothic', CenturyGothic, Geneva, AppleGothic, sans-serif;
 }
 
+a {
+  color: rgba(184, 59, 107);
+  text-decoration: none;
+}
+
 body{
   background: url("../img/cover.png") no-repeat top center fixed;
   background-size: cover;
