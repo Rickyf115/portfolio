@@ -19,7 +19,7 @@
   background-color: white;
   grid-area: content-grid;
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 1fr 0.2fr;
+  grid-template-columns: 0.4fr 1fr 1fr 1fr 0.4fr;
   grid-template-rows: auto;
   grid-template-areas:
   ". text-content . image .";
@@ -34,8 +34,8 @@
     background-color: white;
     grid-area: content-grid;
     display: grid;
-    grid-template-columns: 0.5fr 1fr 0.5fr;
-    grid-template-rows: 1fr 0.1fr 1fr;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
     grid-template-areas:
     ". image ."
     ". . ."

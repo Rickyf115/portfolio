@@ -23,7 +23,7 @@
   background-color: white;
   grid-area: content-grid;
   display: grid;
-  grid-template-columns: 0.5fr 0.2fr 100px 0.2fr 100px 0.2fr 0.5fr;
+  grid-template-columns: 0.5fr auto 100px auto 100px auto 0.5fr;
   grid-template-rows: auto;
   grid-template-areas:
   ". ethics . general . engineering .";
@@ -40,8 +40,8 @@
     background-color: white;
     grid-area: content-grid;
     display: grid;
-    grid-template-columns: 0.5fr 1fr 0.5fr;
-    grid-template-rows: 1fr 30px 1fr 30px 1fr;
+    grid-template-columns: auto;
+    grid-template-rows: auto 30px auto 30px auto;
     grid-template-areas:
     ". ethics ."
     " . . ."
