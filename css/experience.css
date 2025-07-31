@@ -4,10 +4,12 @@
   background-color: white;
   grid-area: content-grid;
   display: grid;
-  grid-template-columns: 0.5fr 1fr 150px 1fr 0.5fr;
+  grid-template-columns: 0.5fr auto 0.5fr;
   grid-template-rows: auto;
   grid-template-areas:
-  ". text-content . resume .";
+  "text-content text-content text-content"
+  ". . ."
+  ". resume .";
 }
 
 .content-grid .resume{
