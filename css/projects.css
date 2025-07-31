@@ -11,6 +11,8 @@
   grid-template-areas:
   ". main ."
   ". sheet ."
+  ". safetynet ."
+  ". rubiks ."
   ". raytracing ."
   ". samurai ."
   ". cybot .";
@@ -18,6 +20,14 @@
 
 .content-grid #main{
   grid-area:main;
+}
+
+#safetynet {
+  grid-area: safetynet;
+}
+
+#rubiks {
+  grid-area: rubiks;
 }
 
 #sheet-vision{
@@ -43,6 +53,8 @@
     grid-template-areas:
     "main"
     "sheet"
+    "safetynet"
+    "rubiks"
     "raytracing"
     "samurai"
     "cybot";
