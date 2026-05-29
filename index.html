@@ -11,9 +11,9 @@
       --bg2:       #1a0f07;
       --surface:   #1e1008;
       --border:    #3a2010;
-      --cyan:      #d4651a;
-      --cyan-dim:  rgba(212, 101, 26, 0.12);
-      --cyan-glow: rgba(212, 101, 26, 0.35);
+      --accent:      #d4651a;
+      --accent-dim:  rgba(212, 101, 26, 0.12);
+      --accent-glow: rgba(212, 101, 26, 0.35);
       --text:      #f5ece0;
       --text-muted:#9a7a60;
       --text-dim:  #5a3a20;
@@ -33,7 +33,7 @@
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
     /* ===== NAV ===== */
     nav {
@@ -55,7 +55,7 @@
     .nav-logo {
       font-family: var(--mono);
       font-size: 1.05rem;
-      color: var(--cyan);
+      color: var(--accent);
       text-decoration: none;
       letter-spacing: 0.06em;
     }
@@ -80,10 +80,10 @@
       position: absolute;
       bottom: -3px; left: 0;
       width: 0; height: 1px;
-      background: var(--cyan);
+      background: var(--accent);
       transition: width 0.25s ease;
     }
-    .nav-links a:hover { color: var(--cyan); }
+    .nav-links a:hover { color: var(--accent); }
     .nav-links a:hover::after { width: 100%; }
 
     /* Hamburger */
@@ -129,7 +129,7 @@
       text-transform: uppercase;
       transition: color 0.2s;
     }
-    .mobile-menu a:hover { color: var(--cyan); }
+    .mobile-menu a:hover { color: var(--accent); }
 
     /* ===== HERO ===== */
     #hero {
@@ -160,7 +160,7 @@
     .hero-label {
       font-family: var(--mono);
       font-size: 0.78rem;
-      color: var(--cyan);
+      color: var(--accent);
       letter-spacing: 0.22em;
       text-transform: uppercase;
       margin-bottom: 1.1rem;
@@ -176,7 +176,7 @@
       opacity: 0;
       animation: fadeUp 0.6s 0.35s forwards;
     }
-    .hero-name span { color: var(--cyan); }
+    .hero-name span { color: var(--accent); }
     .hero-title {
       font-family: var(--mono);
       font-size: clamp(0.95rem, 1.8vw, 1.2rem);
@@ -189,7 +189,7 @@
     .cursor {
       display: inline-block;
       width: 2px; height: 1em;
-      background: var(--cyan);
+      background: var(--accent);
       animation: blink 1s step-end infinite;
       vertical-align: middle;
       margin-left: 2px;
@@ -227,15 +227,15 @@
       transition: all 0.22s ease;
     }
     .btn-primary {
-      background: var(--cyan);
+      background: var(--accent);
       color: var(--bg);
-      border: 1px solid var(--cyan);
+      border: 1px solid var(--accent);
       font-weight: bold;
     }
     .btn-primary:hover {
       background: transparent;
-      color: var(--cyan);
-      box-shadow: 0 0 22px var(--cyan-glow);
+      color: var(--accent);
+      box-shadow: 0 0 22px var(--accent-glow);
     }
     .btn-secondary {
       background: transparent;
@@ -243,8 +243,8 @@
       border: 1px solid var(--border);
     }
     .btn-secondary:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
+      border-color: var(--accent);
+      color: var(--accent);
     }
     .hero-social {
       display: flex;
@@ -264,9 +264,9 @@
       transition: all 0.22s;
     }
     .social-link:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
-      box-shadow: 0 0 10px var(--cyan-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-dim);
       transform: translateY(-2px);
     }
     .social-link svg { display: block; }
@@ -289,7 +289,7 @@
       content: '';
       position: absolute;
       inset: -10px;
-      border: 1px solid var(--cyan);
+      border: 1px solid var(--accent);
       border-radius: 4px;
       opacity: 0.3;
       transform: translate(10px, 10px);
@@ -321,7 +321,7 @@
     }
     .scroll-hint-line {
       width: 1px; height: 28px;
-      background: linear-gradient(to bottom, var(--cyan), transparent);
+      background: linear-gradient(to bottom, var(--accent), transparent);
     }
 
     /* ===== SECTION SHARED ===== */
@@ -331,7 +331,7 @@
     .section-tag {
       font-family: var(--mono);
       font-size: 0.72rem;
-      color: var(--cyan);
+      color: var(--accent);
       letter-spacing: 0.22em;
       text-transform: uppercase;
       margin-bottom: 0.6rem;
@@ -341,8 +341,8 @@
       font-weight: 400;
       letter-spacing: -0.02em;
     }
-    .section-title span { color: var(--cyan); }
-    .section-rule { width: 48px; height: 2px; background: var(--cyan); margin-top: 1rem; }
+    .section-title span { color: var(--accent); }
+    .section-rule { width: 48px; height: 2px; background: var(--accent); margin-top: 1rem; }
 
     /* ===== SKILLS STRIP ===== */
     #skills-strip {
@@ -355,7 +355,7 @@
     .skills-label {
       font-family: var(--mono);
       font-size: 0.72rem;
-      color: var(--cyan);
+      color: var(--accent);
       letter-spacing: 0.22em;
       text-transform: uppercase;
       margin-bottom: 1.4rem;
@@ -372,8 +372,8 @@
       cursor: default;
       transition: all 0.2s;
     }
-    .chip:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
-    .chip.hi { border-color: rgba(212, 101, 26, 0.35); color: var(--cyan); background: var(--cyan-dim); }
+    .chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+    .chip.hi { border-color: rgba(212, 101, 26, 0.35); color: var(--accent); background: var(--accent-dim); }
 
     /* ===== EXPERIENCE ===== */
     #experience { background: var(--bg); }
@@ -383,7 +383,7 @@
       position: absolute;
       left: 0; top: 8px; bottom: 0;
       width: 1px;
-      background: linear-gradient(to bottom, var(--cyan) 0%, var(--border) 60%, transparent 100%);
+      background: linear-gradient(to bottom, var(--accent) 0%, var(--border) 60%, transparent 100%);
     }
     .tl-item { position: relative; padding: 0 0 3.5rem 2.2rem; }
     .tl-dot {
@@ -392,14 +392,14 @@
       width: 11px; height: 11px;
       border-radius: 50%;
       background: var(--bg);
-      border: 2px solid var(--cyan);
-      box-shadow: 0 0 10px var(--cyan-glow);
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
       transform: translateX(-50%);
     }
     .tl-date {
       font-family: var(--mono);
       font-size: 0.72rem;
-      color: var(--cyan);
+      color: var(--accent);
       letter-spacing: 0.12em;
       margin-bottom: 0.4rem;
     }
@@ -425,8 +425,8 @@
       line-height: 1.65;
       max-width: 720px;
     }
-    .ach::before { content: '▸'; color: var(--cyan); flex-shrink: 0; margin-top: 0.06em; }
-    .ach strong { color: var(--text); }
+    .ach::before { content: '▸'; color: var(--accent); flex-shrink: 0; margin-top: 0.06em; }
+    .ach b { color: var(--text); }
     .tl-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
     .tl-chip {
       padding: 0.18rem 0.6rem;
@@ -457,7 +457,7 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 2px;
-      background: linear-gradient(90deg, var(--cyan), transparent 70%);
+      background: linear-gradient(90deg, var(--accent), transparent 70%);
       opacity: 0;
       transition: opacity 0.28s;
     }
@@ -496,7 +496,7 @@
       gap: 0.4rem;
       font-family: var(--mono);
       font-size: 0.76rem;
-      color: var(--cyan);
+      color: var(--accent);
       text-decoration: none;
       letter-spacing: 0.06em;
       transition: gap 0.2s;
@@ -541,7 +541,7 @@
       font-size: 0.78rem;
       transition: color 0.2s;
     }
-    .foot-links a:hover { color: var(--cyan); }
+    .foot-links a:hover { color: var(--accent); }
     footer p { color: var(--text-dim); font-family: var(--mono); font-size: 0.7rem; }
 
     /* ===== SCROLL ANIMATIONS ===== */
@@ -729,13 +729,13 @@
           enterprise-grade distributed systems across on-premise and multi-cloud environments.
         </p>
         <div class="achievements">
-          <div class="ach">Led a team of <strong>7 engineers</strong> building Kafka-as-a-Service and Elasticsearch-as-a-Service platforms, achieving <strong>99.5% reliability</strong> via Kubernetes Operators and robust infrastructure-as-code practices.</div>
-          <div class="ach">Built custom Kubernetes Operators for Kafka, Elasticsearch, Prometheus, Service Monitors, GCP VolumeSnapshots, Certificate Management, and bare-metal Kubernetes upgrade orchestration.</div>
-          <div class="ach">Achieved a <strong>52% increase in resource deployments</strong> by migrating from GitOps to a GUI-based management system within an enterprise marketplace, backed by a custom Terraform Provider and Kubernetes resource manager.</div>
-          <div class="ach">Delivered <strong>$2.5M in annual cost savings</strong> through cloud resource optimization, instance type migrations, and elimination of excessive log retention in GCP.</div>
-          <div class="ach">Expanded platform to handle <strong>20+ petabytes of data movement</strong> across on-premise and GCP (GKE, GAR, IAM, GCS, VPC) by extending Kubernetes Operators for cloud environments.</div>
-          <div class="ach">Designed a vulnerability scanning workstream using reusable GitHub Actions, a custom Python Rally API library, and automated report generation — adopted org-wide.</div>
-          <div class="ach">Mentored junior engineers in rotational programs; taught quarterly courses on Kubernetes Operators and Elasticsearch/Kibana.</div>
+          <div class="ach"><span>Led a team of <b>7 engineers</b> building Kafka-as-a-Service and Elasticsearch-as-a-Service platforms, achieving <b>99.5% reliability</b> via Kubernetes Operators and robust infrastructure-as-code practices.</span></div>
+          <div class="ach"><span>Built custom Kubernetes Operators for Kafka, Elasticsearch, Prometheus, Service Monitors, GCP VolumeSnapshots, Certificate Management, and bare-metal Kubernetes upgrade orchestration.</span></div>
+          <div class="ach"><span>Achieved a <b>52% increase in resource deployments</b> by migrating from GitOps to a GUI-based management system within an enterprise marketplace, backed by a custom Terraform Provider and Kubernetes resource manager.</span></div>
+          <div class="ach"><span>Delivered <b>$2.5M in annual cost savings</b> through cloud resource optimization, instance type migrations, and elimination of excessive log retention in GCP.</span></div>
+          <div class="ach"><span>Expanded platform to handle <b>20+ petabytes of data movement</b> across on-premise and GCP (GKE, GAR, IAM, GCS, VPC) by extending Kubernetes Operators for cloud environments.</span></div>
+          <div class="ach"><span>Designed a vulnerability scanning workstream using reusable GitHub Actions, a custom Python Rally API library, and automated report generation — adopted org-wide.</span></div>
+          <div class="ach"><span>Mentored junior engineers in rotational programs; taught quarterly courses on Kubernetes Operators and Elasticsearch/Kibana.</span></div>
         </div>
         <div class="tl-chips">
           <span class="tl-chip">Go</span>
