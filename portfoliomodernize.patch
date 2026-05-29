@@ -1,0 +1,1623 @@
+From 7f1e815a6068b2bb1d5279ccff783759eda3794c Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Fri, 29 May 2026 03:35:58 +0000
+Subject: [PATCH] Modernize portfolio navigation, animations, and UX
+
+- Replace opaque nav state management with CSS class-based approach
+  (.scrolled on nav-bar, .open on head-nav overlay) for cleaner transitions
+- Rewrite index page as full-screen hero with glass pill nav buttons,
+  dark overlay for readability, and staggered entrance animations
+- Add animated underline indicator on active/hovered nav links
+- Slim hamburger bars with smoother X transform animation
+- Mobile overlay nav slides in with staggered link fade-up on open
+- Content areas fade up on page load via CSS keyframe animation
+- Profile image gets rounded corners, shadow, and lift-on-hover effect
+- Experience page: sticky resume sidebar and better content grid
+- Projects page: two-column layout for image-bearing projects,
+  flex image galleries with hover lift, section separators
+- Footer links get pill hover highlight and lift animation
+- CSS custom properties for consistent accent color and easing
+- Improve typography: line-height, letter-spacing, font-weight hierarchy
+- Add DOCTYPE and lang="en" to all HTML pages
+
+https://claude.ai/code/session_01J9X5A6EDvxKTh6BH7YhZjS
+---
+ aboutme.html           |  20 +--
+ css/aboutme.css        |  77 ++++++-----
+ css/experience.css     | 104 ++++++++++-----
+ css/hamburger.css      |  63 ++++++---
+ css/hamburgerindex.css | 137 ++++++++++++--------
+ css/index.css          | 183 ++++++++++++++++++++------
+ css/projects.css       | 150 +++++++++++++--------
+ css/universalStyle.css | 286 ++++++++++++++++++++++++++++-------------
+ experience.html        |  41 +++---
+ index.html             |  17 +--
+ js/findScrollPoint.js  |  41 +++---
+ js/openNav.js          |  23 ++--
+ projects.html          |  51 ++++----
+ 13 files changed, 765 insertions(+), 428 deletions(-)
+
+diff --git a/aboutme.html b/aboutme.html
+index 3c6a353..b202fdc 100644
+--- a/aboutme.html
++++ b/aboutme.html
+@@ -1,4 +1,5 @@
+-<html>
++<!DOCTYPE html>
++<html lang="en">
+   <head>
+     <title>About Me</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+@@ -24,15 +25,14 @@
+           <div id="bar1"></div>
+           <div id="bar2"></div>
+           <div id="bar3"></div>
+-        </div> <!--hamburger-->
++        </div>
+         <a href="index.html">Home</a>
+         <a class="active" href="aboutme.html">About Me</a>
+         <a href="experience.html">Experience</a>
+         <a href="projects.html">Projects</a>
+-      </div> <!-- nav-bar-->
++      </div>
+ 
+-      <div class="cover-image-spot">
+-      </div><!--Cover Image-->
++      <div class="cover-image-spot"></div>
+ 
+       <div class="content-grid">
+         <div class="text-content">
+@@ -44,9 +44,10 @@
+             Experienced in Kubernetes hosted applications, Operator Development, CICD,
+             Terraform, and Distributed Systems.
+           </p>
+-        </div><!--Text Content-->
++        </div>
+         <img id="pic-of-me" src="img/me.png"/>
+-      </div> <!--Content-->
++      </div>
++
+       <div class="footer-wrapper">
+         <div class="foot">
+           <form action="mailto:rickyf115@pm.me">
+@@ -60,8 +61,7 @@
+           </form>
+         </div>
+       </div>
+-    </div> <!--wrapper-->
+-    <div class="closed" id="bool">
+-    </div> <!--End hacky div-->
++    </div>
++    <div class="closed" id="bool"></div>
+   </body>
+ </html>
+diff --git a/css/aboutme.css b/css/aboutme.css
+index 5087b5c..545a032 100644
+--- a/css/aboutme.css
++++ b/css/aboutme.css
+@@ -1,46 +1,55 @@
+-.text-content{
+-  padding-top: 0;
++.content-grid {
++  padding: 64px 80px 100px;
++  background: white;
++  grid-area: content-grid;
++  display: grid;
++  grid-template-columns: 1fr 460px;
++  grid-template-areas: "text-content image";
++  gap: 64px;
++  align-items: start;
++}
++
++.text-content {
+   grid-area: text-content;
+-  color: black;
+-  transition: 3s;
++  color: #1a1a2e;
+ }
+ 
+-.content-grid #pic-of-me{
+-  grid-area: image;
++.text-content p {
++  line-height: 1.75;
++  margin-bottom: 16px;
+ }
+ 
+-#pic-of-me {
+-  border: 1px solid black;
+-  width: 500px;
+-  height: 500px;
++.content-grid #pic-of-me {
++  grid-area: image;
++  width: 100%;
++  max-width: 460px;
++  height: auto;
++  aspect-ratio: 1;
++  border-radius: 18px;
++  object-fit: cover;
++  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14);
++  transition:
++    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
++    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+ }
+ 
+-.content-grid{
+-  padding-top: 50px;
+-  padding-bottom: 200px;
+-  background-color: white;
+-  grid-area: content-grid;
+-  display: grid;
+-  grid-template-columns: 0.4fr 1fr 1fr 1fr 0.4fr;
+-  grid-template-rows: auto;
+-  grid-template-areas:
+-  ". text-content . image .";
++.content-grid #pic-of-me:hover {
++  transform: translateY(-5px) scale(1.01);
++  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.2);
+ }
+ 
+-@media screen and (max-width: 1100px){
+-  .content-grid{
+-    padding-top: 50px;
+-    padding-bottom: 50px;
+-    padding-left: 50px;
+-    padding-right: 50px;
+-    background-color: white;
+-    grid-area: content-grid;
+-    display: grid;
+-    grid-template-columns: auto;
+-    grid-template-rows: auto;
++@media screen and (max-width: 1100px) {
++  .content-grid {
++    grid-template-columns: 1fr;
+     grid-template-areas:
+-    ". image ."
+-    ". . ."
+-    "text-content text-content text-content";
++      "image"
++      "text-content";
++    gap: 32px;
++    padding: 44px 28px 64px;
++  }
++
++  .content-grid #pic-of-me {
++    max-width: 260px;
++    justify-self: center;
+   }
+ }
+diff --git a/css/experience.css b/css/experience.css
+index 9f6685c..c459c03 100644
+--- a/css/experience.css
++++ b/css/experience.css
+@@ -1,44 +1,82 @@
+-.content-grid{
+-  padding-top: 50px;
+-  padding-bottom: 200px;
+-  padding-left: 50px;
+-  padding-right: 50px;
+-  background-color: white;
++.content-grid {
++  padding: 64px 80px 100px;
++  background: white;
+   grid-area: content-grid;
+   display: grid;
+-  grid-template-columns: auto;
+-  grid-template-rows: auto;
+-  grid-template-areas:
+-  "text-content"
+-  "."
+-  "resume";
++  grid-template-columns: 1fr 440px;
++  grid-template-areas: "text-content resume";
++  gap: 64px;
++  align-items: start;
+ }
+ 
+-.content-grid .resume{
++.text-content {
++  grid-area: text-content;
++  color: #1a1a2e;
++}
++
++.text-content p {
++  line-height: 1.75;
++  margin-bottom: 12px;
++}
++
++.text-content ul {
++  padding-left: 22px;
++  line-height: 1.8;
++}
++
++.text-content li {
++  margin-bottom: 6px;
++}
++
++.content-grid .resume {
+   grid-area: resume;
++  position: sticky;
++  top: 80px;
++}
++
++.content-grid .resume .heading {
++  display: flex;
++  align-items: center;
++  gap: 10px;
++  margin-bottom: 16px;
+ }
+ 
+-@media screen and (max-width: 1100px){
+-  .content-grid{
+-    padding-top: 50px;
+-    padding-bottom: 50px;
+-    padding-left: 50px;
+-    padding-right: 50px;
+-    background-color: white;
+-    grid-area: content-grid;
+-    display: grid;
+-    grid-template-columns: auto;
+-    grid-template-rows: auto;
++.content-grid .resume .heading a {
++  display: inline-flex;
++  align-items: center;
++  padding: 4px 8px;
++  border-radius: 6px;
++  transition: background 0.26s ease;
++}
++
++.content-grid .resume .heading a:hover {
++  background: rgba(184, 59, 107, 0.1);
++  opacity: 1;
++}
++
++#iframeresume {
++  width: 100%;
++  height: 560px;
++  border: none;
++  border-radius: 14px;
++  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
++}
++
++@media screen and (max-width: 1100px) {
++  .content-grid {
++    grid-template-columns: 1fr;
+     grid-template-areas:
+-    "text-content text-content text-content"
+-    ". . ."
+-    ". resume .";
++      "text-content"
++      "resume";
++    gap: 48px;
++    padding: 44px 28px 64px;
+   }
+-}
+ 
+-.text-content{
+-  padding-top: 0;
+-  grid-area: text-content;
+-  color: black;
+-  transition: 3s;
++  .content-grid .resume {
++    position: static;
++  }
++
++  #iframeresume {
++    height: 480px;
++  }
+ }
+diff --git a/css/hamburger.css b/css/hamburger.css
+index 1a9c581..6496356 100644
+--- a/css/hamburger.css
++++ b/css/hamburger.css
+@@ -1,33 +1,58 @@
+-.nav-bar .hamburger{
++/* ── Hamburger button (inner pages) ─────────── */
++.nav-bar .hamburger {
+   display: none;
+   cursor: pointer;
+-  padding-right: 10px;
+-  padding-top: 10px;
++  padding: 10px;
+   position: fixed;
+-  right:0;
+-  top:0;
++  right: 12px;
++  top: 6px;
++  z-index: 101;
++  border-radius: 6px;
++  transition: background 0.22s ease;
+ }
+ 
+-#bar1, #bar2, #bar3{
+-  width : 35px;
+-  height: 5px;
++.nav-bar .hamburger:hover {
++  background: rgba(255, 255, 255, 0.12);
++}
++
++.nav-bar.scrolled .hamburger:hover {
++  background: rgba(0, 0, 0, 0.06);
++}
++
++#bar1, #bar2, #bar3 {
++  width: 24px;
++  height: 2px;
+   background-color: white;
+-  margin: 6px 0;
+-  transition: 0.5s;
++  margin: 5px 0;
++  border-radius: 2px;
++  transition:
++    transform 0.38s cubic-bezier(0.4, 0, 0.2, 1),
++    opacity 0.28s ease,
++    background-color 0.28s ease;
+ }
+ 
+-/*Animation*/
+-.change #bar1{
+-  -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+-  transform: rotate(-45deg) translate(-9px, 6px);
++/* ── X close animation ──────────────────────── */
++.change #bar1 {
++  transform: rotate(-45deg) translate(-5px, 5px);
+ }
+ 
+-.change #bar2{
++.change #bar2 {
+   opacity: 0;
++  transform: translateX(8px);
+ }
+ 
+-.change #bar3{
+-  -webkit-transform: rotate(45deg) translate(-8px, -8px);
+-  transform: rotate(45deg) translate(-8px, -8px);
++.change #bar3 {
++  transform: rotate(45deg) translate(-5px, -5px);
++}
++
++/* ── Show hamburger on mobile ────────────────── */
++@media screen and (max-width: 1100px) {
++  .nav-bar .hamburger {
++    display: block;
++  }
++}
++
++/* State tracking div — not visible */
++#bool {
++  display: none;
+ }
+-/*End Animation*/
+diff --git a/css/hamburgerindex.css b/css/hamburgerindex.css
+index 79b4933..96c7881 100644
+--- a/css/hamburgerindex.css
++++ b/css/hamburgerindex.css
+@@ -1,76 +1,103 @@
+-.nav-bar{
+-  width: 100%;
+-  height: 0%;
++/* ── Hamburger (index page — outside the nav) ── */
++.hamburger {
++  display: none;
++  cursor: pointer;
++  padding: 10px;
+   position: fixed;
+-  z-index: 1;
+-  top: 0;
+-  left: 0;
+-  background-color: rgba(255,255,255,0);
+-  overflow-y: hidden;
+-  transition: 0.8s;
+-  padding-top:60px;
+-  text-align: center;
+-  grid-area: nav;
+-}
+-
+-.nav-bar a {
+-  padding: 8px 8px 8px 32px;
+-  text-decoration: none;
+-  font-size: 25px;
+-  color: black;
+-  display: block;
+-  transition: 0.3s;
+-  text-transform: uppercase;
++  right: 12px;
++  top: 6px;
++  z-index: 102;
++  border-radius: 6px;
++  transition: background 0.22s ease;
+ }
+ 
+-.nav-bar a:hover{
+-  background-color: rgba(0,0,0,0.1);
++.hamburger:hover {
++  background: rgba(255, 255, 255, 0.12);
+ }
+ 
+-.hamburger{
+-  z-index: 2;
+-  display: none;
+-  cursor: pointer;
+-  padding-right: 10px;
+-  padding-top: 10px;
+-  position: absolute;
+-  right: 0;
+-  top: 0;
++@media screen and (max-width: 1100px) {
++  .hamburger {
++    display: block;
++  }
+ }
+ 
+-#bar1,#bar2,#bar3{
+-  width: 35px;
+-  height: 5px;
+-  background-color: white;
+-  margin: 6px 0;
+-  transition: 0.4s;
++#bar1, #bar2, #bar3 {
++  width: 24px;
++  height: 2px;
++  background-color: rgba(255, 255, 255, 0.9);
++  margin: 5px 0;
++  border-radius: 2px;
++  transition:
++    transform 0.38s cubic-bezier(0.4, 0, 0.2, 1),
++    opacity 0.28s ease,
++    background-color 0.28s ease;
+ }
+ 
+-/*Animate Hamburger Icon*/
+-.change #bar1{
+-  -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+-  transform: rotate(-45deg) translate(-9px, 6px);
++/* ── X close animation ──────────────────────── */
++.change #bar1 {
++  transform: rotate(-45deg) translate(-5px, 5px);
+ }
+ 
+-.change #bar2{
++.change #bar2 {
+   opacity: 0;
++  transform: translateX(8px);
+ }
+ 
+ .change #bar3 {
+-  -webkit-transform: rotate(45deg) translate(-8px, -8px);
+-  transform: rotate(45deg) translate(-8px, -8px);
++  transform: rotate(45deg) translate(-5px, -5px);
+ }
+-/*End animation*/
+ 
+-@media screen and (max-width: 1100px){
+-  .hamburger{
+-    display: inline-block;
+-  }
++/* ── Overlay nav (nav-bar = head-nav on index) ── */
++.nav-bar {
++  width: 100%;
++  height: 0;
++  position: fixed;
++  z-index: 99;
++  top: 0;
++  left: 0;
++  background: transparent;
++  overflow: hidden;
++  display: flex;
++  flex-direction: column;
++  justify-content: center;
++  align-items: center;
++  transition:
++    height 0.44s cubic-bezier(0.4, 0, 0.2, 1),
++    background 0.44s ease;
++}
++
++.nav-bar.open {
++  height: 100dvh;
++  background: rgba(255, 255, 255, 0.97);
++}
++
++.nav-bar a {
++  display: block;
++  padding: 12px 40px;
++  font-size: 20px;
++  font-weight: 600;
++  letter-spacing: 0.1em;
++  text-transform: uppercase;
++  color: #1a1a2e;
++  text-decoration: none;
++  opacity: 0;
++  transform: translateY(14px);
++  transition:
++    color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
++    opacity 0.28s ease,
++    transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
++}
++
++.nav-bar.open a              { opacity: 1; transform: translateY(0); }
++.nav-bar.open a:nth-child(1) { transition-delay: 0.06s; }
++.nav-bar.open a:nth-child(2) { transition-delay: 0.12s; }
++.nav-bar.open a:nth-child(3) { transition-delay: 0.18s; }
++.nav-bar.open a:nth-child(4) { transition-delay: 0.24s; }
++
++.nav-bar a:hover {
++  color: #b83b6b;
+ }
+ 
+-/*
+-Ignore this, this is hiding the hacky div.
+-*/
+-#bool{
++#bool {
+   display: none;
+ }
+diff --git a/css/index.css b/css/index.css
+index 109ce79..ef9efa7 100644
+--- a/css/index.css
++++ b/css/index.css
+@@ -1,68 +1,167 @@
+-.big-wrapper{
+-  display: grid;
+-  grid-template-columns: auto;
+-  grid-template-rows: 1.5fr 1fr;
+-  grid-template-areas:
+-  "nav"
+-  "middle-wrap";
++:root {
++  --accent: #b83b6b;
++  --text-light: rgba(255, 255, 255, 0.94);
++  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+ }
+ 
+ * {
+   font-family: 'Century Gothic', CenturyGothic, Geneva, AppleGothic, sans-serif;
++  box-sizing: border-box;
+ }
+ 
+-body{
++body {
+   padding: 0;
+   margin: 0;
+   background-image: url("../img/cover.png");
+   background-size: cover;
+-  height: 100%;
+-  width: 100%;
++  background-position: center top;
++  background-attachment: fixed;
++  min-height: 100dvh;
++  overflow-x: hidden;
+ }
+ 
+-.middle-wrapper{
+-  padding-top: 40px;
+-  padding-bottom: 40px;
+-  display: grid;
+-  grid-area: middle-wrap;
+-  font-weight: 500;
+-  background-color: white;
+-  grid-template-rows: auto;
+-  grid-template-columns: 0.1fr 1fr 0.1fr;
+-  grid-template-areas:
+-  ". page-title ."
+-  ".  navs .";
++/* Darkening overlay for readability */
++body::before {
++  content: '';
++  position: fixed;
++  inset: 0;
++  background: rgba(0, 0, 0, 0.38);
++  z-index: 0;
++  pointer-events: none;
+ }
+ 
+-.middle-wrapper .page-title{
+-  grid-area: page-title;
+-  padding-left: 50px;
+-  font-size: 24px;
++/* ── Layout ─────────────────────────────────── */
++.big-wrapper {
++  position: relative;
++  z-index: 1;
++  min-height: 100dvh;
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  justify-content: center;
+ }
+ 
+-.middle-wrapper .nav-keys{
+-  grid-area: navs;
++.filler {
++  display: none;
+ }
+ 
+-.middle-wrapper .nav-keys a{
+-  text-decoration: none;
+-  color: black;
+-  font-size: 18px;
+-  padding: 24px 20px;
++/* ── Header ──────────────────────────────────── */
++header {
++  position: fixed;
++  top: 0;
++  left: 0;
++  right: 0;
++  z-index: 100;
++  height: 60px;
++  pointer-events: none;
++}
++
++/* ── Main content ────────────────────────────── */
++.middle-wrapper {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
+   text-align: center;
+-  display: block;
+-  float: left;
++  padding: 48px 40px;
++  pointer-events: auto;
++  animation: heroIn 0.75s var(--ease) both;
++  animation-delay: 0.12s;
++}
++
++@keyframes heroIn {
++  from {
++    opacity: 0;
++    transform: translateY(28px);
++  }
++  to {
++    opacity: 1;
++    transform: translateY(0);
++  }
++}
++
++.middle-wrapper .page-title {
++  margin-bottom: 48px;
++}
++
++.middle-wrapper .page-title p {
++  margin: 0;
++  font-size: clamp(28px, 5vw, 54px);
++  font-weight: 700;
++  letter-spacing: -0.02em;
++  color: var(--text-light);
++  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.28);
++}
++
++/* ── Nav key buttons ─────────────────────────── */
++.nav-keys {
++  display: flex;
++  gap: 14px;
++  flex-wrap: wrap;
++  justify-content: center;
++}
++
++.nav-keys a {
++  position: relative;
++  display: inline-block;
++  padding: 13px 30px;
++  font-size: 12px;
++  font-weight: 600;
++  letter-spacing: 0.12em;
+   text-transform: uppercase;
++  color: var(--text-light);
++  text-decoration: none;
++  border: 1.5px solid rgba(255, 255, 255, 0.42);
++  border-radius: 50px;
++  background: rgba(255, 255, 255, 0.08);
++  backdrop-filter: blur(12px);
++  -webkit-backdrop-filter: blur(12px);
++  overflow: hidden;
++  transition:
++    border-color 0.28s var(--ease),
++    background 0.28s var(--ease),
++    transform 0.28s var(--ease),
++    box-shadow 0.28s var(--ease);
+ }
+ 
+-@media screen and (max-width: 1100px){
+-  .middle-wrapper{
+-    grid-template-columns: auto;
+-    grid-template-areas:
+-    "page-title";
++.nav-keys a::before {
++  content: '';
++  position: absolute;
++  inset: 0;
++  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 100%);
++  opacity: 0;
++  transition: opacity 0.28s var(--ease);
++  border-radius: 50px;
++}
++
++.nav-keys a:hover {
++  border-color: rgba(255, 255, 255, 0.78);
++  transform: translateY(-3px);
++  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
++  opacity: 1;
++}
++
++.nav-keys a:hover::before {
++  opacity: 1;
++}
++
++.nav-keys a:active {
++  transform: translateY(-1px);
++}
++
++/* Staggered entrance */
++.nav-keys a:nth-child(1) { animation: heroIn 0.65s var(--ease) both; animation-delay: 0.28s; }
++.nav-keys a:nth-child(2) { animation: heroIn 0.65s var(--ease) both; animation-delay: 0.36s; }
++.nav-keys a:nth-child(3) { animation: heroIn 0.65s var(--ease) both; animation-delay: 0.44s; }
++.nav-keys a:nth-child(4) { animation: heroIn 0.65s var(--ease) both; animation-delay: 0.52s; }
++
++/* ── Responsive ──────────────────────────────── */
++@media screen and (max-width: 768px) {
++  .nav-keys {
++    flex-direction: column;
++    min-width: 200px;
+   }
+ 
+-  .middle-wrapper .nav-keys{
+-    display: none;
++  .nav-keys a {
++    text-align: center;
+   }
+ }
+diff --git a/css/projects.css b/css/projects.css
+index 46de233..744e24d 100644
+--- a/css/projects.css
++++ b/css/projects.css
+@@ -1,82 +1,122 @@
+-.content-grid{
+-  padding-right: 50px;
+-  padding-left: 50px;
+-  padding-top: 50px;
+-  padding-bottom: 200px;
+-  background-color: white;
++.content-grid {
++  padding: 64px 80px 100px;
++  background: white;
+   grid-area: content-grid;
+-  display: grid;
+-  grid-template-columns: 0.05fr 1fr 0.05fr;
+-  grid-template-rows: auto;
+-  grid-template-areas:
+-  ". main ."
+-  ". sheet ."
+-  ". safetynet ."
+-  ". rubiks ."
+-  ". raytracing ."
+-  ". samurai ."
+-  ". cybot .";
+ }
+ 
+-.content-grid #main{
+-  grid-area:main;
++.content-grid #main {
++  margin-bottom: 8px;
++}
++
++/* Project section separators */
++.content-grid > div[id] {
++  padding: 48px 0;
++  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+ }
+ 
+-#safetynet {
+-  grid-area: safetynet;
++.content-grid > div[id]:last-child {
++  border-bottom: none;
++  padding-bottom: 0;
+ }
+ 
++/* Two-column layout for projects with images */
++#run-samurai,
++#ray-tracing,
++#sheet-vision {
++  display: grid;
++  grid-template-columns: 1fr 1fr;
++  gap: 48px;
++  align-items: start;
++}
++
++/* Text-only projects */
++#safetynet,
+ #rubiks {
+-  grid-area: rubiks;
++  max-width: 680px;
+ }
+ 
+-#sheet-vision{
+-  grid-area: sheet;
++.project-text p {
++  line-height: 1.75;
++  color: #1a1a2e;
++  margin-bottom: 12px;
+ }
+ 
+-#run-samurai{
+-  grid-area: samurai;
++.project-text ul {
++  padding-left: 22px;
++  line-height: 1.8;
+ }
+ 
+-#cybot{
+-  grid-area: cybot;
++.project-text li {
++  margin-bottom: 5px;
++  color: #1a1a2e;
+ }
+ 
+-#ray-tracing{
+-  grid-area: raytracing
++/* Image gallery */
++.image-content {
++  margin-top: 8px;
+ }
+ 
+-@media screen and (max-width: 1100px){
+-  .content-grid{
+-    grid-template-rows: auto;
+-    grid-template-columns: auto;
+-    grid-template-areas:
+-    "main"
+-    "sheet"
+-    "safetynet"
+-    "rubiks"
+-    "raytracing"
+-    "samurai"
+-    "cybot";
+-  }
++.images {
++  list-style: none;
++  padding: 0;
++  margin: 0;
++  display: flex;
++  flex-wrap: wrap;
++  gap: 12px;
++}
+ 
+-  #sheet-vision .image-content img {
+-    height: 350px;
+-    width: 600px;
+-  }
++.images li {
++  position: relative;
++  overflow: hidden;
++  border-radius: 10px;
++  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
++  transition:
++    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
++    box-shadow 0.32s cubic-bezier(0.4, 0, 0.2, 1);
++}
++
++.images li:hover {
++  transform: translateY(-4px);
++  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
++}
++
++.images li img {
++  display: block;
+ }
+ 
++/* Ray tracing images */
+ #ray-tracing .image-content img {
+-  height: 400px;
+-  width: 400px;
++  height: 200px;
++  width: 200px;
++  object-fit: cover;
+ }
+ 
+-.images {
+-  list-style-type: none;
++/* Sheet vision image */
++#sheet-vision .image-content img {
++  height: auto;
++  width: 100%;
++  max-width: 100%;
++  border-radius: 10px;
+ }
+ 
+-.images li {
+-  float: left;
+-  position:relative;
+-  margin: 1em;
++@media screen and (max-width: 1100px) {
++  .content-grid {
++    padding: 44px 24px 64px;
++  }
++
++  #run-samurai,
++  #ray-tracing,
++  #sheet-vision {
++    grid-template-columns: 1fr;
++  }
++
++  #ray-tracing .image-content img {
++    height: 150px;
++    width: 150px;
++  }
++
++  #sheet-vision .image-content img {
++    max-width: 100%;
++    height: auto;
++  }
+ }
+diff --git a/css/universalStyle.css b/css/universalStyle.css
+index e7d3ec1..2a1ab10 100644
+--- a/css/universalStyle.css
++++ b/css/universalStyle.css
+@@ -1,141 +1,243 @@
+-*{
+-  font-family: 'Century Gothic', CenturyGothic, Geneva, AppleGothic, sans-serif;
++:root {
++  --accent: #b83b6b;
++  --accent-soft: rgba(184, 59, 107, 0.1);
++  --nav-solid: rgba(255, 255, 255, 0.97);
++  --text-dark: #1a1a2e;
++  --text-light: rgba(255, 255, 255, 0.93);
++  --ease: cubic-bezier(0.4, 0, 0.2, 1);
++  --dur: 0.32s;
+ }
+ 
+-a {
+-  color: rgba(184, 59, 107);
+-  text-decoration: none;
++* {
++  font-family: 'Century Gothic', CenturyGothic, Geneva, AppleGothic, sans-serif;
++  box-sizing: border-box;
+ }
+ 
+-body{
++body {
+   background: url("../img/cover.png") no-repeat top center fixed;
+   background-size: cover;
+   margin: 0;
+   padding: 0;
+-  height: 100%;
+-  width: 100%;
++  min-height: 100vh;
+ }
+ 
+-.footer-wrapper{
+-  background-color: white;
+-  grid-area: foot;
+-  padding-left: 30px;
+-  float: left;
+-}
+-
+-.footer-wrapper .foot form{
+-  display: inline-block;
+-  padding: 24px 14px;
++a {
++  color: var(--accent);
++  text-decoration: none;
++  transition: opacity var(--dur) var(--ease);
+ }
+ 
+-.footer-wrapper .foot form input{
+-  height:20px;
+-  width:20px;
++a:hover {
++  opacity: 0.72;
+ }
+ 
+-.wrapper{
++/* ── Page layout ─────────────────────────────── */
++.wrapper {
+   display: grid;
+   grid-template-columns: auto;
+-  grid-template-rows: 0px 20px 500px 1fr 100px;
++  grid-template-rows: 0px 60px 480px 1fr auto;
+   grid-template-areas:
+-  "hidden-nav"
+-  "nav"
+-  "cover-image"
+-  "content-grid"
+-  "foot";
++    "hidden-nav"
++    "nav"
++    "cover-image"
++    "content-grid"
++    "foot";
+ }
+ 
+-.nav-bar a{
+-  text-decoration: none;
+-  text-transform: uppercase;
+-  color:white;
+-  padding: 18px 22px;
+-  font-size: 18px;
+-  display: block;
+-  float: left;
++.cover-image-spot {
++  grid-area: cover-image;
++  background: transparent;
+ }
+ 
+-.nav-bar{
++/* ── Desktop nav bar ─────────────────────────── */
++.nav-bar {
+   grid-area: nav;
+   position: fixed;
+-  z-index: 1;
++  z-index: 100;
++  top: 0;
++  left: 0;
+   width: 100%;
+-  transition: 0.5s;
+-  background-color: rgba(0,0,0,0);
++  height: 60px;
++  display: flex;
++  align-items: center;
++  padding: 0 40px;
++  background: transparent;
++  transition:
++    background var(--dur) var(--ease),
++    box-shadow var(--dur) var(--ease);
+ }
+ 
+-.cover-image-spot{
+-  width:100%;
+-  background-color: rgba(0,0,0,0);
+-  grid-area: cover-image;
++.nav-bar.scrolled {
++  background: var(--nav-solid);
++  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 4px 24px rgba(0, 0, 0, 0.07);
+ }
+ 
+-.heading{
+-  font-size: 24px;
++.nav-bar a {
++  position: relative;
++  text-decoration: none;
++  text-transform: uppercase;
++  color: var(--text-light);
++  padding: 8px 16px;
++  font-size: 12px;
++  letter-spacing: 0.1em;
++  font-weight: 600;
++  white-space: nowrap;
++  transition: color var(--dur) var(--ease);
+ }
+ 
+-@media screen and (max-width: 1100px){
+-  .wrapper{
+-    display: grid;
+-    grid-template-columns: auto;
+-    grid-template-rows: 0px 20px 500px 1fr 100px;
+-    grid-template-areas:
+-    "hidden-nav"
+-    "nav"
+-    "cover-image"
+-    "content-grid"
+-    "foot";
+-  }
++.nav-bar a:hover {
++  opacity: 1;
+ }
+ 
+-@media screen and (max-width: 1100px){
+-  .nav-bar a{
+-    display: none;
+-  }
++.nav-bar.scrolled a {
++  color: var(--text-dark);
++}
+ 
+-  .nav-bar a:hover{
+-    background-color: rgba(0,0,0,0.1);
+-  }
++/* Animated underline indicator */
++.nav-bar a::after {
++  content: '';
++  position: absolute;
++  bottom: 2px;
++  left: 16px;
++  right: 16px;
++  height: 2px;
++  background: var(--accent);
++  border-radius: 2px;
++  transform: scaleX(0);
++  transform-origin: center;
++  transition: transform var(--dur) var(--ease);
++}
+ 
+-  .nav-bar .hamburger{
+-    display: inline-block;
+-  }
++.nav-bar a:hover::after,
++.nav-bar a.active::after {
++  transform: scaleX(1);
++}
+ 
+-  .nav-bar{
+-    display: block;
+-    height: 6%;
+-  }
++.nav-bar a.active {
++  color: var(--text-light);
+ }
+ 
+-.nav-bar .active{
+-  border-bottom: 3px solid white;
++.nav-bar.scrolled a.active {
++  color: var(--accent);
+ }
+ 
+-#head-nav{
+-  width: 100%;
+-  height: 0%;
++/* ── Mobile overlay nav ──────────────────────── */
++#head-nav {
++  grid-area: hidden-nav;
+   position: fixed;
+-  z-index: 1;
++  z-index: 99;
+   top: 0;
+   left: 0;
+-  background-color: rgba(255,255,255,0);
+-  transition: 0.8s;
+-  padding-top: 60px;
+-  text-align: center;
+-  grid-area: hidden-nav;
+-  overflow-y: hidden;
++  width: 100%;
++  height: 0;
++  overflow: hidden;
++  background: transparent;
++  display: flex;
++  flex-direction: column;
++  justify-content: center;
++  align-items: center;
++  transition:
++    height 0.44s var(--ease),
++    background 0.44s ease;
+ }
+ 
+-#head-nav a{
+-  padding: 8px 8px 8px 32px;
+-  text-decoration: none;
+-  font-size: 25px;
+-  color: black;
++#head-nav.open {
++  height: 100dvh;
++  background: rgba(255, 255, 255, 0.97);
++}
++
++#head-nav a {
+   display: block;
+-  transition: 0.3s;
++  padding: 12px 40px;
++  font-size: 20px;
++  font-weight: 600;
++  letter-spacing: 0.1em;
+   text-transform: uppercase;
++  color: var(--text-dark);
++  text-decoration: none;
++  opacity: 0;
++  transform: translateY(14px);
++  transition:
++    color var(--dur) var(--ease),
++    opacity 0.28s ease,
++    transform 0.34s var(--ease);
++}
++
++#head-nav.open a              { opacity: 1; transform: translateY(0); }
++#head-nav.open a:nth-child(1) { transition-delay: 0.06s; }
++#head-nav.open a:nth-child(2) { transition-delay: 0.12s; }
++#head-nav.open a:nth-child(3) { transition-delay: 0.18s; }
++#head-nav.open a:nth-child(4) { transition-delay: 0.24s; }
++
++#head-nav a:hover {
++  color: var(--accent);
++  opacity: 1;
++}
++
++/* ── Section heading ─────────────────────────── */
++.heading {
++  font-size: 26px;
++  font-weight: 700;
++  letter-spacing: -0.01em;
++  color: var(--text-dark);
++}
++
++/* ── Content fade-in on load ─────────────────── */
++@keyframes fadeUp {
++  from { opacity: 0; transform: translateY(24px); }
++  to   { opacity: 1; transform: translateY(0); }
++}
++
++.content-grid {
++  animation: fadeUp 0.6s var(--ease) both;
++  animation-delay: 0.1s;
++}
++
++/* ── Footer ──────────────────────────────────── */
++.footer-wrapper {
++  grid-area: foot;
++  background: white;
++  border-top: 1px solid rgba(0, 0, 0, 0.07);
++  padding: 0 28px;
++}
++
++.footer-wrapper .foot {
++  display: flex;
++  align-items: center;
++  padding: 10px 0;
++  gap: 4px;
++}
++
++.footer-wrapper .foot form {
++  display: inline-flex;
++  align-items: center;
++  justify-content: center;
++  padding: 8px;
++  border-radius: 8px;
++  transition:
++    background var(--dur) var(--ease),
++    transform var(--dur) var(--ease);
++}
++
++.footer-wrapper .foot form:hover {
++  background: var(--accent-soft);
++  transform: translateY(-2px);
+ }
+ 
+-#head-nav a:hover{
+-  background-color: rgba(0,0,0,0.1);
++.footer-wrapper .foot form input {
++  height: 22px;
++  width: 22px;
++  cursor: pointer;
++  display: block;
++}
++
++/* ── Responsive ──────────────────────────────── */
++@media screen and (max-width: 1100px) {
++  .nav-bar a {
++    display: none;
++  }
++
++  .nav-bar .hamburger {
++    display: block;
++  }
+ }
+diff --git a/experience.html b/experience.html
+index 6ccabc3..cd86163 100644
+--- a/experience.html
++++ b/experience.html
+@@ -1,6 +1,7 @@
+-<html>
++<!DOCTYPE html>
++<html lang="en">
+   <head>
+-    <title>About Me</title>
++    <title>Experience</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <link rel="stylesheet" type="text/css" href="css/hamburger.css"/>
+     <script src="js/jquery-3.3.1.min.js"></script>
+@@ -24,15 +25,14 @@
+           <div id="bar1"></div>
+           <div id="bar2"></div>
+           <div id="bar3"></div>
+-        </div> <!--hamburger-->
++        </div>
+         <a href="index.html">Home</a>
+         <a href="aboutme.html">About Me</a>
+         <a class="active" href="experience.html">Experience</a>
+         <a href="projects.html">Projects</a>
+-      </div> <!-- nav-bar-->
++      </div>
+ 
+-      <div class="cover-image-spot">
+-      </div><!--Cover Image-->
++      <div class="cover-image-spot"></div>
+ 
+       <div class="content-grid">
+         <div class="text-content">
+@@ -84,7 +84,7 @@
+                         On Premise and Cloud Deployed Kubernetes clusters (Upgrades, Patching, Troubleshooting, etc).
+                       </li>
+                       <li>
+-                        Lead & Participate in Agile Ceremonies for the team, including sprint planning, retrospectives, and daily standups.
++                        Lead &amp; Participate in Agile Ceremonies for the team, including sprint planning, retrospectives, and daily standups.
+                       </li>
+                     </ul>
+                   </li>
+@@ -143,7 +143,7 @@
+                       More Terraform Provider Development
+                     </li>
+                     <li>
+-                      ElasticSearch state store for managing race conditions and state management. 
++                      ElasticSearch state store for managing race conditions and state management.
+                       (Note: We could've and probably should have used a simple postgresql DB for this.
+                       We just ran an Elasticsearch service as well and had lot of experience with it, it was a good fit for the use case.)
+                     </li>
+@@ -182,7 +182,7 @@
+                   </ul>
+                 </ul>
+                 <li>
+-                  Expanded service offerings to the cloud for datamovement, handling over 20 petabytes of data.                
++                  Expanded service offerings to the cloud for datamovement, handling over 20 petabytes of data.
+                 </li>
+                 <ul>
+                   <li>
+@@ -309,17 +309,17 @@
+             </div>
+             <!--End Optum Experience-->
+ 
+-        			<!-- Resume Copy for online use -->
+         	</div>
+-        </div><!--Text Content-->
++        </div>
+         <div class="resume">
+-    			<p class="heading">Resume <a href="./Misc/resume.pdf" download><img src="./img/download.png" width="20px" height="20px"></a></p>
+-    			<iframe id="iframeresume" src="resume.html"
+-    				width="400px" height="500px" frameborder="0"
+-    				scrolling="no" marginheight="0" marginwidth="0">
+-    			</iframe>
+-    		</div>
+-      </div> <!--Content-->
++    		<p class="heading">Resume <a href="./Misc/resume.pdf" download><img src="./img/download.png" width="20px" height="20px"></a></p>
++    		<iframe id="iframeresume" src="resume.html"
++    			width="400px" height="500px" frameborder="0"
++    			scrolling="no" marginheight="0" marginwidth="0">
++    		</iframe>
++    	</div>
++      </div>
++
+       <div class="footer-wrapper">
+         <div class="foot">
+           <form action="mailto:rickyf115@pm.me">
+@@ -333,8 +333,7 @@
+           </form>
+         </div>
+       </div>
+-    </div> <!--wrapper-->
+-    <div class="closed" id="bool">
+-    </div> <!--End hacky div-->
++    </div>
++    <div class="closed" id="bool"></div>
+   </body>
+ </html>
+diff --git a/index.html b/index.html
+index 5bbe9af..170b692 100644
+--- a/index.html
++++ b/index.html
+@@ -1,4 +1,5 @@
+-<html>
++<!DOCTYPE html>
++<html lang="en">
+   <head>
+     <title>Ricky's Portfolio</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+@@ -24,9 +25,6 @@
+         </nav>
+       </header>
+ 
+-      <div class="filler">
+-      </div>
+-
+       <div class="middle-wrapper">
+         <div class="page-title">
+           <p>Ricky Faure's Web Portfolio</p>
+@@ -36,15 +34,10 @@
+           <a href="aboutme.html">About Me</a>
+           <a href="experience.html">Experience</a>
+           <a href="projects.html">Projects</a>
+-        </div> <!--Links-->
+-      </div> <!--Middle Wrapper-->
+-
+-      <div class="filler">
++        </div>
+       </div>
+ 
+-    </div> <!-- Big Wrapper -->
+-    <!--Hacky thing to fix bug-->
+-    <div class="closed" id="bool">
+-    </div> <!--End hacky div-->
++    </div>
++    <div class="closed" id="bool"></div>
+   </body>
+ </html>
+diff --git a/js/findScrollPoint.js b/js/findScrollPoint.js
+index 39a09ea..cf3e85d 100644
+--- a/js/findScrollPoint.js
++++ b/js/findScrollPoint.js
+@@ -1,19 +1,24 @@
+-$(document).on('scroll', function(){
+-  if($(this).scrollTop()>=$('.content-grid').position().top){
+-    $('.nav-bar').css('background-color', 'white');
+-    $('.nav-bar').css('border-bottom', '1px solid black');
+-    $('.nav-bar .active').css('border-bottom', '1px solid black');
+-    $('.nav-bar a').css('color', 'black');
+-    $('#bar1').css('background-color', 'black');
+-    $('#bar2').css('background-color', 'black');
+-    $('#bar3').css('background-color', 'black');
+-  }else{
+-    $('.nav-bar').css('background-color', 'rgba(0,0,0,0)');
+-    $('.nav-bar').css('border-bottom', 'none');
+-    $('.nav-bar .active').css('border-bottom', '3px solid white');
+-    $('.nav-bar a').css('color', 'white');
+-    $('#bar1').css('background-color', 'white');
+-    $('#bar2').css('background-color', 'white');
+-    $('#bar3').css('background-color', 'white');
++function checkScroll(){
++  var atContent = $(document).scrollTop() >= $('.content-grid').position().top;
++
++  if(atContent){
++    $('.nav-bar').addClass('scrolled');
++    // Clear any inline color overrides — CSS classes handle link colors
++    $('.nav-bar a').css('color', '');
++    $('.nav-bar .active').css('border-bottom', '');
++    $('.nav-bar').css({'background-color': '', 'border-bottom': ''});
++    $('#bar1,#bar2,#bar3').css('background-color', '#1a1a2e');
++  } else {
++    $('.nav-bar').removeClass('scrolled');
++    $('.nav-bar a').css('color', '');
++    $('.nav-bar .active').css('border-bottom', '');
++    $('.nav-bar').css({'background-color': '', 'border-bottom': ''});
++    // Keep bars dark if the mobile overlay is open
++    if($('#bool').attr('class') !== 'not'){
++      $('#bar1,#bar2,#bar3').css('background-color', '');
++    }
+   }
+-});
++}
++
++$(document).ready(function(){ checkScroll(); });
++$(document).on('scroll', function(){ checkScroll(); });
+diff --git a/js/openNav.js b/js/openNav.js
+index e2d6a56..1b7e56c 100644
+--- a/js/openNav.js
++++ b/js/openNav.js
+@@ -1,18 +1,19 @@
+ function openNav(){
+   var x = $("#bool");
+   if(x.attr('class') === "closed"){
+-    $('#head-nav').css('height','100%');
+-    $('#head-nav').css('background', 'white');
+-    $('#bar1').css('background','black');
+-    $('#bar2').css('background','black');
+-    $('#bar3').css('background','black');
++    $('#head-nav').addClass('open');
++    $('#bar1').css('background-color', '#1a1a2e');
++    $('#bar2').css('background-color', '#1a1a2e');
++    $('#bar3').css('background-color', '#1a1a2e');
+     x.attr('class', 'not');
+-  }else{
+-    $('#head-nav').css('height','0%');
+-    $('#head-nav').css('background','rgba(255,255,255,0)');
+-    $('#bar1').css('background','white');
+-    $('#bar2').css('background','white');
+-    $('#bar3').css('background','white');
++  } else {
++    $('#head-nav').removeClass('open');
++    // Only reset to white if the nav bar is not scrolled
++    if(!$('.nav-bar').hasClass('scrolled')){
++      $('#bar1').css('background-color', '');
++      $('#bar2').css('background-color', '');
++      $('#bar3').css('background-color', '');
++    }
+     x.attr('class', 'closed');
+   }
+ }
+diff --git a/projects.html b/projects.html
+index 8dc14eb..4ae1807 100644
+--- a/projects.html
++++ b/projects.html
+@@ -1,4 +1,5 @@
+-<html>
++<!DOCTYPE html>
++<html lang="en">
+   <head>
+     <title>Projects</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+@@ -25,15 +26,14 @@
+           <div id="bar1"></div>
+           <div id="bar2"></div>
+           <div id="bar3"></div>
+-        </div> <!--hamburger-->
++        </div>
+         <a href="index.html">Home</a>
+         <a href="aboutme.html">About Me</a>
+         <a href="experience.html">Experience</a>
+         <a class="active" href="projects.html">Projects</a>
+-      </div> <!-- nav-bar-->
++      </div>
+ 
+-      <div class="cover-image-spot">
+-      </div><!--Cover Image-->
++      <div class="cover-image-spot"></div>
+ 
+       <div class="content-grid">
+ 
+@@ -118,14 +118,14 @@
+             </p>
+           </div>
+         </div>
+-        <!--SafetyNet-->
++        <!--Rubiks-->
+ 
+         <div id="ray-tracing">
+           <div class="project-text">
+-            <p class="heading">Ray Tracing Engine</p> 
++            <p class="heading">Ray Tracing Engine</p>
+             <p>
+-              <b>Summary </b> Ray tracing is a computationally expensive rendering technique which immitates realistic light bounces to provide realistic looking scenes. 
+-              I worked on writing an engine that renders scenes using ray tracing, using vanilla javascript, which opens on the browser. Currently our engine is capable of rendering both spheres and triangles. 
++              <b>Summary </b> Ray tracing is a computationally expensive rendering technique which immitates realistic light bounces to provide realistic looking scenes.
++              I worked on writing an engine that renders scenes using ray tracing, using vanilla javascript, which opens on the browser. Currently our engine is capable of rendering both spheres and triangles.
+               Since it can render triangles and spheres, it can potentially render most other shapes such as cubes, given most shapes can be created using any combination of these geometric shapes.
+             </p>
+             <p>
+@@ -145,19 +145,19 @@
+                 <li><a href="https://developer.nvidia.com/discover/ray-tracing" target="_blank">NVidia Ray Tracing Documentation</a></li>
+                 <li><a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-ray-tracing" target="_blank">Scratch-A-Pixel Introduction to Ray Tracing</a></li>
+                 <li>Berg. Computational geometry : algorithms and applications. Berlin: Springer, 2008. Print.</li>
+-              </ul> 
++              </ul>
+             </p>
+           </div>
+           <div class="image-content">
+-              <ul class="images">
+-                <li><img src="img/raytracing/stage_1.PNG" alt="Shapes Drawn onto screen" /></li>
+-                <li><img src="img/raytracing/stage_2.PNG" alt="Proper lighting" /></li>
+-                <li><img src="img/raytracing/stage_3.PNG" alt="Added Camera" /></li>
+-                <li><img src="img/raytracing/stage_4_triangle.PNG" alt="Properly Rendered Triangle" /></li>
+-                <li><img src="img/raytracing/stage_4_square.PNG" alt="Properly Rendered Cube" /></li>
+-                <li><img src="img/raytracing/stage_5.PNG" alt="Ray Bouncing" /></li>
+-              </ul>
+-            </div>
++            <ul class="images">
++              <li><img src="img/raytracing/stage_1.PNG" alt="Shapes Drawn onto screen" /></li>
++              <li><img src="img/raytracing/stage_2.PNG" alt="Proper lighting" /></li>
++              <li><img src="img/raytracing/stage_3.PNG" alt="Added Camera" /></li>
++              <li><img src="img/raytracing/stage_4_triangle.PNG" alt="Properly Rendered Triangle" /></li>
++              <li><img src="img/raytracing/stage_4_square.PNG" alt="Properly Rendered Cube" /></li>
++              <li><img src="img/raytracing/stage_5.PNG" alt="Ray Bouncing" /></li>
++            </ul>
++          </div>
+         </div>
+         <!--End Ray Tracing Engine!-->
+ 
+@@ -165,9 +165,9 @@
+           <div class="project-text">
+             <p class="heading">Sheet Vision <b>- Senior Design</b></p>
+             <p>
+-              <b>Summary </b>Sheet Vision is an application that can read and show a user how sheet music is played, and how it is supposed to sound. 
+-              This will lead to the user being able to draw parallels between what is on the sheet, and the music being played, 
+-              supplementing the learning process of reading sheet music. Not only will our application play the music on the sheet, 
++              <b>Summary </b>Sheet Vision is an application that can read and show a user how sheet music is played, and how it is supposed to sound.
++              This will lead to the user being able to draw parallels between what is on the sheet, and the music being played,
++              supplementing the learning process of reading sheet music. Not only will our application play the music on the sheet,
+               but it will also listen to the user playing it, and will give proper feedback to the user, to fix mistakes they may be making.
+             </p>
+             <p>
+@@ -200,7 +200,7 @@
+           </div>
+         </div>
+         <!--End Sheet Vision!-->
+-      </div> 
++      </div>
+       <!--Content-->
+ 
+       <div class="footer-wrapper">
+@@ -216,8 +216,7 @@
+           </form>
+         </div>
+       </div>
+-    </div> <!--wrapper-->
+-    <div class="closed" id="bool">
+-    </div> <!--End hacky div-->
++    </div>
++    <div class="closed" id="bool"></div>
+   </body>
+ </html>
+-- 
+2.43.0
+
