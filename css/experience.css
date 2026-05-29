@@ -1,6 +1,6 @@
 .content-grid {
   padding: 64px 80px 100px;
-  background: white;
+  background: #fdf6ee;
   grid-area: content-grid;
   display: grid;
   grid-template-columns: 1fr 440px;
@@ -11,7 +11,7 @@
 
 .text-content {
   grid-area: text-content;
-  color: #1a1a2e;
+  color: #2c1a0a;
 }
 
 .text-content p {
@@ -55,7 +55,7 @@
 }
 
 .content-grid .resume .heading a:hover {
-  background: rgba(184, 59, 107, 0.1);
+  background: rgba(212, 101, 26, 0.1);
   opacity: 1;
 }
 

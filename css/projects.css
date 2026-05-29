@@ -1,6 +1,6 @@
 .content-grid {
   padding: 64px 80px 100px;
-  background: white;
+  background: #fdf6ee;
   grid-area: content-grid;
 }
 
@@ -37,7 +37,7 @@
 
 .project-text p {
   line-height: 1.75;
-  color: #1a1a2e;
+  color: #2c1a0a;
   margin-bottom: 12px;
 }
 
@@ -48,7 +48,7 @@
 
 .project-text li {
   margin-bottom: 5px;
-  color: #1a1a2e;
+  color: #2c1a0a;
 }
 
 /* Image gallery */

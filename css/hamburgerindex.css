@@ -68,7 +68,7 @@
 
 .nav-bar.open {
   height: 100dvh;
-  background: rgba(255, 255, 255, 0.97);
+  background: rgba(253, 246, 238, 0.97);
 }
 
 .nav-bar a {
@@ -78,7 +78,7 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #1a1a2e;
+  color: #2c1a0a;
   text-decoration: none;
   opacity: 0;
   transform: translateY(14px);
@@ -95,7 +95,7 @@
 .nav-bar.open a:nth-child(4) { transition-delay: 0.24s; }
 
 .nav-bar a:hover {
-  color: #b83b6b;
+  color: #d4651a;
 }
 
 #bool {
