@@ -19,6 +19,11 @@
   margin-bottom: 12px;
 }
 
+.text-content p > b:only-child {
+  color: var(--accent);
+  font-size: 17px;
+}
+
 .text-content ul {
   padding-left: 22px;
   line-height: 1.8;
