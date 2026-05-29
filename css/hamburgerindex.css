@@ -1,76 +1,103 @@
-.nav-bar{
-  width: 100%;
-  height: 0%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: rgba(255,255,255,0);
-  overflow-y: hidden;
-  transition: 0.8s;
-  padding-top:60px;
-  text-align: center;
-  grid-area: nav;
-}
-
-.nav-bar a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: black;
-  display: block;
-  transition: 0.3s;
-  text-transform: uppercase;
-}
-
-.nav-bar a:hover{
-  background-color: rgba(0,0,0,0.1);
-}
-
-.hamburger{
-  z-index: 2;
+/* ── Hamburger (index page — outside the nav) ── */
+.hamburger {
   display: none;
   cursor: pointer;
-  padding-right: 10px;
-  padding-top: 10px;
-  position: absolute;
-  right: 0;
-  top: 0;
+  padding: 10px;
+  position: fixed;
+  right: 12px;
+  top: 6px;
+  z-index: 102;
+  border-radius: 6px;
+  transition: background 0.22s ease;
 }
 
-#bar1,#bar2,#bar3{
-  width: 35px;
-  height: 5px;
-  background-color: white;
-  margin: 6px 0;
-  transition: 0.4s;
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
-/*Animate Hamburger Icon*/
-.change #bar1{
-  -webkit-transform: rotate(-45deg) translate(-9px, 6px);
-  transform: rotate(-45deg) translate(-9px, 6px);
-}
-
-.change #bar2{
-  opacity: 0;
-}
-
-.change #bar3 {
-  -webkit-transform: rotate(45deg) translate(-8px, -8px);
-  transform: rotate(45deg) translate(-8px, -8px);
-}
-/*End animation*/
-
-@media screen and (max-width: 1100px){
-  .hamburger{
-    display: inline-block;
+@media screen and (max-width: 1100px) {
+  .hamburger {
+    display: block;
   }
 }
 
-/*
-Ignore this, this is hiding the hacky div.
-*/
-#bool{
+#bar1, #bar2, #bar3 {
+  width: 24px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.9);
+  margin: 5px 0;
+  border-radius: 2px;
+  transition:
+    transform 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.28s ease,
+    background-color 0.28s ease;
+}
+
+/* ── X close animation ──────────────────────── */
+.change #bar1 {
+  transform: rotate(-45deg) translate(-5px, 5px);
+}
+
+.change #bar2 {
+  opacity: 0;
+  transform: translateX(8px);
+}
+
+.change #bar3 {
+  transform: rotate(45deg) translate(-5px, -5px);
+}
+
+/* ── Overlay nav (nav-bar = head-nav on index) ── */
+.nav-bar {
+  width: 100%;
+  height: 0;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  background: transparent;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition:
+    height 0.44s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.44s ease;
+}
+
+.nav-bar.open {
+  height: 100dvh;
+  background: rgba(255, 255, 255, 0.97);
+}
+
+.nav-bar a {
+  display: block;
+  padding: 12px 40px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1a1a2e;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    color 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.28s ease,
+    transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-bar.open a              { opacity: 1; transform: translateY(0); }
+.nav-bar.open a:nth-child(1) { transition-delay: 0.06s; }
+.nav-bar.open a:nth-child(2) { transition-delay: 0.12s; }
+.nav-bar.open a:nth-child(3) { transition-delay: 0.18s; }
+.nav-bar.open a:nth-child(4) { transition-delay: 0.24s; }
+
+.nav-bar a:hover {
+  color: #b83b6b;
+}
+
+#bool {
   display: none;
 }

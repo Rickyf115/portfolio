@@ -1,18 +1,19 @@
 function openNav(){
   var x = $("#bool");
   if(x.attr('class') === "closed"){
-    $('#head-nav').css('height','100%');
-    $('#head-nav').css('background', 'white');
-    $('#bar1').css('background','black');
-    $('#bar2').css('background','black');
-    $('#bar3').css('background','black');
+    $('#head-nav').addClass('open');
+    $('#bar1').css('background-color', '#1a1a2e');
+    $('#bar2').css('background-color', '#1a1a2e');
+    $('#bar3').css('background-color', '#1a1a2e');
     x.attr('class', 'not');
-  }else{
-    $('#head-nav').css('height','0%');
-    $('#head-nav').css('background','rgba(255,255,255,0)');
-    $('#bar1').css('background','white');
-    $('#bar2').css('background','white');
-    $('#bar3').css('background','white');
+  } else {
+    $('#head-nav').removeClass('open');
+    // Only reset to white if the nav bar is not scrolled
+    if(!$('.nav-bar').hasClass('scrolled')){
+      $('#bar1').css('background-color', '');
+      $('#bar2').css('background-color', '');
+      $('#bar3').css('background-color', '');
+    }
     x.attr('class', 'closed');
   }
 }

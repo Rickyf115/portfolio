@@ -1,19 +1,24 @@
-$(document).on('scroll', function(){
-  if($(this).scrollTop()>=$('.content-grid').position().top){
-    $('.nav-bar').css('background-color', 'white');
-    $('.nav-bar').css('border-bottom', '1px solid black');
-    $('.nav-bar .active').css('border-bottom', '1px solid black');
-    $('.nav-bar a').css('color', 'black');
-    $('#bar1').css('background-color', 'black');
-    $('#bar2').css('background-color', 'black');
-    $('#bar3').css('background-color', 'black');
-  }else{
-    $('.nav-bar').css('background-color', 'rgba(0,0,0,0)');
-    $('.nav-bar').css('border-bottom', 'none');
-    $('.nav-bar .active').css('border-bottom', '3px solid white');
-    $('.nav-bar a').css('color', 'white');
-    $('#bar1').css('background-color', 'white');
-    $('#bar2').css('background-color', 'white');
-    $('#bar3').css('background-color', 'white');
+function checkScroll(){
+  var atContent = $(document).scrollTop() >= $('.content-grid').position().top;
+
+  if(atContent){
+    $('.nav-bar').addClass('scrolled');
+    // Clear any inline color overrides — CSS classes handle link colors
+    $('.nav-bar a').css('color', '');
+    $('.nav-bar .active').css('border-bottom', '');
+    $('.nav-bar').css({'background-color': '', 'border-bottom': ''});
+    $('#bar1,#bar2,#bar3').css('background-color', '#1a1a2e');
+  } else {
+    $('.nav-bar').removeClass('scrolled');
+    $('.nav-bar a').css('color', '');
+    $('.nav-bar .active').css('border-bottom', '');
+    $('.nav-bar').css({'background-color': '', 'border-bottom': ''});
+    // Keep bars dark if the mobile overlay is open
+    if($('#bool').attr('class') !== 'not'){
+      $('#bar1,#bar2,#bar3').css('background-color', '');
+    }
   }
-});
+}
+
+$(document).ready(function(){ checkScroll(); });
+$(document).on('scroll', function(){ checkScroll(); });
