@@ -149,9 +149,30 @@
     .hero-content {
       position: relative;
       z-index: 1;
-      max-width: 720px;
+      max-width: 1100px;
       margin: 6rem auto 0;
       width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 5rem;
+      align-items: center;
+    }
+    .hero-cat {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s forwards;
+    }
+    .hero-cat pre {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--accent);
+      text-shadow: 0 0 14px var(--accent-glow);
+      white-space: pre;
+      user-select: none;
+      cursor: default;
     }
     .hero-label {
       font-family: var(--mono);
@@ -564,10 +585,13 @@
 
       #hero { padding: 0 1.5rem; }
       .hero-content {
+        display: block;
+        max-width: 720px;
         text-align: center;
         padding-top: 5rem;
         padding-bottom: 4rem;
       }
+      .hero-cat { display: none; }
       .hero-bio { margin-left: auto; margin-right: auto; }
       .hero-actions { justify-content: center; }
       .hero-social { justify-content: center; }
@@ -645,6 +669,9 @@
           </svg>
         </a>
       </div>
+    </div>
+    <div class="hero-cat" aria-hidden="true">
+      <pre id="ascii-cat"></pre>
     </div>
   </div>
   <div class="scroll-hint" aria-hidden="true">
@@ -1013,6 +1040,108 @@
     }
     obs.observe(el);
   });
+
+  /* ===== ASCII CAT ===== */
+  (function () {
+    var catEl = document.getElementById('ascii-cat');
+    if (!catEl) return;
+
+    var CAT_TPL = [
+      '      /\\   /\\    ',
+      '     /  \\_/  \\   ',
+      '    / (L) (R) \\  ',
+      '   ( ==  ^  == ) ',
+      '    )   ___   (  ',
+      '   (  /     \\  ) ',
+      '    \\/       \\/  ',
+      '    /|       |\\  ',
+      '   / |       | \\ ',
+      '  /__|_______|__\\',
+    ].join('\n');
+
+    /* 3x3 iris lookup [vert 0=up/1=mid/2=down][horiz 0=left/1=center/2=right] */
+    var IRIS = [
+      ['.', '^', '.'],
+      ['<', 'o', '>'],
+      ['.', 'v', '.'],
+    ];
+    var BLINK = '-';
+
+    var vDir = 1, hDir = 1, blinking = false;
+
+    function render() {
+      var iris = blinking ? BLINK : IRIS[vDir][hDir];
+      catEl.textContent = CAT_TPL.replace('L', iris).replace('R', iris);
+    }
+    render();
+
+    function scheduleBlink() {
+      setTimeout(function () {
+        blinking = true; render();
+        setTimeout(function () {
+          blinking = false; render();
+          scheduleBlink();
+        }, 140);
+      }, 2000 + Math.random() * 3000);
+    }
+    scheduleBlink();
+
+    var catCenter = { x: 0, y: 0 };
+    function updateCatCenter() {
+      var r = catEl.getBoundingClientRect();
+      catCenter.x = r.left + r.width / 2;
+      catCenter.y = r.top + r.height / 2;
+    }
+    setTimeout(updateCatCenter, 200);
+    window.addEventListener('resize', updateCatCenter, { passive: true });
+    window.addEventListener('scroll', updateCatCenter, { passive: true });
+
+    var idleRaf = null, idleStart = null, idleTimeout = null;
+
+    function stopIdleDrift() {
+      if (idleRaf) { cancelAnimationFrame(idleRaf); idleRaf = null; }
+    }
+
+    function startIdleDrift() {
+      stopIdleDrift();
+      idleStart = performance.now();
+      function tick(t) {
+        var phase = ((t - idleStart) / 2200) * Math.PI * 2;
+        hDir = Math.round((Math.sin(phase) + 1));
+        vDir = 1;
+        render();
+        idleRaf = requestAnimationFrame(tick);
+      }
+      idleRaf = requestAnimationFrame(tick);
+    }
+
+    document.addEventListener('mousemove', function (e) {
+      stopIdleDrift();
+      clearTimeout(idleTimeout);
+      idleTimeout = setTimeout(startIdleDrift, 3000);
+
+      var dx = e.clientX - catCenter.x;
+      var dy = e.clientY - catCenter.y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 80) {
+        vDir = 1; hDir = 1;
+      } else {
+        var angle = (Math.atan2(dy, dx) * 180 / Math.PI + 360) % 360;
+        if      (angle >= 337.5 || angle < 22.5) { vDir = 1; hDir = 2; }
+        else if (angle < 67.5)                   { vDir = 2; hDir = 2; }
+        else if (angle < 112.5)                  { vDir = 2; hDir = 1; }
+        else if (angle < 157.5)                  { vDir = 2; hDir = 0; }
+        else if (angle < 202.5)                  { vDir = 1; hDir = 0; }
+        else if (angle < 247.5)                  { vDir = 0; hDir = 0; }
+        else if (angle < 292.5)                  { vDir = 0; hDir = 1; }
+        else                                     { vDir = 0; hDir = 2; }
+      }
+      render();
+    }, { passive: true });
+
+    idleTimeout = setTimeout(startIdleDrift, 3000);
+  })();
 
 })();
 </script>
