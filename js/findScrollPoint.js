@@ -7,7 +7,7 @@ function checkScroll(){
     $('.nav-bar a').css('color', '');
     $('.nav-bar .active').css('border-bottom', '');
     $('.nav-bar').css({'background-color': '', 'border-bottom': ''});
-    $('#bar1,#bar2,#bar3').css('background-color', '#1a1a2e');
+    $('#bar1,#bar2,#bar3').css('background-color', '#2c1a0a');
   } else {
     $('.nav-bar').removeClass('scrolled');
     $('.nav-bar a').css('color', '');
