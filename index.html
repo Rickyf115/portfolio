@@ -176,7 +176,6 @@
       opacity: 0;
       animation: fadeUp 0.6s 0.35s forwards;
     }
-    .hero-name span { color: var(--accent); }
     .hero-title {
       font-family: var(--mono);
       font-size: clamp(0.95rem, 1.8vw, 1.2rem);
@@ -341,7 +340,6 @@
       font-weight: 400;
       letter-spacing: -0.02em;
     }
-    .section-title span { color: var(--accent); }
     .section-rule { width: 48px; height: 2px; background: var(--accent); margin-top: 1rem; }
 
     /* ===== SKILLS STRIP ===== */
@@ -434,7 +432,7 @@
       border-radius: 3px;
       font-family: var(--mono);
       font-size: 0.68rem;
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
 
     /* ===== PROJECTS ===== */
@@ -575,6 +573,7 @@
       nav { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
+      .scroll-hint { display: none; }
 
       #hero { padding: 0 1.5rem; }
       .hero-content {
@@ -632,7 +631,7 @@
   <div class="hero-content">
     <div class="hero-text">
       <p class="hero-label">// portfolio</p>
-      <h1 class="hero-name">Ricky<br><span>Faure</span></h1>
+      <h1 class="hero-name">Ricky<br>Faure</h1>
       <p class="hero-title" id="typing-el" aria-label="Principal Software Engineer"></p>
       <p class="hero-bio">
         I build scalable enterprise-grade platforms with cutting edge open source tooling.
@@ -832,6 +831,7 @@
           <span class="ptag">3D Rendering</span>
           <span class="ptag">Blinn-Phong</span>
         </div>
+        <a href="https://github.com/svew/javascript-raytracing" target="_blank" rel="noopener" class="proj-link">GitHub &rarr;</a>
       </article>
 
       <article class="proj-card">
