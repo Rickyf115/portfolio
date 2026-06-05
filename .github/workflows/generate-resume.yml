@@ -1,0 +1,49 @@
+name: Generate Resume from Portfolio
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-resume:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies for WeasyPrint
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 \
+            libpangocairo-1.0-0 \
+            libgdk-pixbuf2.0-0 \
+            libffi-dev \
+            shared-mime-info \
+            fonts-liberation
+
+      - name: Install Python dependencies
+        run: pip install weasyprint beautifulsoup4
+
+      - name: Generate resume PDF
+        run: python scripts/generate_resume.py
+
+      - name: Commit and push updated resume
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add Misc/resume.pdf
+          git diff --staged --quiet || git commit -m "chore: regenerate resume from portfolio [skip ci]"
+          git push
