@@ -2,7 +2,7 @@ name: Generate Resume & Deploy Site
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
 
 # Allow committing the PDF back, and deploying to Pages.
