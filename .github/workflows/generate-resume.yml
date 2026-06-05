@@ -35,11 +35,9 @@ jobs:
             fonts-liberation
 
       - name: Install Python dependencies
-        run: pip install anthropic weasyprint beautifulsoup4
+        run: pip install weasyprint beautifulsoup4
 
       - name: Generate resume PDF
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scripts/generate_resume.py
 
       - name: Commit and push updated resume

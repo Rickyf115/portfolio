@@ -1,154 +1,312 @@
 #!/usr/bin/env python3
 """Generate a job-application-friendly resume PDF from portfolio HTML content."""
 
-import os
-import re
+import html as html_lib
 import sys
 from pathlib import Path
 
-import anthropic
 from bs4 import BeautifulSoup
 
+
+# ---------------------------------------------------------------------------
+# Parsing
+# ---------------------------------------------------------------------------
 
 def extract_portfolio_content(html_path: str) -> dict:
     with open(html_path, "r", encoding="utf-8") as f:
         soup = BeautifulSoup(f.read(), "html.parser")
 
-    contact = {
-        "name": "Ricky Faure",
-        "title": "Principal Software Engineer",
-        "email": "rickyf115@pm.me",
-        "linkedin": "https://www.linkedin.com/in/ricardo-faure-805175128/",
-        "github": "https://github.com/Rickyf115",
-    }
+    footer = soup.find("footer")
+
+    def footer_href(substring):
+        if footer:
+            a = footer.find("a", href=lambda h: h and substring in h)
+            return a["href"] if a else ""
+        return ""
+
+    name_el = soup.find("h1", class_="hero-name")
+    name = name_el.get_text(" ", strip=True) if name_el else "Ricky Faure"
+
+    title_el = soup.find("title")
+    title = ""
+    if title_el:
+        raw = title_el.get_text(strip=True)
+        # "Ricky Faure — Principal Software Engineer" -> take part after em dash
+        if "—" in raw:
+            title = raw.split("—", 1)[1].strip()
 
     bio_el = soup.find(class_="hero-bio")
-    contact["bio"] = bio_el.get_text(strip=True) if bio_el else ""
+    bio = bio_el.get_text(strip=True) if bio_el else ""
 
-    skills = [chip.get_text(strip=True) for chip in soup.find_all(class_="chip")]
+    email_href = footer_href("mailto:")
+    email = email_href.replace("mailto:", "") if email_href else ""
+    linkedin = footer_href("linkedin.com")
+    github = footer_href("github.com")
+
+    contact = {
+        "name": name,
+        "title": title,
+        "email": email,
+        "linkedin": linkedin,
+        "github": github,
+        "bio": bio,
+    }
+
+    # Skills — .chip.hi are primary, plain .chip are secondary
+    primary_skills = [
+        el.get_text(strip=True)
+        for el in soup.find_all("span", class_="chip")
+        if "hi" in el.get("class", [])
+    ]
+    secondary_skills = [
+        el.get_text(strip=True)
+        for el in soup.find_all("span", class_="chip")
+        if "hi" not in el.get("class", [])
+    ]
 
     experience = []
     for item in soup.find_all(class_="tl-item"):
-
-        def text(cls, parent=item):
+        def t(cls, parent=item):
             el = parent.find(class_=cls)
             return el.get_text(strip=True) if el else ""
 
         exp = {
-            "date": text("tl-date"),
-            "company": text("tl-company"),
-            "role": text("tl-role"),
-            "desc": text("tl-desc"),
+            "date": t("tl-date"),
+            "company": t("tl-company"),
+            "role": t("tl-role"),
+            "desc": t("tl-desc"),
             "achievements": [a.get_text(strip=True) for a in item.find_all(class_="ach")],
-            "tech": [t.get_text(strip=True) for t in item.find_all(class_="tl-chip")],
+            "tech": [c.get_text(strip=True) for c in item.find_all(class_="tl-chip")],
         }
         experience.append(exp)
 
     projects = []
     for card in soup.find_all(class_="proj-card"):
-
-        def text(cls, parent=card):
+        def t(cls, parent=card):
             el = parent.find(class_=cls)
             return el.get_text(strip=True) if el else ""
 
+        link_el = card.find(class_="proj-link")
         proj = {
-            "name": text("proj-name"),
-            "desc": text("proj-desc"),
-            "tags": [t.get_text(strip=True) for t in card.find_all(class_="ptag")],
+            "name": t("proj-name"),
+            "desc": t("proj-desc"),
+            "tags": [tg.get_text(strip=True) for tg in card.find_all(class_="ptag")],
+            "link": link_el["href"] if link_el and link_el.get("href") else "",
         }
         projects.append(proj)
 
     return {
         "contact": contact,
-        "skills": skills,
+        "primary_skills": primary_skills,
+        "secondary_skills": secondary_skills,
         "experience": experience,
         "projects": projects,
     }
 
 
-def build_prompt(content: dict) -> str:
+# ---------------------------------------------------------------------------
+# HTML resume builder
+# ---------------------------------------------------------------------------
+
+def _e(text: str) -> str:
+    """HTML-escape a string."""
+    return html_lib.escape(str(text))
+
+
+def build_resume_html(content: dict) -> str:
     c = content["contact"]
-    lines = [
-        f"Name: {c['name']}",
-        f"Title: {c['title']}",
-        f"Email: {c['email']}",
-        f"LinkedIn: {c['linkedin']}",
-        f"GitHub: {c['github']}",
-        f"Bio: {c['bio']}",
-        "",
-        "TECHNICAL SKILLS:",
-        ", ".join(content["skills"]),
-        "",
-        "WORK EXPERIENCE:",
-    ]
 
+    # ---- contact header ----
+    contact_parts = []
+    if c["email"]:
+        contact_parts.append(f'<a href="mailto:{_e(c["email"])}">{_e(c["email"])}</a>')
+    if c["linkedin"]:
+        contact_parts.append(f'<a href="{_e(c["linkedin"])}">{_e(c["linkedin"])}</a>')
+    if c["github"]:
+        contact_parts.append(f'<a href="{_e(c["github"])}">{_e(c["github"])}</a>')
+    contact_line = " &nbsp;|&nbsp; ".join(contact_parts)
+
+    # ---- skills ----
+    def skill_tags(skills):
+        return "".join(f'<span class="skill-tag">{_e(s)}</span>' for s in skills)
+
+    skills_html = ""
+    if content["primary_skills"]:
+        skills_html += f'<div class="skill-group"><span class="skill-label">Core:</span> {skill_tags(content["primary_skills"])}</div>'
+    if content["secondary_skills"]:
+        skills_html += f'<div class="skill-group"><span class="skill-label">Additional:</span> {skill_tags(content["secondary_skills"])}</div>'
+
+    # ---- experience ----
+    exp_html = ""
     for exp in content["experience"]:
-        lines += [
-            f"\nCompany: {exp['company']}",
-            f"Role: {exp['role']}",
-            f"Period: {exp['date']}",
-            f"Description: {exp['desc']}",
-        ]
-        if exp["achievements"]:
-            lines.append("Key Achievements:")
-            for ach in exp["achievements"]:
-                lines.append(f"  - {ach}")
+        bullets = ""
+        for ach in exp["achievements"]:
+            bullets += f"<li>{_e(ach)}</li>"
+        bullets_block = f"<ul>{bullets}</ul>" if bullets else ""
+
+        tech_block = ""
         if exp["tech"]:
-            lines.append(f"Technologies: {', '.join(exp['tech'])}")
+            tech_block = f'<p class="tech-line"><strong>Technologies:</strong> {_e(", ".join(exp["tech"]))}</p>'
 
-    lines += ["", "PROJECTS:"]
+        exp_html += f"""
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-org">{_e(exp["company"])}</span>
+            <span class="entry-date">{_e(exp["date"])}</span>
+          </div>
+          <p class="entry-role">{_e(exp["role"])}</p>
+          <p class="entry-desc">{_e(exp["desc"])}</p>
+          {bullets_block}
+          {tech_block}
+        </div>"""
+
+    # ---- projects ----
+    proj_html = ""
     for proj in content["projects"]:
-        lines += [
-            f"\nProject: {proj['name']}",
-            f"Description: {proj['desc']}",
-            f"Technologies: {', '.join(proj['tags'])}",
-        ]
+        name_part = _e(proj["name"])
+        if proj["link"] and not proj["link"].endswith(".pdf"):
+            name_part = f'<a href="{_e(proj["link"])}">{_e(proj["name"])}</a>'
 
-    return "\n".join(lines)
+        tags_part = ""
+        if proj["tags"]:
+            tags_part = f'<span class="proj-tags">{_e(" · ".join(proj["tags"]))}</span>'
+
+        proj_html += f"""
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-org">{name_part}</span>
+            {tags_part}
+          </div>
+          <p class="entry-desc">{_e(proj["desc"])}</p>
+        </div>"""
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{_e(c["name"])} — Resume</title>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    color: #111;
+    background: #fff;
+    max-width: 7.5in;
+    margin: 0 auto;
+    padding: 0.75in 0.75in;
+    line-height: 1.45;
+  }}
+  a {{ color: #111; text-decoration: none; }}
+
+  /* Header */
+  .resume-name {{
+    font-size: 22pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 2pt;
+  }}
+  .resume-title {{
+    font-size: 11pt;
+    color: #444;
+    margin-bottom: 5pt;
+  }}
+  .resume-contact {{
+    font-size: 8.5pt;
+    color: #333;
+    margin-bottom: 14pt;
+  }}
+  .resume-contact a {{ color: #333; }}
+
+  /* Section headers */
+  h2 {{
+    font-size: 9pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 1.5px solid #111;
+    padding-bottom: 2pt;
+    margin: 14pt 0 7pt;
+  }}
+
+  /* Summary */
+  .summary {{ font-size: 9.5pt; color: #222; }}
+
+  /* Skills */
+  .skill-group {{ margin-bottom: 4pt; font-size: 9pt; }}
+  .skill-label {{ font-weight: 700; }}
+  .skill-tag {{
+    display: inline-block;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 0 4pt;
+    margin: 1pt 2pt 1pt 0;
+    font-size: 8pt;
+  }}
+
+  /* Experience / Projects */
+  .entry {{ margin-bottom: 10pt; }}
+  .entry-header {{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }}
+  .entry-org {{ font-weight: 700; font-size: 10pt; }}
+  .entry-date {{ font-size: 8.5pt; color: #555; white-space: nowrap; margin-left: 8pt; }}
+  .entry-role {{ font-style: italic; font-size: 9.5pt; color: #222; margin-top: 1pt; }}
+  .entry-desc {{ font-size: 9pt; color: #333; margin-top: 2pt; }}
+  ul {{
+    margin: 4pt 0 4pt 14pt;
+    padding: 0;
+  }}
+  li {{
+    font-size: 9pt;
+    color: #222;
+    margin-bottom: 2pt;
+  }}
+  .tech-line {{ font-size: 8.5pt; color: #444; margin-top: 3pt; }}
+  .proj-tags {{ font-size: 8.5pt; color: #555; white-space: nowrap; margin-left: 8pt; }}
+
+  @media print {{
+    body {{ padding: 0; }}
+  }}
+</style>
+</head>
+<body>
+
+<p class="resume-name">{_e(c["name"])}</p>
+<p class="resume-title">{_e(c["title"])}</p>
+<p class="resume-contact">{contact_line}</p>
+
+<h2>Summary</h2>
+<p class="summary">{_e(c["bio"])}</p>
+
+<h2>Skills</h2>
+{skills_html}
+
+<h2>Experience</h2>
+{exp_html}
+
+<h2>Projects</h2>
+{proj_html}
+
+</body>
+</html>"""
 
 
-def generate_resume_html(portfolio_content: dict) -> str:
-    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-    prompt_data = build_prompt(portfolio_content)
-
-    message = client.messages.create(
-        model="claude-opus-4-8",
-        max_tokens=4096,
-        messages=[
-            {
-                "role": "user",
-                "content": (
-                    "You are an expert resume writer. Using the portfolio content below, "
-                    "create a clean, ATS-friendly, job-application-ready resume in HTML format.\n\n"
-                    "Requirements:\n"
-                    "- Professional single-column layout optimized for PDF printing (A4/Letter)\n"
-                    "- White background (#ffffff), dark text (#111111) — print-friendly\n"
-                    "- Embedded CSS only — no external stylesheets, no web fonts\n"
-                    "- System sans-serif font stack: Arial, Helvetica, sans-serif\n"
-                    "- Sections in order: Contact Info, Summary, Skills, Experience, Projects\n"
-                    "- Skills grouped into 3 categories: Cloud & Infrastructure, Languages & Frameworks, Tools & Practices\n"
-                    "- Experience bullets are concise, impact-focused, and include quantified metrics where available\n"
-                    "- Page margins: 1in; max-width: 7.5in; font-size: 10pt\n"
-                    "- Name as large header, section headers as bold uppercase with a rule line\n"
-                    "- Return ONLY the complete HTML document starting with <!DOCTYPE html>. No markdown, no code fences, no commentary.\n\n"
-                    f"PORTFOLIO CONTENT:\n{prompt_data}"
-                ),
-            }
-        ],
-    )
-
-    html = message.content[0].text.strip()
-    # Strip any accidental markdown code fences
-    html = re.sub(r"^```[a-z]*\n?", "", html)
-    html = re.sub(r"\n?```$", "", html)
-    return html
-
+# ---------------------------------------------------------------------------
+# PDF conversion
+# ---------------------------------------------------------------------------
 
 def convert_to_pdf(html_content: str, output_path: str) -> None:
     from weasyprint import HTML
-
     HTML(string=html_content).write_pdf(output_path)
 
+
+# ---------------------------------------------------------------------------
+# Entrypoint
+# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     repo_root = Path(__file__).parent.parent
@@ -158,8 +316,8 @@ if __name__ == "__main__":
     print("Extracting portfolio content...")
     content = extract_portfolio_content(str(portfolio_path))
 
-    print("Generating resume with Claude API...")
-    resume_html = generate_resume_html(content)
+    print("Building resume HTML...")
+    resume_html = build_resume_html(content)
 
     print("Converting to PDF...")
     convert_to_pdf(resume_html, str(output_path))
