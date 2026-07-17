@@ -1,3 +1,12 @@
 .agents/
 .claude/
 skills-lock.json
+docs/pdf/
+
+# Personal resume content stays local only; only the templates are tracked.
+docs/masters/*
+!docs/masters/*.template.md
+docs/prospectives/*
+!docs/prospectives/TEMPLATE*.md
+docs/submitted/*
+!docs/submitted/TEMPLATE*.md

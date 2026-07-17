@@ -44,7 +44,7 @@ jobs:
             fonts-liberation
 
       - name: Install Python dependencies
-        run: pip install weasyprint beautifulsoup4
+        run: pip install -r scripts/requirements.txt
 
       # 1. Generate the resume PDF FIRST so the published site always
       #    contains the resume that matches the current site content.

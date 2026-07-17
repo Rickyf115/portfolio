@@ -1,0 +1,3 @@
+weasyprint
+beautifulsoup4
+markdown
