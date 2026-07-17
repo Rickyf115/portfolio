@@ -196,6 +196,7 @@ def build_resume_html(content: dict) -> str:
     margin: 0 auto;
     padding: 0.75in 0.75in;
     line-height: 1.45;
+    overflow-wrap: break-word;
   }}
   a {{ color: #111; text-decoration: none; }}
 
@@ -203,7 +204,6 @@ def build_resume_html(content: dict) -> str:
   .resume-name {{
     font-size: 22pt;
     font-weight: 700;
-    letter-spacing: 0.02em;
     margin-bottom: 2pt;
   }}
   .resume-title {{
@@ -223,7 +223,6 @@ def build_resume_html(content: dict) -> str:
     font-size: 9pt;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
     border-bottom: 1.5px solid #111;
     padding-bottom: 2pt;
     margin: 14pt 0 7pt;
