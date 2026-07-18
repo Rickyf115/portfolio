@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Regenerate the synced content sections of index.html from docs/masters/ats.md.
 
-docs/masters/ats.md is the source of truth for skills, experience, and
-projects. Run this after editing the master, then commit both files:
+docs/masters/ats.md is the source of truth for the summary (rendered as the
+hero bio, which generate_resume.py in turn scrapes as the PDF summary),
+skills, experience, and projects. Run this after editing the master, then
+commit both files:
 
     python scripts/sync_index_from_ats.py
 
 The rewritten regions are delimited in index.html by
 "<!-- BEGIN ATS SYNC: <name> ... -->" / "<!-- END ATS SYNC: <name> -->"
-comment pairs. Everything outside those regions (hero, summary bio,
+comment pairs. Everything outside those regions (hero name/title,
 education, certifications) is site-specific and left untouched.
 
 The generated markup keeps the classes generate_resume.py scrapes
@@ -60,6 +62,10 @@ def split_entries(section_body: str) -> list:
         title, _, body = part.partition("\n")
         entries.append((title.strip(), body.strip()))
     return entries
+
+
+def parse_summary(body: str) -> str:
+    return " ".join(line.strip() for line in body.splitlines() if line.strip())
 
 
 def parse_skills(body: str) -> dict:
@@ -223,21 +229,24 @@ def replace_region(html: str, name: str, inner: str, closing_indent: str) -> str
 def main() -> None:
     md = strip_html_comments(ATS_PATH.read_text(encoding="utf-8"))
     sections = split_sections(md)
-    for required in ("Skills", "Experience", "Projects"):
+    for required in ("Summary", "Skills", "Experience", "Projects"):
         if required not in sections:
             sys.exit(f"error: '## {required}' section not found in {ATS_PATH}")
 
+    summary = parse_summary(sections["Summary"])
     skills = parse_skills(sections["Skills"])
     experience = [parse_experience_entry(t, b) for t, b in split_entries(sections["Experience"])]
     projects = [parse_project_entry(t, b) for t, b in split_entries(sections["Projects"])]
 
     html = INDEX_PATH.read_text(encoding="utf-8")
+    html = replace_region(html, "summary", "        " + md_inline_to_html(summary), "        ")
     html = replace_region(html, "skills", render_skills(skills), "        ")
     html = replace_region(html, "experience", render_experience(experience), "      ")
     html = replace_region(html, "projects", render_projects(projects), "      ")
     INDEX_PATH.write_text(html, encoding="utf-8")
 
     print(f"index.html synced from {ATS_PATH.relative_to(REPO)}:")
+    print(f"  summary: {len(summary.split())} words")
     print(f"  skills: {len(skills['core'])} core + {len(skills['additional'])} additional")
     print(f"  experience entries: {len(experience)}")
     print(f"  projects: {len(projects)}")
