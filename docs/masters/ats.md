@@ -72,6 +72,19 @@ Technologies: Java, Spring Boot, Groovy Spock
 
 ## Projects
 
+### Yo-Yo Mount Visualizer (active development)
+
+3D trick engine that models yo-yo string mounts as graph topologies and aims to discover new tricks through pathfinding. Encodes mounts as ordered, schema-validated string traversals with canonical serialization and hash-based deduplication, renders them in an interactive 3D visualizer with switchable cameras and timeline scrubbing, and animates transitions with a fixed-timestep Verlet rope physics simulation.
+
+Technologies: TypeScript, React, react-three-fiber, 3D visualization, graph modeling, pathfinding, physics simulation, Zod schema validation, Vite, pnpm monorepo, vitest
+Link: https://github.com/Rickyf115/yoyo-mount-visualizer
+
+### Spin Ledger (closed source)
+
+Single pane of glass for buy/sell/trade activity across skill toy community forums. Ingests unstructured, schemaless forum listings that resist conventional parsing, normalizes them into a taxonomy-aware data model, and serves them through an indexed, searchable marketplace dashboard, turning fragmented community commerce into structured, queryable data.
+
+<!-- VERIFY: tech stack for Spin Ledger (languages, search/index layer, hosting) so a Technologies line can be added. -->
+
 ### OSS Feed
 
 Self-hosted weekly RSS digest that tracks releases from curated open source projects. A watchlist YAML feeds GitHub Actions to fetch releases, generate an XML feed, and publish via GitHub Pages, with Slack/Discord webhook notifications and state management to avoid duplicate alerts.

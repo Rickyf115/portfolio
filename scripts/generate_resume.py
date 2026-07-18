@@ -266,7 +266,7 @@ def build_resume_html(content: dict) -> str:
     margin-bottom: 2pt;
   }}
   .tech-line {{ font-size: 8.5pt; color: #444; margin-top: 3pt; }}
-  .proj-tags {{ font-size: 8.5pt; color: #555; white-space: nowrap; margin-left: 8pt; }}
+  .proj-tags {{ font-size: 8.5pt; color: #555; margin-left: 8pt; text-align: right; max-width: 60%; }}
 
   @media print {{
     body {{ padding: 0; }}
