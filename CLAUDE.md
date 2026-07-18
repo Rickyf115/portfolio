@@ -8,6 +8,8 @@ The real source of truth is **`docs/masters/ats.md`** — tracked in git (unlike
 
 Read `docs/masters/ats.md` before generating any tailored resume or cover letter.
 
+The skills, experience, and projects sections of `index.html` are generated from `ats.md`: after editing the master, run `python scripts/sync_index_from_ats.py` and commit both files. Never hand-edit the `ATS SYNC` marked regions of `index.html` — the next sync overwrites them. Content outside those markers (hero, bio, education-free layout) is site-specific and edited directly.
+
 ## Workflow
 
 1. Get a job description.
@@ -56,6 +58,7 @@ Read `docs/masters/ats.md` before generating any tailored resume or cover letter
 
 ## PDF Output
 
+- `scripts/sync_index_from_ats.py` — regenerates the `ATS SYNC` regions of `index.html` from `docs/masters/ats.md`. Local/manual, no dependencies.
 - `scripts/generate_resume.py` — scrapes `index.html`, renders the single canonical site-facing resume to `Misc/resume.pdf`. Runs in CI on every push to `master`.
 - `scripts/generate_tailored_resume.py <path/to/file.md>` — renders any file under `docs/prospectives/` or `docs/submitted/` to `docs/pdf/<name>.pdf`. Local/manual only, not run in CI, not committed (`docs/pdf/` is gitignored).
 

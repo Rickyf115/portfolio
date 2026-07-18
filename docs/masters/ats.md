@@ -12,7 +12,7 @@ Principal Software Engineer at Optum, the technology arm of UnitedHealth Group, 
 
 **Core:** Go, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Kubernetes CRDs, Terraform, custom Terraform Provider development, GCP, GKE, Apache Kafka, Elasticsearch, Helm, CI/CD, GitHub Actions, Python, distributed systems, SRE, infrastructure as code, architecture design
 
-**Additional:** Docker, Prometheus, GitOps, bare-metal Kubernetes, GCP IAM, GCS, VPC, Artifact Registry (GAR), GCP VolumeSnapshots, certificate management, Jenkins, Java, Spring Boot, Groovy Spock, Kibana, Rally API automation, vulnerability management, mentorship and technical teaching, AI-assisted development (Claude Code, GitHub Copilot, OpenAI Codex)
+**Additional:** Docker, Prometheus, GitOps, bare-metal Kubernetes, GCP IAM, GCS, VPC, Artifact Registry (GAR), GCP VolumeSnapshots, certificate management, Jenkins, Java, Spring Boot, Groovy Spock, Kibana, Rally API automation, vulnerability management, mentorship and technical teaching, AI-assisted development, Claude Code, GitHub Copilot, OpenAI Codex
 
 ## Experience
 
@@ -84,6 +84,7 @@ Link: https://github.com/svew/javascript-raytracing
 Application that reads sheet music, plays it back, and listens to the user in real time, providing feedback to help learners draw parallels between notation and sound.
 
 Technologies: ElectronJS, ReactJS, AWS, Python, computer vision
+Link: ./Misc/project_plan.pdf
 
 ### Run Samurai, Run!
 
