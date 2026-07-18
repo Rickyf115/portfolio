@@ -87,6 +87,10 @@ def extract_portfolio_content(html_path: str) -> dict:
 
     projects = []
     for card in soup.find_all(class_="proj-card"):
+        # site-only cards stay on the portfolio page but are excluded from
+        # the generic resume PDF
+        if "site-only" in card.get("class", []):
+            continue
         link_el = card.find(class_="proj-link")
         proj = {
             "name": clean_text(card.find(class_="proj-name")),

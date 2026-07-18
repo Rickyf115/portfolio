@@ -82,6 +82,8 @@ Link: https://github.com/Rickyf115/oss-feed
 
 ### Rubik's Cube Genetic Algorithm Solver
 
+Site-Only: true
+
 Evolutionary algorithm that solves a fully simulated Rubik's Cube model, exploring genetic computation applied to combinatorial optimization.
 
 Technologies: Python, genetic algorithms, matrix math
@@ -89,12 +91,16 @@ Link: https://github.com/Rickyf115/rubiksCubeGeneticAlgo
 
 ### SafetyNet
 
+Site-Only: true
+
 iOS peer-to-peer messaging app requiring no Wi-Fi or cellular data. Uses device-to-device networking with end-to-end encryption for resilient off-grid communication.
 
 Technologies: Swift, iOS, P2P networking, E2E encryption
 Link: https://github.com/gould-ann/SafetyNet-legacy
 
 ### Ray Tracing Engine
+
+Site-Only: true
 
 Browser-based ray tracer in vanilla JavaScript. Renders spheres and triangles with Blinn-Phong lighting, reflections, and a free-moving camera, no GPU required.
 
@@ -109,6 +115,8 @@ Technologies: ElectronJS, ReactJS, AWS, Python, computer vision
 Link: ./Misc/project_plan.pdf
 
 ### Run Samurai, Run!
+
+Site-Only: true
 
 Top-down 2D infinite side-scrolling runner for mobile. Players fight through enemy mobs for upgrades and high scores, with single-player and head-to-head multiplayer modes.
 

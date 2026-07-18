@@ -10,6 +10,8 @@ Read `docs/masters/ats.md` before generating any tailored resume or cover letter
 
 `docs/masters/generic.md` (tracked) is the generic, non-tailored resume: a curated cut of `ats.md` following the same rules as tailored copies (pruned skills, the strongest bullets, one featured project), except it keeps bold lead-in labels and metrics because the site renders them as highlights. When `ats.md` changes materially, re-curate `generic.md` to match — do not let it grow back to master density.
 
+Projects in `generic.md` marked with a `Site-Only: true` line still render as cards on the website but are excluded from the generic resume PDF (`generate_resume.py` skips their `site-only` class). Use it for long-tail portfolio projects that don't earn resume space; keep the PDF to roughly the top 5.
+
 The skills, experience, and projects sections of `index.html` are generated from `generic.md`: after re-curating it, run `python scripts/sync_index_from_ats.py` and commit both files. Never hand-edit the `ATS SYNC` marked regions of `index.html` — the next sync overwrites them. The hero bio is NOT synced: it is a deliberately terse site-facing summary distilled from the master's Summary section (it also becomes the PDF summary via `generate_resume.py`), so when the master's Summary changes materially, regenerate the hero bio to match — short, first person, leading with what he builds plus one or two headline metrics. Other content outside the markers (hero name/title, education-free layout) is site-specific and edited directly.
 
 ## Workflow

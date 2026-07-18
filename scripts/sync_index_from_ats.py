@@ -114,7 +114,7 @@ def parse_experience_entry(title: str, body: str) -> dict:
 
 
 def parse_project_entry(title: str, body: str) -> dict:
-    proj = {"name": title, "desc": "", "tags": [], "link": ""}
+    proj = {"name": title, "desc": "", "tags": [], "link": "", "site_only": False}
     desc_lines = []
     for raw_line in body.splitlines():
         line = raw_line.strip()
@@ -124,6 +124,8 @@ def parse_project_entry(title: str, body: str) -> dict:
             proj["tags"] = [t.strip() for t in line[len("Technologies:"):].split(",") if t.strip()]
         elif line.startswith("Link:"):
             proj["link"] = line[len("Link:"):].strip()
+        elif line.lower().startswith("site-only:"):
+            proj["site_only"] = line.split(":", 1)[1].strip().lower() in ("true", "yes", "1")
         else:
             desc_lines.append(line)
     proj["desc"] = " ".join(desc_lines)
@@ -190,8 +192,9 @@ def link_label(link: str) -> str:
 def render_projects(projects: list) -> str:
     cards = []
     for i, proj in enumerate(projects, start=1):
+        card_class = "proj-card site-only" if proj["site_only"] else "proj-card"
         lines = [
-            '      <article class="proj-card">',
+            f'      <article class="{card_class}">',
             f'        <p class="proj-num">{i:02d}</p>',
             f'        <h3 class="proj-name">{md_inline_to_html(proj["name"])}</h3>',
             f'        <p class="proj-desc">{md_inline_to_html(proj["desc"])}</p>',
@@ -242,10 +245,11 @@ def main() -> None:
     html = replace_region(html, "projects", render_projects(projects), "      ")
     INDEX_PATH.write_text(html, encoding="utf-8")
 
+    site_only = sum(1 for p in projects if p["site_only"])
     print(f"index.html synced from {ATS_PATH.relative_to(REPO)}:")
     print(f"  skills: {len(skills['core'])} core + {len(skills['additional'])} additional")
     print(f"  experience entries: {len(experience)}")
-    print(f"  projects: {len(projects)}")
+    print(f"  projects: {len(projects)} ({site_only} site-only, excluded from the resume PDF)")
 
 
 if __name__ == "__main__":
