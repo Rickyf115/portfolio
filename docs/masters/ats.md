@@ -8,7 +8,7 @@ rickyf115@pm.me | linkedin.com/in/ricardo-faure-805175128 | github.com/Rickyf115
 
 ## Summary
 
-Principal Software Engineer at Optum, the technology arm of UnitedHealth Group, building enterprise-grade platform infrastructure since 2019. Deep backend and distributed systems owner: custom Kubernetes Operators in Go, Kafka-as-a-Service and Elasticsearch-as-a-Service control planes, GKE environment orchestration, and Terraform-driven infrastructure as code across on-premise and multi-cloud environments. Leads architecture design and platform management for systems that move 20+ petabytes of data and serve hundreds of enterprise teams, with hands-on SRE ownership of production streaming infrastructure.
+Principal Software Engineer at Optum, the technology arm of UnitedHealth Group, building enterprise-grade platform infrastructure since 2019. Deep backend and distributed systems owner: custom Kubernetes Operators in Go, Kafka-as-a-Service and Elasticsearch-as-a-Service control planes, GKE environment orchestration, and Terraform-driven infrastructure as code across on-premise and multi-cloud environments. Leads architecture design and platform management for systems that move 20+ petabytes of data and serve hundreds of enterprise teams, with hands-on SRE ownership of production streaming infrastructure spanning 800+ clusters and thousands of nodes at five nines reliability with zero data loss.
 
 ## Skills
 
@@ -28,15 +28,21 @@ Progressed Software Engineer > Senior Software Engineer > Lead Software Engineer
 
 - **Platform and team leadership:** Lead a team of **7 engineers** building Kafka-as-a-Service and Elasticsearch-as-a-Service platforms, achieving **99.5% reliability** via Kubernetes Operators and robust infrastructure-as-code practices.
 - **Kubernetes Operator development:** Build and maintain custom Kubernetes Operators (Go, Kubebuilder) for Kafka, Elasticsearch, Prometheus, Service Monitors, GCP VolumeSnapshots, certificate management, and bare-metal Kubernetes upgrade orchestration.
-- **Control plane architecture:** Design and manage the architecture of the platform's Kubernetes resource management control plane, in which operators generate and own concrete Kubernetes resources for automated deployment and configuration of streaming infrastructure at production scale. <!-- VERIFY: scale numbers for this system (cluster count, node count) and whether to name KRM/PRM internally; the reference doc cites 500+ Kafka clusters / 1,000+ nodes but those are not yours to claim without confirmation. -->
+- **Control plane architecture:** Design and manage the architecture of the platform's Kubernetes resource management control plane, in which operators generate and own concrete Kubernetes resources for automated deployment and configuration of streaming infrastructure at production scale, managing **800+ clusters** across **thousands of nodes** in multi-tenant on-premise and GCP environments.
 - **Self-service marketplace migration:** Achieved a **52% increase in resource deployments** by migrating from GitOps to a GUI-based management system within an enterprise marketplace, backed by a custom Terraform Provider and Kubernetes resource manager.
 - **Cloud cost optimization:** Delivered **$2.5M in annual cost savings** through cloud resource optimization, instance type migrations, and elimination of excessive log retention in GCP.
 - **Cloud scale and GKE orchestration:** Expanded the platform to handle **20+ petabytes of data movement** across on-premise and GCP (GKE, GAR, IAM, GCS, VPC) by extending Kubernetes Operators for cloud environments; own provisioning and orchestration of the platform's GKE environments through Terraform and infrastructure as code.
-- **SRE and production operations:** Serve in on-call rotation for production streaming infrastructure, responding to incidents, tuning performance and utilization against SLAs, and stabilizing high-throughput Kafka and Elasticsearch services. <!-- VERIFY: any quantifiable SRE claims (fleet size, uptime beyond the 99.5% above, incident/MTTR stats, data-loss record). -->
+- **SRE and production operations:** Serve in on-call rotation across a fleet of **800+ clusters** and **thousands of nodes**, delivering **five nines reliability** with **zero customer data loss** in production across the platform's history; respond to incidents, tune performance and utilization against SLAs, and stabilize high-throughput Kafka and Elasticsearch services.
 - **Security automation:** Designed a vulnerability scanning workstream using reusable GitHub Actions, a custom Python Rally API library, and automated report generation, adopted org-wide.
 - **Mentorship and teaching:** Mentor junior engineers in rotational programs; teach quarterly internal courses on Kubernetes Operators and Elasticsearch/Kibana.
 
-Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, GitHub Actions, Python, Kafka, Elasticsearch, Prometheus, Jenkins, Docker
+**Featured Project: Warpstream Cluster Provisioning Platform (Q4 2025 - Q1 2026)**
+
+- Co-led the backend delivery of end-to-end Warpstream-based Kafka cluster provisioning: extended the platform's Kubernetes operators for net-new resource kinds and delivered a net-new Warpstream operator (Go) that generates all required Kubernetes resources and connects them into Cloud Storage buckets, Warpstream API registrations, and agent configs.
+- Co-designed the Terraform cloud infrastructure for the Warpstream Clusters-as-a-Service deployment, including GCP Cloud Storage provisioning, VPC configuration, DNS, and IAM.
+- Shipped to two of Optum's largest Apache Kafka on GCP customers as beta; Warpstream's diskless, Cloud Storage-based architecture eliminates local disk I/O from the stream processing data path, projected to reduce their annual Kafka infrastructure spend by approximately **80%**.
+
+Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, GitHub Actions, Python, Kafka, Warpstream, Elasticsearch, Prometheus, Jenkins, Docker
 
 ### TDP Software Development Intern
 
