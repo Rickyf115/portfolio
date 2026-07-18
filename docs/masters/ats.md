@@ -81,7 +81,7 @@ Link: https://github.com/Rickyf115/yoyo-mount-visualizer
 
 ### Spin Ledger (closed source)
 
-Single pane of glass for buy/sell/trade activity across skill toy community forums. Ingests unstructured, schemaless forum listings that resist conventional parsing, normalizes them into a taxonomy-aware data model, and serves them through an indexed, searchable marketplace dashboard, turning fragmented community commerce into structured, queryable data. Ingestion runs against Discourse's JSON API with deterministic rule-based entity extraction, a deliberate alternative to LLM parsing that exploits the forums' strict listing conventions, enriched by live lookups against a companion taxonomy catalog service.
+Single pane of glass for buy/sell/trade activity across skill toy community forums. Ingests unstructured, schemaless forum listings that resist conventional parsing, normalizes them into a taxonomy-aware data model, and serves them through an indexed, searchable marketplace dashboard, turning fragmented community commerce into structured, queryable data. Ingestion runs against Discourse's JSON API with deterministic rule-based entity extraction that exploits the forums' strict listing conventions, enriched by live lookups against a companion taxonomy catalog service. LLM-based parsing grounded in the live taxonomy is in development, deliberately deferred at launch where it was cost-prohibitive for a project at this stage.
 
 Technologies: Python, FastAPI, SQLAlchemy 2.0, Alembic, Typer CLI, REST API design, database migrations, rule-based entity extraction, data normalization, API-driven scraping, self-hosted deployment
 
