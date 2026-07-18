@@ -85,6 +85,12 @@ Single pane of glass for buy/sell/trade activity across skill toy community foru
 
 Technologies: Python, FastAPI, SQLAlchemy 2.0, Alembic, Typer CLI, REST API design, database migrations, rule-based entity extraction, data normalization, API-driven scraping, self-hosted deployment
 
+### Self-Hosted Home Lab
+
+Multi-machine home lab orchestrating a fleet of containerized services with Docker, fronted by Caddy as a reverse proxy with automatic HTTPS. Hosts a media server, network-attached storage, network-wide DNS-sinkhole ad and tracker blocking, credential and secrets vaults, remote game streaming, and deployments of closed-source personal projects including Spin Ledger. Private encrypted tunnels provide secure remote access to the network without exposing services publicly.
+
+Technologies: Docker, Caddy, reverse proxy, TLS, DNS, VPN tunneling, NAS, Linux, networking, self-hosting, infrastructure administration
+
 ### OSS Feed
 
 Self-hosted weekly RSS digest that tracks releases from curated open source projects. A watchlist YAML feeds GitHub Actions to fetch releases, generate an XML feed, and publish via GitHub Pages, with Slack/Discord webhook notifications and state management to avoid duplicate alerts.
