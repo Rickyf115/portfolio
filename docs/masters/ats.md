@@ -26,7 +26,7 @@ Progressed Software Engineer > Senior Software Engineer > Lead Software Engineer
 
 <!-- VERIFY: promotion dates for each title if you ever want the progression split into separate dated entries. -->
 
-- **Platform and team leadership:** Lead a team of **7 engineers** building Kafka-as-a-Service and Elasticsearch-as-a-Service platforms, achieving **99.5% reliability** via Kubernetes Operators and robust infrastructure-as-code practices.
+- **Platform and team leadership:** Lead a team of **7 engineers** building Kafka-as-a-Service and Elasticsearch-as-a-Service platforms, achieving **five nines reliability** via Kubernetes Operators and robust infrastructure-as-code practices.
 - **Kubernetes Operator development:** Build and maintain custom Kubernetes Operators (Go, Kubebuilder) for Kafka, Elasticsearch, Prometheus, Service Monitors, GCP VolumeSnapshots, certificate management, and bare-metal Kubernetes upgrade orchestration.
 - **Control plane architecture:** Design and manage the architecture of the platform's Kubernetes resource management control plane, in which operators generate and own concrete Kubernetes resources for automated deployment and configuration of streaming infrastructure at production scale, managing **800+ clusters** across **thousands of nodes** in multi-tenant on-premise and GCP environments.
 - **Self-service marketplace migration:** Achieved a **52% increase in resource deployments** by migrating from GitOps to a GUI-based management system within an enterprise marketplace, backed by a custom Terraform Provider and Kubernetes resource manager.
@@ -38,7 +38,8 @@ Progressed Software Engineer > Senior Software Engineer > Lead Software Engineer
 
 **Featured Project: Warpstream Cluster Provisioning Platform (Q4 2025 - Q1 2026)**
 
-- Co-led the backend delivery of end-to-end Warpstream-based Kafka cluster provisioning: extended the platform's Kubernetes operators for net-new resource kinds and delivered a net-new Warpstream operator (Go) that generates all required Kubernetes resources and connects them into Cloud Storage buckets, Warpstream API registrations, and agent configs.
+- Architected the end-to-end design for Warpstream-based Kafka cluster provisioning: the networking design, the operator, agent, and resource specifications, and the resource flows from the customer-facing resource manager down to the backend infrastructure.
+- Extended the platform's Kubernetes operators for net-new resource kinds and delivered a net-new Warpstream operator (Go) that generates all required Kubernetes resources and connects them into Cloud Storage buckets, Warpstream API registrations, and agent configs.
 - Co-designed the Terraform cloud infrastructure for the Warpstream Clusters-as-a-Service deployment, including GCP Cloud Storage provisioning, VPC configuration, DNS, and IAM.
 - Shipped to two of Optum's largest Apache Kafka on GCP customers as beta; Warpstream's diskless, Cloud Storage-based architecture eliminates local disk I/O from the stream processing data path, projected to reduce their annual Kafka infrastructure spend by approximately **80%**.
 
