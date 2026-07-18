@@ -45,7 +45,7 @@ def extract_portfolio_content(html_path: str) -> dict:
             title = raw.split("—", 1)[1].strip()
 
     bio_el = soup.find(class_="hero-bio")
-    bio = bio_el.get_text(strip=True) if bio_el else ""
+    bio = clean_text(bio_el)
 
     email_href = footer_href("mailto:")
     email = email_href.replace("mailto:", "") if email_href else ""
@@ -87,6 +87,10 @@ def extract_portfolio_content(html_path: str) -> dict:
 
     projects = []
     for card in soup.find_all(class_="proj-card"):
+        # site-only cards stay on the portfolio page but are excluded from
+        # the generic resume PDF
+        if "site-only" in card.get("class", []):
+            continue
         link_el = card.find(class_="proj-link")
         proj = {
             "name": clean_text(card.find(class_="proj-name")),

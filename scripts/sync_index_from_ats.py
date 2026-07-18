@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""Regenerate the synced content sections of index.html from docs/masters/ats.md.
+"""Regenerate the synced content sections of index.html from docs/masters/generic.md.
 
-docs/masters/ats.md is the source of truth for skills, experience, and
-projects. Run this after editing the master, then commit both files:
+docs/masters/generic.md is the generic (non-tailored) resume, curated from
+the full master docs/masters/ats.md. It is the source of truth for the
+site's skills, experience, and projects. After re-curating it, run this and
+commit both files:
 
     python scripts/sync_index_from_ats.py
 
 The rewritten regions are delimited in index.html by
 "<!-- BEGIN ATS SYNC: <name> ... -->" / "<!-- END ATS SYNC: <name> -->"
-comment pairs. Everything outside those regions (hero, summary bio,
-education, certifications) is site-specific and left untouched.
+comment pairs. Everything outside those regions is site-specific and left
+untouched -- including the hero bio, which is a deliberately terse summary
+distilled from the master's Summary section (and scraped by
+generate_resume.py as the PDF summary). When the master's Summary changes
+materially, refresh the hero bio by hand (or ask Claude) to match.
 
 The generated markup keeps the classes generate_resume.py scrapes
 (chip/hi, tl-item, tl-date, tl-company, tl-role, tl-desc, ach, tl-chip,
@@ -23,7 +28,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-ATS_PATH = REPO / "docs" / "masters" / "ats.md"
+ATS_PATH = REPO / "docs" / "masters" / "generic.md"
 INDEX_PATH = REPO / "index.html"
 
 
@@ -109,7 +114,7 @@ def parse_experience_entry(title: str, body: str) -> dict:
 
 
 def parse_project_entry(title: str, body: str) -> dict:
-    proj = {"name": title, "desc": "", "tags": [], "link": ""}
+    proj = {"name": title, "desc": "", "tags": [], "link": "", "site_only": False}
     desc_lines = []
     for raw_line in body.splitlines():
         line = raw_line.strip()
@@ -119,6 +124,8 @@ def parse_project_entry(title: str, body: str) -> dict:
             proj["tags"] = [t.strip() for t in line[len("Technologies:"):].split(",") if t.strip()]
         elif line.startswith("Link:"):
             proj["link"] = line[len("Link:"):].strip()
+        elif line.lower().startswith("site-only:"):
+            proj["site_only"] = line.split(":", 1)[1].strip().lower() in ("true", "yes", "1")
         else:
             desc_lines.append(line)
     proj["desc"] = " ".join(desc_lines)
@@ -185,8 +192,9 @@ def link_label(link: str) -> str:
 def render_projects(projects: list) -> str:
     cards = []
     for i, proj in enumerate(projects, start=1):
+        card_class = "proj-card site-only" if proj["site_only"] else "proj-card"
         lines = [
-            '      <article class="proj-card">',
+            f'      <article class="{card_class}">',
             f'        <p class="proj-num">{i:02d}</p>',
             f'        <h3 class="proj-name">{md_inline_to_html(proj["name"])}</h3>',
             f'        <p class="proj-desc">{md_inline_to_html(proj["desc"])}</p>',
@@ -237,10 +245,11 @@ def main() -> None:
     html = replace_region(html, "projects", render_projects(projects), "      ")
     INDEX_PATH.write_text(html, encoding="utf-8")
 
+    site_only = sum(1 for p in projects if p["site_only"])
     print(f"index.html synced from {ATS_PATH.relative_to(REPO)}:")
     print(f"  skills: {len(skills['core'])} core + {len(skills['additional'])} additional")
     print(f"  experience entries: {len(experience)}")
-    print(f"  projects: {len(projects)}")
+    print(f"  projects: {len(projects)} ({site_only} site-only, excluded from the resume PDF)")
 
 
 if __name__ == "__main__":

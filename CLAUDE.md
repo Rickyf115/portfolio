@@ -8,7 +8,11 @@ The real source of truth is **`docs/masters/ats.md`** — tracked in git (unlike
 
 Read `docs/masters/ats.md` before generating any tailored resume or cover letter.
 
-The skills, experience, and projects sections of `index.html` are generated from `ats.md`: after editing the master, run `python scripts/sync_index_from_ats.py` and commit both files. Never hand-edit the `ATS SYNC` marked regions of `index.html` — the next sync overwrites them. Content outside those markers (hero, bio, education-free layout) is site-specific and edited directly.
+`docs/masters/generic.md` (tracked) is the generic, non-tailored resume: a curated cut of `ats.md` following the same rules as tailored copies (pruned skills, the strongest bullets, one featured project), except it keeps bold lead-in labels and metrics because the site renders them as highlights. When `ats.md` changes materially, re-curate `generic.md` to match — do not let it grow back to master density.
+
+Projects in `generic.md` marked with a `Site-Only: true` line still render as cards on the website but are excluded from the generic resume PDF (`generate_resume.py` skips their `site-only` class). Use it for long-tail portfolio projects that don't earn resume space; keep the PDF to roughly the top 5.
+
+The skills, experience, and projects sections of `index.html` are generated from `generic.md`: after re-curating it, run `python scripts/sync_index_from_ats.py` and commit both files. Never hand-edit the `ATS SYNC` marked regions of `index.html` — the next sync overwrites them. The hero bio is NOT synced: it is a deliberately terse site-facing summary distilled from the master's Summary section (it also becomes the PDF summary via `generate_resume.py`), so when the master's Summary changes materially, regenerate the hero bio to match — short, first person, leading with what he builds plus one or two headline metrics. Other content outside the markers (hero name/title, education-free layout) is site-specific and edited directly.
 
 ## Workflow
 
@@ -58,7 +62,7 @@ The skills, experience, and projects sections of `index.html` are generated from
 
 ## PDF Output
 
-- `scripts/sync_index_from_ats.py` — regenerates the `ATS SYNC` regions of `index.html` from `docs/masters/ats.md`. Local/manual, no dependencies.
+- `scripts/sync_index_from_ats.py` — regenerates the `ATS SYNC` regions of `index.html` from `docs/masters/generic.md`. Local/manual, no dependencies.
 - `scripts/generate_resume.py` — scrapes `index.html`, renders the single canonical site-facing resume to `Misc/resume.pdf`. Runs in CI on every push to `master`.
 - `scripts/generate_tailored_resume.py <path/to/file.md>` — renders any file under `docs/prospectives/` or `docs/submitted/` to `docs/pdf/<name>.pdf`. Local/manual only, not run in CI, not committed (`docs/pdf/` is gitignored).
 

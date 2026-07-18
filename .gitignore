@@ -6,6 +6,7 @@ docs/pdf/
 # Tailored resume content stays local only; the master (ats.md) and templates are tracked.
 docs/masters/*
 !docs/masters/ats.md
+!docs/masters/generic.md
 !docs/masters/*.template.md
 docs/prospectives/*
 !docs/prospectives/TEMPLATE*.md
