@@ -43,8 +43,9 @@ Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, 
 
 ### TDP Software Development Intern
 
-Optum | Minneapolis, MN | Summer 2019 <!-- VERIFY: exact internship months; LinkedIn screenshot was cut off before this entry. -->
+Optum | Minneapolis, MN | Jun - Aug, 2017 - 2019
 
+- Returned for three consecutive summer internships (June - August, 2017, 2018, and 2019) with similar roles and responsibilities each year.
 - Contributed business-critical features to a monolithic application, complete with feature implementations and automated unit and integration testing.
 
 Technologies: Java, Spring Boot, Groovy Spock
@@ -98,4 +99,4 @@ Bachelor of Science in Computer Engineering, Minor in Cybersecurity, Iowa State 
 
 ## Certifications
 
-Google Cloud Certified - Cloud Digital Leader, Google <!-- VERIFY: issue year (and expiration if you want it listed). -->
+Google Cloud Certified - Cloud Digital Leader, Google, 2025
