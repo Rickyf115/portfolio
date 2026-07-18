@@ -43,20 +43,20 @@ Progressed Technology Development Program Associate (Jan 2020) > Software Engine
 **Featured Project: Kafka Cluster Provisioning Platform on GCP**
 
 - Build and operate the Kafka-as-a-Service provisioning platform on GCP: custom Kubernetes Operators (Go) own the full cluster lifecycle on GKE, integrated with GCS, IAM, VPC, and Artifact Registry through Terraform-managed cloud infrastructure.
-- Expose provisioning as self-service through the enterprise marketplace, backed by the custom Terraform Provider and Kubernetes resource management control plane.
+- Delivered provisioning first through GitOps-driven CI/CD pipelines, then migrated it to GUI-based self-service in the enterprise marketplace developer platform, backed by the custom Terraform Provider and Kubernetes resource management control plane.
 
 **Featured Project: Kafka Cluster Provisioning Platform on Bare-Metal**
 
-- Build and operate the on-premise Kafka-as-a-Service platform on bare-metal Kubernetes: operators automate cluster provisioning, configuration, certificate management, and rolling upgrades across multi-tenant environments.
+- Build and operate the on-premise Kafka-as-a-Service platform on bare-metal Kubernetes: operators automate cluster provisioning, configuration, certificate management, and rolling upgrades across multi-tenant environments, delivered first through CI/CD pipelines and subsequently through the self-service developer platform.
 - Keep streaming workloads available through node cycling via the custom bare-metal Kubernetes upgrade orchestration operator.
 
 **Featured Project: Elasticsearch Provisioning Platform on GCP**
 
-- Extended the Elasticsearch-as-a-Service operators into GCP, provisioning clusters on GKE with Terraform-managed cloud infrastructure and operator-driven GCP VolumeSnapshot backup and restore.
+- Extended the Elasticsearch-as-a-Service operators into GCP, provisioning clusters on GKE with Terraform-managed cloud infrastructure and operator-driven GCP VolumeSnapshot backup and restore; provisioning ran first through CI/CD pipelines before migrating to the self-service developer platform.
 
 **Featured Project: Elasticsearch Provisioning Platform on Bare-Metal**
 
-- Build and operate Elasticsearch-as-a-Service on bare-metal Kubernetes: operators automate cluster provisioning, configuration, certificate management, and Kibana access, with Prometheus and Service Monitor operators providing observability across the fleet.
+- Build and operate Elasticsearch-as-a-Service on bare-metal Kubernetes: operators automate cluster provisioning, configuration, certificate management, and Kibana access, with Prometheus and Service Monitor operators providing observability across the fleet; provisioning moved from CI/CD pipelines to the self-service developer platform.
 
 Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, GitHub Actions, Python, Kafka, Warpstream, Elasticsearch, Prometheus, Jenkins, Docker
 
