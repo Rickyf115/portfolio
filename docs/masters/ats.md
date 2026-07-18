@@ -1,8 +1,6 @@
 # Ricky Faure
 
-rickyf115@pm.me | linkedin.com/in/ricardo-faure-805175128 | github.com/Rickyf115
-
-<!-- VERIFY: add "City, ST | phone" to the contact line if you want them on tailored copies (the reference doc includes both). -->
+Minneapolis, MN | 952-256-5622 | rickyf115@pm.me | linkedin.com/in/ricardo-faure-805175128 | github.com/Rickyf115
 
 ---
 
@@ -20,11 +18,9 @@ Principal Software Engineer at Optum, the technology arm of UnitedHealth Group, 
 
 ### Principal Software Engineer, TLCP
 
-Optum, UnitedHealth Group | 2019 - Present
+Optum, UnitedHealth Group | Minneapolis, MN | Jan 2020 - Present
 
-Progressed Software Engineer > Senior Software Engineer > Lead Software Engineer > Principal Software Engineer. Empower hundreds of teams across the enterprise to build data-driven services, moving tens of petabytes of data with minimal architectural overhead, using Kubernetes Operators and CI/CD to automate deployment, management, and hosting of enterprise-grade distributed systems across on-premise and multi-cloud environments.
-
-<!-- VERIFY: promotion dates for each title if you ever want the progression split into separate dated entries. -->
+Progressed Technology Development Program Associate (Jan 2020) > Software Engineer (Jan 2021) > Senior Software Engineer (Mar 2022) > Lead Software Engineer (Feb 2023) > Principal Software Engineer, TLCP (Feb 2024 - Present). Empower hundreds of teams across the enterprise to build data-driven services, moving tens of petabytes of data with minimal architectural overhead, using Kubernetes Operators and CI/CD to automate deployment, management, and hosting of enterprise-grade distributed systems across on-premise and multi-cloud environments.
 
 - **Platform and team leadership:** Lead a team of **7 engineers** building Kafka-as-a-Service and Elasticsearch-as-a-Service platforms, achieving **five nines reliability** via Kubernetes Operators and robust infrastructure-as-code practices.
 - **Kubernetes Operator development:** Build and maintain custom Kubernetes Operators (Go, Kubebuilder) for Kafka, Elasticsearch, Prometheus, Service Monitors, GCP VolumeSnapshots, certificate management, and bare-metal Kubernetes upgrade orchestration.
@@ -47,7 +43,7 @@ Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, 
 
 ### TDP Software Development Intern
 
-Optum | <!-- VERIFY: internship dates --> Internship
+Optum | Minneapolis, MN | Summer 2019 <!-- VERIFY: exact internship months; LinkedIn screenshot was cut off before this entry. -->
 
 - Contributed business-critical features to a monolithic application, complete with feature implementations and automated unit and integration testing.
 
@@ -97,8 +93,8 @@ Technologies: P5.js, HTML/CSS, PHP, AJAX, game loop development
 
 ## Education
 
-<!-- VERIFY: degree, school, graduation year (and GPA if desired). Sheet Vision is labeled Senior Design on the site, so presumably a BS in CS/SE, but nothing is stated anywhere in this repo. -->
+Bachelor of Science in Computer Engineering, Minor in Cybersecurity, Iowa State University, 2015 - 2019
 
 ## Certifications
 
-<!-- VERIFY: none listed on the site. Add any (or delete this section from tailored copies). -->
+Google Cloud Certified - Cloud Digital Leader, Google <!-- VERIFY: issue year (and expiration if you want it listed). -->
