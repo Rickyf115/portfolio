@@ -4,7 +4,7 @@ Guidance for Claude Code (and Copilot) when generating or editing resume and cov
 
 ## Personal Context
 
-The real source of truth is **`docs/masters/ats.md`** — gitignored, local-only, not published anywhere. It holds every skill, role, achievement, and project, written for tailoring rather than for the webpage (`index.html` is the terse, site-facing version). If it doesn't exist yet, copy it from `docs/masters/ats.template.md` and have the user fill it in — don't fabricate its contents.
+The real source of truth is **`docs/masters/ats.md`** — tracked in git (unlike the tailored copies in `docs/prospectives/` and `docs/submitted/`, which stay gitignored). It holds every skill, role, achievement, and project, written for tailoring rather than for the webpage (`index.html` is the terse, site-facing version). If it doesn't exist yet, copy it from `docs/masters/ats.template.md` and have the user fill it in — don't fabricate its contents.
 
 Read `docs/masters/ats.md` before generating any tailored resume or cover letter.
 
