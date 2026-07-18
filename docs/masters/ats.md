@@ -87,7 +87,7 @@ Technologies: Python, FastAPI, SQLAlchemy 2.0, Alembic, Typer CLI, REST API desi
 
 ### Self-Hosted Home Lab
 
-Multi-machine home lab orchestrating a fleet of containerized services with Docker, fronted by Caddy as a reverse proxy with automatic HTTPS. Hosts a media server, network-attached storage, network-wide DNS-sinkhole ad and tracker blocking, credential and secrets vaults, remote game streaming, and deployments of closed-source personal projects including Spin Ledger. Private encrypted tunnels provide secure remote access to the network without exposing services publicly.
+Multi-machine home lab orchestrating a fleet of containerized services with Docker, fronted by Caddy as a reverse proxy with automatic HTTPS. Hosts a media server, network-attached storage, network-wide DNS-sinkhole ad and tracker blocking, credential and secrets vaults, and deployments of closed-source personal projects including Spin Ledger. Private encrypted tunnels provide secure remote access to the network without exposing services publicly.
 
 Technologies: Docker, Caddy, reverse proxy, TLS, DNS, VPN tunneling, NAS, Linux, networking, self-hosting, infrastructure administration
 
