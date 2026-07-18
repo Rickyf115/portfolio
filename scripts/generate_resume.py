@@ -2,10 +2,19 @@
 """Generate a job-application-friendly resume PDF from portfolio HTML content."""
 
 import html as html_lib
+import re
 import sys
 from pathlib import Path
 
 from bs4 import BeautifulSoup
+
+
+def clean_text(el) -> str:
+    """Extract element text with single spaces, so inline tags like <b>
+    don't glue words together ("achieving99.5%via") in the PDF text layer."""
+    if el is None:
+        return ""
+    return re.sub(r"\s+", " ", el.get_text(" ", strip=True))
 
 
 # ---------------------------------------------------------------------------
@@ -66,31 +75,23 @@ def extract_portfolio_content(html_path: str) -> dict:
 
     experience = []
     for item in soup.find_all(class_="tl-item"):
-        def t(cls, parent=item):
-            el = parent.find(class_=cls)
-            return el.get_text(strip=True) if el else ""
-
         exp = {
-            "date": t("tl-date"),
-            "company": t("tl-company"),
-            "role": t("tl-role"),
-            "desc": t("tl-desc"),
-            "achievements": [a.get_text(strip=True) for a in item.find_all(class_="ach")],
-            "tech": [c.get_text(strip=True) for c in item.find_all(class_="tl-chip")],
+            "date": clean_text(item.find(class_="tl-date")),
+            "company": clean_text(item.find(class_="tl-company")),
+            "role": clean_text(item.find(class_="tl-role")),
+            "desc": clean_text(item.find(class_="tl-desc")),
+            "achievements": [clean_text(a) for a in item.find_all(class_="ach")],
+            "tech": [clean_text(c) for c in item.find_all(class_="tl-chip")],
         }
         experience.append(exp)
 
     projects = []
     for card in soup.find_all(class_="proj-card"):
-        def t(cls, parent=card):
-            el = parent.find(class_=cls)
-            return el.get_text(strip=True) if el else ""
-
         link_el = card.find(class_="proj-link")
         proj = {
-            "name": t("proj-name"),
-            "desc": t("proj-desc"),
-            "tags": [tg.get_text(strip=True) for tg in card.find_all(class_="ptag")],
+            "name": clean_text(card.find(class_="proj-name")),
+            "desc": clean_text(card.find(class_="proj-desc")),
+            "tags": [clean_text(tg) for tg in card.find_all(class_="ptag")],
             "link": link_el["href"] if link_el and link_el.get("href") else "",
         }
         projects.append(proj)
@@ -265,7 +266,7 @@ def build_resume_html(content: dict) -> str:
     margin-bottom: 2pt;
   }}
   .tech-line {{ font-size: 8.5pt; color: #444; margin-top: 3pt; }}
-  .proj-tags {{ font-size: 8.5pt; color: #555; white-space: nowrap; margin-left: 8pt; }}
+  .proj-tags {{ font-size: 8.5pt; color: #555; margin-left: 8pt; text-align: right; max-width: 60%; }}
 
   @media print {{
     body {{ padding: 0; }}
