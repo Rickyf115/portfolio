@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Regenerate the synced content sections of index.html from docs/masters/ats.md.
+"""Regenerate the synced content sections of index.html from docs/masters/generic.md.
 
-docs/masters/ats.md is the source of truth for skills, experience, and
-projects. Run this after editing the master, then commit both files:
+docs/masters/generic.md is the generic (non-tailored) resume, curated from
+the full master docs/masters/ats.md. It is the source of truth for the
+site's skills, experience, and projects. After re-curating it, run this and
+commit both files:
 
     python scripts/sync_index_from_ats.py
 
@@ -26,7 +28,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-ATS_PATH = REPO / "docs" / "masters" / "ats.md"
+ATS_PATH = REPO / "docs" / "masters" / "generic.md"
 INDEX_PATH = REPO / "index.html"
 
 
