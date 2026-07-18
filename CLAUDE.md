@@ -8,7 +8,7 @@ The real source of truth is **`docs/masters/ats.md`** — tracked in git (unlike
 
 Read `docs/masters/ats.md` before generating any tailored resume or cover letter.
 
-The summary (rendered as the hero bio), skills, experience, and projects sections of `index.html` are generated from `ats.md`: after editing the master, run `python scripts/sync_index_from_ats.py` and commit both files. Never hand-edit the `ATS SYNC` marked regions of `index.html` — the next sync overwrites them. Content outside those markers (hero name/title, education-free layout) is site-specific and edited directly.
+The skills, experience, and projects sections of `index.html` are generated from `ats.md`: after editing the master, run `python scripts/sync_index_from_ats.py` and commit both files. Never hand-edit the `ATS SYNC` marked regions of `index.html` — the next sync overwrites them. The hero bio is NOT synced: it is a deliberately terse site-facing summary distilled from the master's Summary section (it also becomes the PDF summary via `generate_resume.py`), so when the master's Summary changes materially, regenerate the hero bio to match — short, first person, leading with what he builds plus one or two headline metrics. Other content outside the markers (hero name/title, education-free layout) is site-specific and edited directly.
 
 ## Workflow
 
