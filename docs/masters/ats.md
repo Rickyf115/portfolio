@@ -10,9 +10,9 @@ Principal Software Engineer at Optum, the technology arm of UnitedHealth Group, 
 
 ## Skills
 
-**Core:** Go, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Kubernetes CRDs, Terraform, custom Terraform Provider development, GCP, GKE, Apache Kafka, Elasticsearch, Helm, CI/CD, GitHub Actions, Python, distributed systems, SRE, infrastructure as code, architecture design
+**Core:** Go, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Kubernetes CRDs, Terraform, custom Terraform Provider development, GCP, GKE, AWS, Apache Kafka, Elasticsearch, Cassandra, Helm, CI/CD, GitHub Actions, Python, distributed systems, SRE, infrastructure as code, architecture design
 
-**Additional:** Docker, Prometheus, Grafana, GitOps, bare-metal Kubernetes, GCP IAM, GCS, VPC, Artifact Registry (GAR), GCP VolumeSnapshots, certificate management, Jenkins, Java, Spring Boot, Groovy Spock, Kibana, Rally API automation, vulnerability management, mentorship and technical teaching, AI-assisted development, agentic development workflows, Claude Code, GitHub Copilot, OpenAI Codex
+**Additional:** Docker, Prometheus, Grafana, GitOps, bare-metal Kubernetes, GCP IAM, GCS, VPC, Artifact Registry (GAR), GCP VolumeSnapshots, Route53, S3, DynamoDB, SOPS, certificate management, Jenkins, Java, Spring Boot, Groovy Spock, Kibana, Rally API automation, vulnerability management, mentorship and technical teaching, AI-assisted development, agentic development workflows, Claude Code, GitHub Copilot, OpenAI Codex
 
 ## Experience
 
@@ -30,6 +30,7 @@ Progressed Technology Development Program Associate (Jan 2020) > Software Engine
 - **Cloud scale and GKE orchestration:** Expanded the platform to handle **20+ petabytes of data movement** across on-premise and GCP (GKE, GAR, IAM, GCS, VPC) by extending Kubernetes Operators for cloud environments; own provisioning and orchestration of the **30+ GKE clusters** backing these platforms through Terraform and infrastructure as code.
 - **SRE and production operations:** Serve in on-call rotation across a fleet of **800+ clusters** and **thousands of nodes**, delivering **five nines reliability** with **zero customer data loss** in production across the platform's history; respond to incidents, tune performance and utilization against SLAs, and stabilize high-throughput Kafka and Elasticsearch services.
 - **Observability as code:** Converted Grafana dashboard maintenance to infrastructure as code, keeping dashboards versioned and reproducible so observability scales with the many data sources the platform has grown to.
+- **AWS infrastructure ownership:** Manage domain and subdomain DNS via Route53, operate an internal certificate authority with SOPS-encrypted secrets, and manage Terraform state storage and locking through S3 and DynamoDB.
 - **Agentic development workspaces:** Design and build agent-driven development workspaces that standardize the team's engineering workflow into a consistent, deterministic process; encode the full breadth of the platform's distributed projects and their interdependencies into durable agent context, and author reusable agent skills that automate remediation and SRE support tasks.
 - **Security automation:** Designed a vulnerability scanning workstream using reusable GitHub Actions, a custom Python Rally API library, and automated report generation, adopted org-wide.
 - **Mentorship and teaching:** Mentor junior engineers in rotational programs; teach quarterly internal courses on Kubernetes Operators and Elasticsearch/Kibana.
@@ -59,7 +60,12 @@ Progressed Technology Development Program Associate (Jan 2020) > Software Engine
 
 - Build and operate Elasticsearch-as-a-Service on bare-metal Kubernetes: operators automate cluster provisioning, configuration, certificate management, and Kibana access, with Prometheus and Service Monitor operators providing observability across the fleet; provisioning moved from CI/CD pipelines to the self-service developer platform.
 
-Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, GitHub Actions, Python, Kafka, Warpstream, Elasticsearch, Prometheus, Jenkins, Docker
+**Featured Project: Cassandra Cluster Provisioning Platform on Bare-Metal (retired)**
+
+- Maintained bare-metal Kubernetes Operators for Cassandra cluster lifecycle management early in tenure, developing resource representations for a GitOps-driven customer provisioning flow and repairing broken clusters in production, at smaller scale than the Kafka and Elasticsearch platforms.
+- Retired the platform in favor of a vendor-managed MongoDB offering.
+
+Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, AWS, Route53, S3, DynamoDB, GitHub Actions, Python, Kafka, Warpstream, Elasticsearch, Cassandra, Prometheus, Jenkins, Docker
 
 ### TDP Software Development Intern
 
@@ -121,9 +127,9 @@ Link: https://github.com/svew/javascript-raytracing
 
 ### Sheet Vision (Senior Design)
 
-Application that reads sheet music, plays it back, and listens to the user in real time, providing feedback to help learners draw parallels between notation and sound.
+Application that reads sheet music, plays it back, and listens to the user in real time, providing feedback to help learners draw parallels between notation and sound. Backend exposed OpenCV-based image recognition algorithms through AWS Lambda functions (loaded via Lambda layers) behind API Gateway, with S3 storing base64-encoded images for processing.
 
-Technologies: ElectronJS, ReactJS, AWS, Python, computer vision
+Technologies: ElectronJS, ReactJS, AWS Lambda, AWS API Gateway, AWS S3, OpenCV, Python, computer vision
 Link: ./Misc/project_plan.pdf
 
 ### Run Samurai, Run!
