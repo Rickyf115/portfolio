@@ -12,7 +12,7 @@ Principal Software Engineer at Optum, the technology arm of UnitedHealth Group, 
 
 **Core:** Go, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Kubernetes CRDs, Terraform, custom Terraform Provider development, GCP, GKE, Apache Kafka, Elasticsearch, Helm, CI/CD, GitHub Actions, Python, distributed systems, SRE, infrastructure as code, architecture design
 
-**Additional:** Docker, Prometheus, Grafana, GitOps, bare-metal Kubernetes, GCP IAM, GCS, VPC, Artifact Registry (GAR), GCP VolumeSnapshots, certificate management, Jenkins, Java, Spring Boot, Groovy Spock, Kibana, Rally API automation, vulnerability management, mentorship and technical teaching, AI-assisted development, agentic development workflows, Claude Code, GitHub Copilot, OpenAI Codex
+**Additional:** Docker, Prometheus, Grafana, GitOps, bare-metal Kubernetes, GCP IAM, GCS, VPC, Artifact Registry (GAR), GCP VolumeSnapshots, certificate management, Jenkins, Artifactory, AWS (S3, Route53, DynamoDB), SOPS, Java, Spring Boot, Groovy Spock, Kibana, Rally API automation, vulnerability management, mentorship and technical teaching, AI-assisted development, agentic development workflows, Claude Code, GitHub Copilot, OpenAI Codex
 
 ## Experience
 
@@ -32,6 +32,7 @@ Progressed Technology Development Program Associate (Jan 2020) > Software Engine
 - **Observability as code:** Converted Grafana dashboard maintenance to infrastructure as code, keeping dashboards versioned and reproducible so observability scales with the many data sources the platform has grown to.
 - **Agentic development workspaces:** Design and build agent-driven development workspaces that standardize the team's engineering workflow into a consistent, deterministic process; encode the full breadth of the platform's distributed projects and their interdependencies into durable agent context, and author reusable agent skills that automate remediation and SRE support tasks.
 - **Security automation:** Designed a vulnerability scanning workstream using reusable GitHub Actions, a custom Python Rally API library, and automated report generation, adopted org-wide.
+- **Artifact management:** Manage the platform's build artifacts and container images in Artifactory, the team's internal registry, handling day-to-day pushing, promotion, and pulling of artifacts and bundles across environments.
 - **Mentorship and teaching:** Mentor junior engineers in rotational programs; teach quarterly internal courses on Kubernetes Operators and Elasticsearch/Kibana.
 
 **Featured Project: Warpstream Cluster Provisioning Platform (Q4 2025 - Q1 2026)**
@@ -59,7 +60,7 @@ Progressed Technology Development Program Associate (Jan 2020) > Software Engine
 
 - Build and operate Elasticsearch-as-a-Service on bare-metal Kubernetes: operators automate cluster provisioning, configuration, certificate management, and Kibana access, with Prometheus and Service Monitor operators providing observability across the fleet; provisioning moved from CI/CD pipelines to the self-service developer platform.
 
-Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, GitHub Actions, Python, Kafka, Warpstream, Elasticsearch, Prometheus, Jenkins, Docker
+Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, GitHub Actions, Python, Kafka, Warpstream, Elasticsearch, Prometheus, Jenkins, Artifactory, Docker
 
 ### TDP Software Development Intern
 
