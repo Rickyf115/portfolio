@@ -32,7 +32,7 @@ Progressed Technology Development Program Associate (Jan 2020) > Software Engine
 - **Observability as code:** Converted Grafana dashboard maintenance to infrastructure as code, keeping dashboards versioned and reproducible so observability scales with the many data sources the platform has grown to.
 - **Agentic development workspaces:** Design and build agent-driven development workspaces that standardize the team's engineering workflow into a consistent, deterministic process; encode the full breadth of the platform's distributed projects and their interdependencies into durable agent context, and author reusable agent skills that automate remediation and SRE support tasks.
 - **Security automation:** Designed a vulnerability scanning workstream using reusable GitHub Actions, a custom Python Rally API library, and automated report generation, adopted org-wide.
-- **Artifact management:** Manage the platform's build artifacts and container images in Artifactory, the team's internal registry, handling day-to-day pushing, promotion, and pulling of artifacts and bundles across environments.
+- **Artifact management:** Maintain **hundreds of artifacts** in Artifactory, the team's internal registry, handling day-to-day pushing, promotion, and pulling of artifacts and bundles across environments, plus vulnerability scanning and remediation on top of routine maintenance.
 - **Mentorship and teaching:** Mentor junior engineers in rotational programs; teach quarterly internal courses on Kubernetes Operators and Elasticsearch/Kibana.
 
 **Featured Project: Warpstream Cluster Provisioning Platform (Q4 2025 - Q1 2026)**
