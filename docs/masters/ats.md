@@ -10,7 +10,7 @@ Principal Software Engineer at Optum, the technology arm of UnitedHealth Group, 
 
 ## Skills
 
-**Core:** Go, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Kubernetes CRDs, Terraform, custom Terraform Provider development, GCP, GKE, Apache Kafka, Elasticsearch, Helm, CI/CD, GitHub Actions, Python, distributed systems, SRE, infrastructure as code, architecture design
+**Core:** Go, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Kubernetes CRDs, Kubernetes admission webhooks (validating, mutating), Terraform, custom Terraform Provider development, GCP, GKE, Apache Kafka, Elasticsearch, Helm, CI/CD, GitHub Actions, Python, distributed systems, SRE, infrastructure as code, architecture design
 
 **Additional:** Docker, Prometheus, Grafana, GitOps, bare-metal Kubernetes, GCP IAM, GCS, VPC, Artifact Registry (GAR), GCP VolumeSnapshots, certificate management, Jenkins, Java, Spring Boot, Groovy Spock, Kibana, Rally API automation, vulnerability management, mentorship and technical teaching, AI-assisted development, agentic development workflows, Claude Code, GitHub Copilot, OpenAI Codex
 
@@ -24,6 +24,7 @@ Progressed Technology Development Program Associate (Jan 2020) > Software Engine
 
 - **Platform and team leadership:** Lead **15 engineers** across the Kafka-as-a-Service and Elasticsearch-as-a-Service platforms and advise **2 engineering leaders**, sustaining **five nines reliability** through Kubernetes Operators and disciplined infrastructure-as-code practices.
 - **Kubernetes Operator development:** Build and maintain custom Kubernetes Operators (Go, Kubebuilder) for Kafka, Elasticsearch, Prometheus, Service Monitors, GCP VolumeSnapshots, certificate management, and bare-metal Kubernetes upgrade orchestration.
+- **Admission webhook development:** Build validating and mutating Kubernetes admission webhooks to enforce CRD schema correctness and manage CRD schema migrations; use mutating webhooks to upgrade Kafka and Elasticsearch Operator CRD versions across live environments without disrupting existing resources.
 - **Control plane architecture:** Design and manage the architecture of the platform's Kubernetes resource management control plane, in which operators generate and own concrete Kubernetes resources for automated deployment and configuration of streaming infrastructure at production scale, managing **800+ clusters** across **thousands of nodes** in multi-tenant on-premise and GCP environments.
 - **Self-service marketplace migration:** Achieved a **52% increase in resource deployments** by migrating from GitOps to a GUI-based management system within an enterprise marketplace, backed by a custom Terraform Provider and Kubernetes resource manager.
 - **Cloud cost optimization:** Delivered **$2.5M in annual cost savings** through cloud resource optimization, instance type migrations, and elimination of excessive log retention in GCP.
