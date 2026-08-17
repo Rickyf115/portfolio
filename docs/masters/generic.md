@@ -17,7 +17,7 @@ Principal Software Engineer at Optum building enterprise-grade platform infrastr
 
 ## Skills
 
-**Core:** Go, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Terraform, GCP, GKE, Apache Kafka, Elasticsearch, Helm, CI/CD, Python, distributed systems, SRE, infrastructure as code
+**Core:** Go, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Terraform, GCP, GKE, AWS, Apache Kafka, Elasticsearch, Cassandra, Helm, CI/CD, Python, distributed systems, SRE, infrastructure as code
 
 **Additional:** Docker, Prometheus, Grafana, GitOps, GitHub Actions, bare-metal Kubernetes, certificate management, Java, Spring Boot, AI-assisted development, Claude Code, mentorship and technical teaching
 
@@ -30,7 +30,7 @@ Optum, UnitedHealth Group | Minneapolis, MN | Jan 2020 - Present
 Progressed Technology Development Program Associate (Jan 2020) > Software Engineer (Jan 2021) > Senior Software Engineer (Mar 2022) > Lead Software Engineer (Feb 2023) > Principal Software Engineer, TLCP (Feb 2024 - Present). Empower hundreds of teams across the enterprise to build data-driven services, moving tens of petabytes of data with minimal architectural overhead, using Kubernetes Operators and CI/CD to automate deployment, management, and hosting of enterprise-grade distributed systems across on-premise and multi-cloud environments.
 
 - **Platform and team leadership:** Lead **15 engineers** across the Kafka-as-a-Service and Elasticsearch-as-a-Service platforms and advise **2 engineering leaders**, sustaining **five nines reliability** through Kubernetes Operators and disciplined infrastructure-as-code practices.
-- **Kubernetes Operator development:** Build and maintain custom Kubernetes Operators (Go, Kubebuilder) for Kafka, Elasticsearch, Prometheus, Service Monitors, GCP VolumeSnapshots, certificate management, and bare-metal Kubernetes upgrade orchestration.
+- **Kubernetes Operator development:** Build and maintain custom Kubernetes Operators (Go, Kubebuilder) for Kafka, Elasticsearch, Cassandra, Prometheus, Service Monitors, GCP VolumeSnapshots, certificate management, and bare-metal Kubernetes upgrade orchestration.
 - **Control plane architecture:** Design and manage the platform's Kubernetes resource management control plane, managing **800+ clusters** across **thousands of nodes** in multi-tenant on-premise and GCP environments with **zero customer data loss** in production.
 - **Self-service marketplace migration:** Achieved a **52% increase in resource deployments** by migrating from GitOps to a GUI-based management system within an enterprise marketplace, backed by a custom Terraform Provider and Kubernetes resource manager.
 - **Cloud cost optimization:** Delivered **$2.5M in annual cost savings** through cloud resource optimization, instance type migrations, and elimination of excessive log retention in GCP.
@@ -111,7 +111,7 @@ Link: https://github.com/svew/javascript-raytracing
 
 Application that reads sheet music, plays it back, and listens to the user in real time, providing feedback to help learners draw parallels between notation and sound.
 
-Technologies: ElectronJS, ReactJS, AWS, Python, computer vision
+Technologies: ElectronJS, ReactJS, AWS Lambda, AWS S3, OpenCV, Python, computer vision
 Link: ./Misc/project_plan.pdf
 
 ### Run Samurai, Run!
