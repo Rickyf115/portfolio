@@ -36,6 +36,7 @@ Progressed Technology Development Program Associate (Jan 2020) > Software Engine
 - **Cloud cost optimization:** Delivered **$2.5M in annual cost savings** through cloud resource optimization, instance type migrations, and elimination of excessive log retention in GCP.
 - **Cloud scale and GKE orchestration:** Expanded the platform to handle **20+ petabytes of data movement** across on-premise and GCP by extending Kubernetes Operators for cloud environments; own provisioning and orchestration of the **30+ GKE clusters** backing these platforms through Terraform.
 - **Agentic development workspaces:** Design and build agent-driven development workspaces that standardize the team's engineering workflow into a consistent, deterministic process, with reusable agent skills that automate remediation and SRE support tasks.
+- **Mentorship and coaching:** Coach lead and senior engineers, with **3 promoted to Senior Engineer** and **1 to Lead Engineer** under direct mentorship.
 
 **Featured Project: Warpstream Cluster Provisioning Platform (Q4 2025 - Q1 2026)**
 

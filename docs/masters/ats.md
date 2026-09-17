@@ -35,7 +35,7 @@ Progressed Technology Development Program Associate (Jan 2020) > Software Engine
 - **Artifact management:** Maintain **hundreds of artifacts** in Artifactory, the team's internal registry, handling day-to-day pushing, promotion, and pulling of artifacts and bundles across environments, plus vulnerability scanning and remediation on top of routine maintenance.
 - **Agentic development workspaces:** Design and build agent-driven development workspaces that standardize the team's engineering workflow into a consistent, deterministic process; encode the full breadth of the platform's distributed projects and their interdependencies into durable agent context, and author reusable agent skills that automate remediation and SRE support tasks.
 - **Security automation:** Designed a vulnerability scanning workstream using reusable GitHub Actions, a custom Python Rally API library, and automated report generation, adopted org-wide.
-- **Mentorship and teaching:** Mentor junior engineers in rotational programs; teach quarterly internal courses on Kubernetes Operators and Elasticsearch/Kibana.
+- **Mentorship and teaching:** Coach lead and senior engineers, with 3 engineers promoted to Senior Engineer and 1 to Lead Engineer under direct mentorship; mentor junior engineers in rotational programs; teach quarterly internal courses on Kubernetes Operators and Elasticsearch/Kibana.
 
 **Featured Project: Warpstream Cluster Provisioning Platform (Q4 2025 - Q1 2026)**
 
