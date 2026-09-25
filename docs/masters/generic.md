@@ -13,13 +13,13 @@ When ats.md changes materially, re-curate this file to match. -->
 
 ## Summary
 
-Principal Software Engineer at Optum building enterprise-grade platform infrastructure: custom Kubernetes Operators in Go, Kafka-as-a-Service and Elasticsearch-as-a-Service control planes, and Terraform-driven GKE orchestration moving 20+ petabytes of data across 800+ clusters at five nines reliability.
+Principal Software Engineer at Optum, programming since 2012, leading multi-year roadmaps for enterprise-grade platform infrastructure: custom Kubernetes Operators in Go, Kafka-as-a-Service and Elasticsearch-as-a-Service control planes, and Terraform-driven GKE orchestration moving 20+ petabytes of data across 800+ clusters at five nines reliability. Partners with VP-level leaders and vendors (Warpstream, GCP), and builds production AI agents with responsible-use review gates.
 
 ## Skills
 
-**Core:** Go, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Terraform, GCP, GKE, AWS, Apache Kafka, Elasticsearch, Cassandra, Helm, CI/CD, Python, distributed systems, SRE, infrastructure as code
+**Core:** Go, Python, Java, Kubernetes, Kubernetes Operators, Kubebuilder / Operator SDK, Terraform, GCP, GKE, AWS, Apache Kafka, Elasticsearch, Cassandra, Helm, CI/CD, distributed systems, SRE, infrastructure as code, technical roadmap planning
 
-**Additional:** Docker, Prometheus, Grafana, GitOps, GitHub Actions, bare-metal Kubernetes, certificate management, Java, Spring Boot, AI-assisted development, Claude Code, mentorship and technical teaching
+**Additional:** ArgoCD, Kargo, Docker, Prometheus, Thanos, Grafana, PagerDuty, GitHub Actions, canary and blue/green releases, bare-metal Kubernetes, Confluent Schema Registry, C, C#, AI agent development, responsible AI practices, Claude Code, mentorship and technical teaching
 
 ## Experience
 
@@ -29,20 +29,20 @@ Optum, UnitedHealth Group | Minneapolis, MN | Jan 2020 - Present
 
 Progressed Technology Development Program Associate (Jan 2020) > Software Engineer (Jan 2021) > Senior Software Engineer (Mar 2022) > Lead Software Engineer (Feb 2023) > Principal Software Engineer, TLCP (Feb 2024 - Present). Empower hundreds of teams across the enterprise to build data-driven services, moving tens of petabytes of data with minimal architectural overhead, using Kubernetes Operators and CI/CD to automate deployment, management, and hosting of enterprise-grade distributed systems across on-premise and multi-cloud environments.
 
-- **Platform and team leadership:** Lead **15 engineers** across the Kafka-as-a-Service and Elasticsearch-as-a-Service platforms and advise **2 engineering leaders**, sustaining **five nines reliability** through Kubernetes Operators and disciplined infrastructure-as-code practices.
-- **Kubernetes Operator development:** Build and maintain custom Kubernetes Operators (Go, Kubebuilder) for Kafka, Elasticsearch, Cassandra, Prometheus, Service Monitors, GCP VolumeSnapshots, certificate management, and bare-metal Kubernetes upgrade orchestration.
-- **Control plane architecture:** Design and manage the platform's Kubernetes resource management control plane, managing **800+ clusters** across **thousands of nodes** in multi-tenant on-premise and GCP environments with **zero customer data loss** in production.
-- **Self-service marketplace migration:** Achieved a **52% increase in resource deployments** by migrating from GitOps to a GUI-based management system within an enterprise marketplace, backed by a custom Terraform Provider and Kubernetes resource manager.
-- **Cloud cost optimization:** Delivered **$2.5M in annual cost savings** through cloud resource optimization, instance type migrations, and elimination of excessive log retention in GCP.
-- **Cloud scale and GKE orchestration:** Expanded the platform to handle **20+ petabytes of data movement** across on-premise and GCP by extending Kubernetes Operators for cloud environments; own provisioning and orchestration of the **30+ GKE clusters** backing these platforms through Terraform.
-- **Agentic development workspaces:** Design and build agent-driven development workspaces that standardize the team's engineering workflow into a consistent, deterministic process, with reusable agent skills that automate remediation and SRE support tasks.
+- **Platform and team leadership:** Lead **15 engineers** across the Kafka-as-a-Service and Elasticsearch-as-a-Service platforms and advise **2 engineering leaders**, sustaining **five nines reliability** with **zero customer data loss** in production.
+- **Multi-year Kafka roadmap:** Led the **2-year** roadmap that took Kafka provisioning from CI/CD pipelines to self-service in the enterprise marketplace, backed by a custom Terraform Provider; resource deployments rose **52%** and usage has grown nearly **3x**.
+- **Executive influence:** Wrote a Kubernetes security report for a VP that set the organization's GKE security standard (IAM, Workload Identity, least-privilege RBAC) and secured funding to move off bare metal; partnered with a VP to design an org-wide SRE model adopted by **4 engineering teams**.
+- **Automated deployment pipelines:** Lead the automated deployment initiative across **30 GKE clusters** with ArgoCD, Kargo, promotion pipelines, and canary and blue/green releases, cutting pull requests per change from **30+ to 2**.
+- **Control plane architecture:** Design and manage the platform's Kubernetes control plane across **800+ clusters** and **~2,000 GCP instances**, with the largest GKE cluster exceeding **1,000 nodes** and **20+ petabytes of data movement**.
+- **Cloud cost and GCP partnership:** Delivered **$2.5M in annual savings** by eliminating excessive log retention in GCP; manage the GCP partnership for CUD allocation, reservations, and right-sizing.
+- **Agentic development:** Build agentic workspaces and agent skills used by **30+ engineers**, shipping **~50 fully agent-developed features** to production and cutting support response time from several days to about **1 hour**; building AI support agents projected to save **4,160 engineering hours a year**.
 
-**Featured Project: Warpstream Cluster Provisioning Platform (Q4 2025 - Q1 2026)**
+**Featured Project: Warpstream Cluster Provisioning Platform (Q4 2025 - Present)**
 
-- Architected the end-to-end design for Warpstream-based Kafka cluster provisioning, from the customer-facing resource manager down to the backend infrastructure, and delivered a net-new Warpstream operator (Go) plus the Terraform cloud infrastructure behind it.
-- Shipped to two of Optum's largest Apache Kafka on GCP customers as beta; Warpstream's diskless architecture is projected to reduce their annual Kafka infrastructure spend by approximately **80%**.
+- Architected the end-to-end design for Warpstream-based Kafka cluster provisioning and delivered a net-new Warpstream operator (Go) plus its Terraform cloud infrastructure; lead the Warpstream vendor partnership and the roadmap for it as a net-new product.
+- Projected to cut beta customers' annual Kafka spend by approximately **80%**; migrated workloads already save roughly **$2.9M per year**.
 
-Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, GitHub Actions, Python, Kafka, Warpstream, Elasticsearch, Prometheus, Docker
+Technologies: Go, Kubebuilder, Kubernetes Operators, Helm, Terraform, GCP, GKE, ArgoCD, Kargo, GitHub Actions, Python, Kafka, Warpstream, Elasticsearch, Prometheus, Thanos, Docker
 
 ### TDP Software Development Intern
 
@@ -53,6 +53,12 @@ Optum | Minneapolis, MN | Jun - Aug, 2017 - 2019
 Technologies: Java, Spring Boot, Groovy Spock
 
 ## Projects
+
+### HostPort Allocator (open source contribution)
+
+Contributed to HostPort Allocator, an open source Kubernetes host port allocator.
+
+Technologies: Kubernetes
 
 ### Yo-Yo Mount Visualizer (active development)
 
@@ -109,6 +115,8 @@ Link: https://github.com/svew/javascript-raytracing
 
 ### Sheet Vision (Senior Design)
 
+Site-Only: true
+
 Application that reads sheet music, plays it back, and listens to the user in real time, providing feedback to help learners draw parallels between notation and sound.
 
 Technologies: ElectronJS, ReactJS, AWS Lambda, AWS S3, OpenCV, Python, computer vision
@@ -129,3 +137,5 @@ Bachelor of Science in Computer Engineering, Minor in Cybersecurity, Iowa State 
 ## Certifications
 
 Google Cloud Certified - Cloud Digital Leader, Google, 2025
+
+AI Dojo - Safe AI Agent Development and Usage, Optum (internal accreditation), 2025
