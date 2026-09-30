@@ -547,19 +547,9 @@
       transform-origin: left center;
       transform: scaleX(0);
     }
-    .hl-belt { position: absolute; left: 0; right: 0; bottom: 0; }
-    .hero-line .ug-side {
-      position: absolute;
-      left: -20px; bottom: -3px;
-      width: 30px; height: 38px;
-      border-radius: 9px 3px 3px 9px;
-      background: linear-gradient(90deg, #f2c547, #b3831b);
-    }
-    .hero-line .ug-side::after { left: auto; right: 2px; top: 8px; bottom: 8px; width: 9px; height: auto; border-radius: 3px 0 0 3px; }
     .follow-hint {
       position: absolute;
-      left: 50%; bottom: 18px;
-      transform: translateX(-50%);
+      left: calc(50% + 34px); bottom: 18px;
       z-index: 1;
       font-family: var(--mono);
       font-size: 0.66rem;
@@ -569,29 +559,57 @@
       white-space: nowrap;
     }
 
-    /* ===== BELT LINK (section transitions) ===== */
-    .belt-link {
-      position: relative;
-      height: 210px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    /* ===== BELT NETWORK =====
+       One continuous belt route is laid out by JS from the page layout: straight
+       pieces, curved corners, and underground pairs wherever it crosses content. */
+    main { position: relative; z-index: 0; }
+    .belt-layer {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
     }
-    .belt-link .belt-v { flex: 1; overflow: hidden; }
-    .belt-link .bitem { animation: itemDown 2s linear infinite; }
-    .belt-link .lane-a { left: 7px; }
-    .belt-link .lane-b { left: 16px; }
-    .belt-link .bitem:nth-child(2) { animation-delay: -0.5s; }
-    .belt-link .bitem:nth-child(3) { animation-delay: -1s; }
-    .belt-link .bitem:nth-child(4) { animation-delay: -1.5s; }
-    @keyframes itemDown {
-      from { top: -14px; }
-      to   { top: 100%; }
+    .belt-layer .belt-h, .belt-layer .belt-v, .belt-layer .ug { position: absolute; }
+    .belt-up { animation-direction: reverse; }
+    .belt-layer .ug { z-index: 2; }
+    .belt-layer .bitem { left: 0; top: 0; z-index: 1; will-change: transform; }
+    @property --rot { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    .belt-corner {
+      --r: 16px;      /* centreline radius, set per corner */
+      --per: 57deg;   /* one 16px rib period at that radius */
+      position: absolute;
+      background:
+        radial-gradient(circle at var(--cx) var(--cy),
+          transparent calc(var(--r) - 16px),
+          var(--belt) calc(var(--r) - 16px) calc(var(--r) - 13px),
+          #5a430c calc(var(--r) - 13px) calc(var(--r) - 11px),
+          transparent calc(var(--r) - 11px) calc(var(--r) + 11px),
+          #5a430c calc(var(--r) + 11px) calc(var(--r) + 13px),
+          var(--belt) calc(var(--r) + 13px) calc(var(--r) + 16px),
+          transparent calc(var(--r) + 16px)),
+        repeating-conic-gradient(from var(--rot) at var(--cx) var(--cy),
+          #2d2c2b 0deg calc(var(--per) * 0.31),
+          #4d4c4a calc(var(--per) * 0.31) calc(var(--per) * 0.44),
+          #1c1b1a calc(var(--per) * 0.44) calc(var(--per) * 0.56),
+          #383734 calc(var(--per) * 0.56) var(--per));
+      -webkit-mask-image: radial-gradient(circle at var(--cx) var(--cy), transparent calc(var(--r) - 16.5px), #000 calc(var(--r) - 16px) calc(var(--r) + 16px), transparent calc(var(--r) + 16.5px));
+      mask-image: radial-gradient(circle at var(--cx) var(--cy), transparent calc(var(--r) - 16.5px), #000 calc(var(--r) - 16px) calc(var(--r) + 16px), transparent calc(var(--r) + 16.5px));
+      filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.4));
+      animation: cornerSpin 0.2s linear infinite;
     }
+    .belt-corner.ccw { animation-direction: reverse; }
+    @keyframes cornerSpin {
+      from { --rot: 0deg; }
+      to   { --rot: var(--per); }
+    }
+
+    /* ===== BELT LINK (section transitions; the route runs through these gaps) ===== */
+    .belt-link { position: relative; height: 210px; }
     .belt-tag {
       position: absolute;
       left: calc(50% + 38px);
-      top: 50%;
+      top: 30%;
       transform: translateY(-50%);
       padding: 0.2rem 0.65rem;
       border-radius: 3px;
@@ -689,19 +707,6 @@
 
     /* ===== EXPERIENCE (production history, fed by a belt) ===== */
     .timeline { position: relative; padding-left: 3.4rem; }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 0.3rem; top: 0; bottom: 0;
-      width: 28px;
-      background-image:
-        linear-gradient(to right, var(--belt) 0 3px, #5a430c 3px 5px, transparent 5px calc(100% - 5px), #5a430c calc(100% - 5px) calc(100% - 3px), var(--belt) calc(100% - 3px)),
-        repeating-linear-gradient(to bottom, #2d2c2b 0 5px, #4d4c4a 5px 7px, #1c1b1a 7px 9px, #383734 9px 16px);
-      background-size: 100% 100%, 100% 16px;
-      animation: beltDown 0.2s linear infinite;
-      -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent);
-      mask-image: linear-gradient(to bottom, #000 80%, transparent);
-    }
     .tl-item {
       position: relative;
       margin-bottom: 2.2rem;
@@ -722,7 +727,7 @@
     }
     .tl-dot { /* a crate riding the belt */
       position: absolute;
-      left: -2.5rem; top: 1.45rem;
+      left: calc(16px - 3.4rem); top: 1.45rem;
       width: 20px; height: 20px;
       transform: translateX(-50%);
       border-radius: 2px;
@@ -776,7 +781,6 @@
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       column-gap: 0;   /* cell belts butt together into one continuous belt per row */
       row-gap: 2.6rem;
-      --cell-dur: 3.4s;
     }
     .proj-card { position: relative; --c1: #a8733a; --c2: #7b4f24; --cb: #3e2410; --band: transparent; --tex: none; }
     /* Fallback (no JS): plain panels */
@@ -847,6 +851,21 @@
       box-shadow: inset 0 0 0 1px #000, inset 0 3px 5px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     .proj-sub { display: block; margin-top: 0.15rem; font-size: 0.76rem; color: var(--text-muted); }
+    .oss-badge {
+      display: inline-block;
+      margin-top: 0.4rem;
+      padding: 0.08rem 0.55rem;
+      border-radius: 2px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #0f1a0b;
+      background: linear-gradient(#8ddc6c, #4f9a3b);
+      box-shadow: 0 0 0 1px #13260e, inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .oss-badge::before { content: '\2605  '; }
+    .pd-oss { margin-top: 0.3rem; }
+    .pd-oss[hidden] { display: none; }
     .plate-hint {
       display: block;
       margin-top: 0.35rem;
@@ -858,15 +877,7 @@
     }
     .proj-card:hover .plate-hint, .proj-card:focus-visible .plate-hint { opacity: 1; }
     @media (hover: none) { .plate-hint { opacity: 0.85; } }
-    .cell-belt { overflow: hidden; }
-    .cell-belt .bitem { animation: itemRight var(--cell-dur) linear infinite; }
-    .cell-belt .lane-a { top: 6px; }
-    .cell-belt .lane-b { top: 16px; animation-delay: calc(var(--cell-dur) * -0.5); }
-    @keyframes itemRight {
-      from { left: -7px; }
-      to   { left: calc(100% - 7px); }
-    }
-    .belt-box { position: absolute; left: 0; top: 0; z-index: 1; }
+    .belt-slot { height: 32px; }  /* the main belt route passes through here */
 
     /* Eight chest types; 8n+k so new projects keep cycling */
     .proj-card:nth-child(8n+1) { /* wooden */
@@ -1176,8 +1187,7 @@
       #skills-strip { padding: 2rem 1.5rem; }
       .skills-cloud { margin: 0 0.6rem; padding: 0.7rem; }
       .timeline { padding-left: 2.6rem; }
-      .timeline::before { left: 0; width: 24px; }
-      .tl-dot { left: -2rem; width: 16px; height: 16px; }
+      .tl-dot { left: calc(16px - 2.6rem); width: 16px; height: 16px; }
       .tl-item::before { left: -1rem; }
       .tl-item { padding: 1.1rem 1.1rem 1.2rem; }
       .silo-wrap { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -1230,6 +1240,7 @@
 </div>
 
 <main>
+<div class="belt-layer" id="belt-layer" aria-hidden="true"></div>
 
 <!-- ===== HERO ===== -->
 <section id="hero" aria-label="Introduction">
@@ -1281,16 +1292,11 @@
         <span class="asm-bar"><span class="asm-bar-fill"></span></span>
       </div>
     </div>
-    <div class="belt-h belt-left hl-belt"></div>
-    <div class="ug ug-side"></div>
   </div>
   <p class="follow-hint" aria-hidden="true">follow the belt &#9660;</p>
 </section>
 
 <div class="belt-link" aria-hidden="true">
-  <div class="ug ug-out"></div>
-  <div class="belt-v"><span class="bitem gear lane-a"></span><span class="bitem plate lane-b"></span><span class="bitem circuit lane-a"></span><span class="bitem copper lane-b"></span></div>
-  <div class="ug ug-in"></div>
   <span class="belt-tag">Technologies</span>
 </div>
 
@@ -1345,9 +1351,6 @@
 </div>
 
 <div class="belt-link" aria-hidden="true">
-  <div class="ug ug-out"></div>
-  <div class="belt-v"><span class="bitem gear lane-a"></span><span class="bitem plate lane-b"></span><span class="bitem circuit lane-a"></span><span class="bitem copper lane-b"></span></div>
-  <div class="ug ug-in"></div>
   <span class="belt-tag">Experience</span>
 </div>
 
@@ -1421,9 +1424,6 @@
 </section>
 
 <div class="belt-link" aria-hidden="true">
-  <div class="ug ug-out"></div>
-  <div class="belt-v"><span class="bitem gear lane-a"></span><span class="bitem plate lane-b"></span><span class="bitem circuit lane-a"></span><span class="bitem copper lane-b"></span></div>
-  <div class="ug ug-in"></div>
   <span class="belt-tag">Projects</span>
 </div>
 
@@ -1441,15 +1441,6 @@
       <!-- BEGIN ATS SYNC: projects (generated from docs/masters/ats.md by scripts/sync_index_from_ats.py; do not edit by hand) -->
       <article class="proj-card">
         <p class="proj-num">01</p>
-        <h3 class="proj-name">HostPort Allocator (open source contribution)</h3>
-        <p class="proj-desc">Contributed to HostPort Allocator, an open source Kubernetes host port allocator.</p>
-        <div class="proj-tags">
-          <span class="ptag">Kubernetes</span>
-        </div>
-      </article>
-
-      <article class="proj-card">
-        <p class="proj-num">02</p>
         <h3 class="proj-name">Yo-Yo Mount Visualizer (active development)</h3>
         <p class="proj-desc">3D trick engine that models yo-yo string mounts as graph topologies and aims to discover new tricks through pathfinding. Encodes mounts as schema-validated string traversals with canonical hashing, rendered in an interactive 3D visualizer with a Verlet rope physics simulation.</p>
         <div class="proj-tags">
@@ -1464,7 +1455,7 @@
       </article>
 
       <article class="proj-card">
-        <p class="proj-num">03</p>
+        <p class="proj-num">02</p>
         <h3 class="proj-name">Spin Ledger (closed source)</h3>
         <p class="proj-desc">Single pane of glass for buy/sell/trade activity across skill toy community forums. Ingests unstructured, schemaless forum listings, normalizes them into a taxonomy-aware data model via deterministic rule-based entity extraction, and serves them through an indexed, searchable marketplace dashboard.</p>
         <div class="proj-tags">
@@ -1478,7 +1469,7 @@
       </article>
 
       <article class="proj-card">
-        <p class="proj-num">04</p>
+        <p class="proj-num">03</p>
         <h3 class="proj-name">Self-Hosted Home Lab</h3>
         <p class="proj-desc">Multi-machine home lab orchestrating containerized services with Docker, fronted by Caddy as a reverse proxy with automatic HTTPS; every service is served exclusively over TLS. Hosts a media server, network-attached storage, network-wide DNS-sinkhole ad blocking, secrets vaults, and closed-source project deployments, with private encrypted tunnels for secure remote access.</p>
         <div class="proj-tags">
@@ -1494,7 +1485,7 @@
       </article>
 
       <article class="proj-card">
-        <p class="proj-num">05</p>
+        <p class="proj-num">04</p>
         <h3 class="proj-name">OSS Feed</h3>
         <p class="proj-desc">Self-hosted weekly RSS digest that tracks releases from curated open source projects. A watchlist YAML feeds GitHub Actions to fetch releases, generate an XML feed, and publish via GitHub Pages, with Slack/Discord webhook notifications.</p>
         <div class="proj-tags">
@@ -1507,7 +1498,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">06</p>
+        <p class="proj-num">05</p>
         <h3 class="proj-name">Rubik's Cube Genetic Algorithm Solver</h3>
         <p class="proj-desc">Evolutionary algorithm that solves a fully simulated Rubik's Cube model, exploring genetic computation applied to combinatorial optimization.</p>
         <div class="proj-tags">
@@ -1519,7 +1510,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">07</p>
+        <p class="proj-num">06</p>
         <h3 class="proj-name">SafetyNet</h3>
         <p class="proj-desc">iOS peer-to-peer messaging app requiring no Wi-Fi or cellular data. Uses device-to-device networking with end-to-end encryption for resilient off-grid communication.</p>
         <div class="proj-tags">
@@ -1532,7 +1523,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">08</p>
+        <p class="proj-num">07</p>
         <h3 class="proj-name">Ray Tracing Engine</h3>
         <p class="proj-desc">Browser-based ray tracer in vanilla JavaScript. Renders spheres and triangles with Blinn-Phong lighting, reflections, and a free-moving camera, no GPU required.</p>
         <div class="proj-tags">
@@ -1545,7 +1536,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">09</p>
+        <p class="proj-num">08</p>
         <h3 class="proj-name">Sheet Vision (Senior Design)</h3>
         <p class="proj-desc">Application that reads sheet music, plays it back, and listens to the user in real time, providing feedback to help learners draw parallels between notation and sound.</p>
         <div class="proj-tags">
@@ -1561,7 +1552,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">10</p>
+        <p class="proj-num">09</p>
         <h3 class="proj-name">Run Samurai, Run!</h3>
         <p class="proj-desc">Top-down 2D infinite side-scrolling runner for mobile. Players fight through enemy mobs for upgrades and high scores, with single-player and head-to-head multiplayer modes.</p>
         <div class="proj-tags">
@@ -1572,6 +1563,15 @@
           <span class="ptag">game loop development</span>
         </div>
       </article>
+
+      <article class="proj-card">
+        <p class="proj-num">10</p>
+        <h3 class="proj-name">HostPort Allocator (open source contribution)</h3>
+        <p class="proj-desc">Contributed to HostPort Allocator, an open source Kubernetes host port allocator.</p>
+        <div class="proj-tags">
+          <span class="ptag">Kubernetes</span>
+        </div>
+      </article>
       <!-- END ATS SYNC: projects -->
 
     </div>
@@ -1579,9 +1579,6 @@
 </section>
 
 <div class="belt-link" aria-hidden="true">
-  <div class="ug ug-out"></div>
-  <div class="belt-v"><span class="bitem gear lane-a"></span><span class="bitem plate lane-b"></span><span class="bitem circuit lane-a"></span><span class="bitem copper lane-b"></span></div>
-  <div class="ug ug-in"></div>
   <span class="belt-tag">Rocket silo</span>
 </div>
 
@@ -1657,6 +1654,7 @@
       <div>
         <p class="pd-num"></p>
         <p class="pd-kind"></p>
+        <span class="oss-badge pd-oss" hidden>Open source contribution</span>
       </div>
     </div>
     <p class="deep pd-desc"></p>
@@ -1781,23 +1779,315 @@
       })
       .then(function () { arm.getAnimations().forEach(function (a) { a.cancel(); }); });
   }
-  // Put a copy of the held item on the belt inside `container` and ride it to endX.
-  function rideBelt(container, held, cls, endX, vars) {
-    var c = container.getBoundingClientRect();
-    var r = held.getBoundingClientRect();
-    var item = el('span', 'bitem belt-box ' + cls);
-    if (vars) Object.keys(vars).forEach(function (k) { item.style.setProperty(k, vars[k]); });
-    var x = r.left - c.left, y = r.top - c.top;
-    item.style.left = x + 'px';
-    item.style.top = y + 'px';
-    container.appendChild(item);
-    var dist = endX - x - (endX > x ? r.width : 0);
-    var dur = Math.max(300, Math.abs(dist) / BELT_SPEED * 1000);
-    item.animate([
-      { transform: 'translateX(0)', opacity: 1 },
-      { transform: 'translateX(' + dist * 0.97 + 'px)', opacity: 1, offset: 0.97 },
-      { transform: 'translateX(' + dist + 'px)', opacity: 0 },
-    ], { duration: dur, easing: 'linear' }).finished.then(function () { item.remove(); });
+  /* ===== Belt network =====
+     The main belt is one route of orthogonal segments through the page. Pieces are
+     rebuilt from the layout; items ride it at belt speed and disappear into
+     underground belts where the route passes under content. */
+  var mainEl = document.querySelector('main');
+  var layer = document.getElementById('belt-layer');
+  var route = { segs: [], parts: [], total: 0, hidden: [] };
+  var items = [];
+  var ITEM_KINDS = ['gear', 'plate', 'circuit', 'copper'];
+
+  function box(e) { // layout box relative to <main>, unaffected by transforms
+    var x = 0, y = 0, n = e;
+    while (n && n !== mainEl) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; }
+    return { x: x, y: y, w: e.offsetWidth, h: e.offsetHeight };
+  }
+  function visible(e) { return e && e.offsetParent !== null && getComputedStyle(e).display !== 'none'; }
+
+  function waypoints() {
+    var W = layer.clientWidth, cx = Math.round(W / 2);
+    var inner = box(document.querySelector('#experience .section-inner'));
+    var xL = inner.x + 16;
+    var hero = box(document.getElementById('hero'));
+    var links = document.querySelectorAll('.belt-link');
+    var pts = [], startUg = false;
+    var hl = document.querySelector('.hero-line');
+    if (visible(hl)) {
+      var yH = hero.y + hero.h - 34 - 16;          // hero belt, under the assembler's inserter
+      pts.push([W + 60, yH], [cx, yH]);
+    } else {
+      pts.push([cx, hero.y + hero.h - 40]);        // surfaces from an underground belt
+      startUg = true;
+    }
+    var l2 = box(links[1]);
+    var yJ = Math.round(l2.y + l2.h * 0.55);
+    pts.push([cx, yJ], [xL, yJ]);                  // over to the experience belt
+
+    // Snake through the project rows: right, left, right...
+    var rows = [];
+    cards.forEach(function (c) {
+      var b = box(c), y = b.y + b.h - 16, r = rows[rows.length - 1];
+      if (r && Math.abs(r.y - y) < 4) r.right = Math.max(r.right, b.x + b.w);
+      else rows.push({ y: y, right: b.x + b.w });
+    });
+    // With enough page margin, U-turn just outside the grid so the curves can sweep
+    // wide without passing under the chests; otherwise turn at the grid edge.
+    var roomy = inner.x >= 40;
+    var rightX = inner.x + inner.w + 24, leftX = inner.x - 24;
+    var x = xL;
+    rows.forEach(function (r, i) {
+      pts.push([x, r.y]);
+      var full = r.right >= inner.x + inner.w - 2;
+      x = i % 2 === 0 ? (roomy && full && i < rows.length - 1 ? rightX : r.right - 16)
+                      : (roomy && i < rows.length - 1 ? leftX : xL);
+      pts.push([x, r.y]);
+    });
+
+    // Down to the rocket silo and into its side
+    var l4 = box(links[3]);
+    var yM = Math.round(l4.y + l4.h * 0.55);
+    var front = box(document.querySelector('.silo-front'));
+    var scene = box(document.getElementById('silo-scene'));
+    var yS = scene.y + scene.h - 26 - 36;
+    var xS = Math.max(xL, front.x - 40);
+    if (x < front.x - 16 && Math.abs(x - xS) < 160) xS = x;   // skip a tiny jog
+    pts.push([x, yM], [xS, yM], [xS, yS], [front.x + 70, yS]);
+
+    // Drop duplicate and collinear points
+    var out = [];
+    pts.forEach(function (p) {
+      var a = out[out.length - 1], b = out[out.length - 2];
+      if (a && a[0] === p[0] && a[1] === p[1]) return;
+      if (a && b && ((b[0] === a[0] && a[0] === p[0]) || (b[1] === a[1] && a[1] === p[1]))) out.pop();
+      out.push(p);
+    });
+    return { pts: out, startUg: startUg };
+  }
+
+  function obstacles() {
+    var list = [];
+    document.querySelectorAll('.skills-inner, .section-head, .chest, .silo-gui').forEach(function (e) {
+      if (!visible(e)) return;
+      var b = box(e);
+      list.push({ x: b.x - 4, y: b.y - 4, w: b.w + 8, h: b.h + 8 });
+    });
+    return list;
+  }
+
+  function piece(cls, x, y, w, h, extra) {
+    var e = el('div', cls);
+    e.style.left = x + 'px'; e.style.top = y + 'px';
+    if (w) { e.style.width = w + 'px'; e.style.height = h + 'px'; }
+    if (extra) extra(e);
+    layer.appendChild(e);
+    return e;
+  }
+  function ugHousing(kind, x, y, dir) {
+    var rot = dir[1] > 0 ? 0 : dir[1] < 0 ? 180 : dir[0] > 0 ? -90 : 90;
+    piece('ug ' + kind, x - 23, y - 13, 0, 0, function (e) { e.style.transform = 'rotate(' + rot + 'deg)'; });
+  }
+
+  var R_MAX = 96;   // widest belt curve (centreline radius, px)
+  function hits(obs, x0, y0, x1, y1) {
+    var l = Math.min(x0, x1), r = Math.max(x0, x1), t = Math.min(y0, y1), b = Math.max(y0, y1);
+    return obs.some(function (o) { return o.x < r && o.x + o.w > l && o.y < b && o.y + o.h > t; });
+  }
+  function bandHits(obs, p, dir, len) { // a 32px-wide stretch of belt from p along dir
+    var q = [p[0] + dir[0] * len, p[1] + dir[1] * len];
+    return dir[1] === 0 ? hits(obs, p[0], p[1] - 16, q[0], q[1] + 16) : hits(obs, p[0] - 16, p[1], q[0] + 16, q[1]);
+  }
+  // Largest sweep that fits: the curve and a short straight on either side (room
+  // for an underground entrance/exit) must stay clear of content.
+  function cornerRadius(P, A, B, lenIn, lenOut, obs) {
+    for (var r = R_MAX; r > 16; r -= 8) {
+      if (r > lenIn / 2 - 4 || r > lenOut / 2 - 4) continue;
+      var C = [P[0] - r * A[0] + r * B[0], P[1] - r * A[1] + r * B[1]];
+      var Q = [C[0] + (r + 16) * (A[0] - B[0]), C[1] + (r + 16) * (A[1] - B[1])];
+      if (hits(obs, C[0], C[1], Q[0], Q[1])) continue;
+      if (bandHits(obs, [P[0] - r * A[0], P[1] - r * A[1]], [-A[0], -A[1]], 28)) continue;
+      if (bandHits(obs, [P[0] + r * B[0], P[1] + r * B[1]], B, 28)) continue;
+      return r;
+    }
+    return 16;
+  }
+
+  function layoutBelts() {
+    var wp = waypoints(), pts = wp.pts, obs = obstacles();
+    layer.querySelectorAll('.belt-h, .belt-v, .belt-corner, .ug').forEach(function (e) { e.remove(); });
+    var segs = [];
+    for (var i = 0; i < pts.length - 1; i++) {
+      var a = pts[i], b = pts[i + 1];
+      segs.push({ a: a, dir: [Math.sign(b[0] - a[0]), Math.sign(b[1] - a[1])],
+                  len: Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]) });
+    }
+    var radii = [0];
+    for (i = 1; i < pts.length - 1; i++) {
+      radii.push(cornerRadius(pts[i], segs[i - 1].dir, segs[i].dir, segs[i - 1].len, segs[i].len, obs));
+    }
+    radii.push(0);
+
+    var parts = [], hidden = [], D = 0;
+    segs.forEach(function (sg, i) {
+      var horiz = sg.dir[1] === 0;
+      var startRes = radii[i], endRes = radii[i + 1];
+      var base = D - startRes;   // route distance = base + t for t along this segment
+      // Where the 32px belt band crosses an obstacle, in distance along this segment
+      var spans = [];
+      obs.forEach(function (o) {
+        var crosses, s0, s1;
+        if (horiz) {
+          crosses = o.y < sg.a[1] + 16 && o.y + o.h > sg.a[1] - 16;
+          s0 = sg.dir[0] > 0 ? o.x - sg.a[0] : sg.a[0] - o.x - o.w;
+          s1 = sg.dir[0] > 0 ? o.x + o.w - sg.a[0] : sg.a[0] - o.x;
+        } else {
+          crosses = o.x < sg.a[0] + 16 && o.x + o.w > sg.a[0] - 16;
+          s0 = sg.dir[1] > 0 ? o.y - sg.a[1] : sg.a[1] - o.y - o.h;
+          s1 = sg.dir[1] > 0 ? o.y + o.h - sg.a[1] : sg.a[1] - o.y;
+        }
+        if (!crosses || s1 <= 0 || s0 >= sg.len) return;
+        spans.push([Math.max(s0, startRes + 26), Math.min(s1, sg.len - endRes - 26)]);
+      });
+      spans.sort(function (p, q) { return p[0] - q[0]; });
+      var merged = [];
+      spans.forEach(function (sp) {
+        var m = merged[merged.length - 1];
+        if (m && sp[0] - m[1] < 60) m[1] = Math.max(m[1], sp[1]);
+        else merged.push(sp.slice());
+      });
+      merged = merged.filter(function (m) { return m[1] > m[0]; });
+
+      // Straight belt around the underground pairs
+      var at = function (t) { return [sg.a[0] + sg.dir[0] * t, sg.a[1] + sg.dir[1] * t]; };
+      var runs = [], from = startRes;
+      merged.forEach(function (m) {
+        runs.push([from, m[0] - 13]);
+        from = m[1] + 13;
+        var pin = at(m[0] - 13), pout = at(m[1] + 13);
+        ugHousing('ug-in', pin[0], pin[1], sg.dir);
+        ugHousing('ug-out', pout[0], pout[1], sg.dir);
+        hidden.push([base + m[0] - 13, base + m[1] + 13]);
+      });
+      runs.push([from, sg.len - endRes]);
+      runs.forEach(function (r) {
+        if (r[1] - r[0] < 1) return;
+        var p0 = at(r[0]), p1 = at(r[1]);
+        if (horiz) {
+          piece('belt-h' + (sg.dir[0] < 0 ? ' belt-left' : ''), Math.min(p0[0], p1[0]), sg.a[1] - 16, Math.abs(p1[0] - p0[0]), 32);
+        } else {
+          piece('belt-v' + (sg.dir[1] < 0 ? ' belt-up' : ''), sg.a[0] - 16, Math.min(p0[1], p1[1]), 32, Math.abs(p1[1] - p0[1]));
+        }
+      });
+      var lineLen = sg.len - startRes - endRes;
+      parts.push({ line: true, a: sg.a, dir: sg.dir, t0: startRes, base: base, d0: D, len: lineLen });
+      D += lineLen;
+
+      // Sweeping curve into the next segment
+      var nx = segs[i + 1];
+      if (nx) {
+        var r = radii[i + 1], P = pts[i + 1], A = sg.dir, B = nx.dir;
+        var cross = A[0] * B[1] - A[1] * B[0];
+        var C = [P[0] - r * A[0] + r * B[0], P[1] - r * A[1] + r * B[1]];
+        var Q = [C[0] + (r + 16) * (A[0] - B[0]), C[1] + (r + 16) * (A[1] - B[1])];
+        var left = Math.min(C[0], Q[0]), top = Math.min(C[1], Q[1]);
+        var c = piece('belt-corner' + (cross < 0 ? ' ccw' : ''), left, top, r + 16, r + 16);
+        c.style.setProperty('--cx', (C[0] - left) + 'px');
+        c.style.setProperty('--cy', (C[1] - top) + 'px');
+        c.style.setProperty('--r', r + 'px');
+        c.style.setProperty('--per', (916.7 / r).toFixed(2) + 'deg');
+        var arcLen = Math.PI / 2 * r;
+        parts.push({ line: false, C: C, r: r, th0: Math.atan2(-B[1], -B[0]),
+                     sweep: cross > 0 ? Math.PI / 2 : -Math.PI / 2, d0: D, len: arcLen });
+        D += arcLen;
+      }
+    });
+    if (wp.startUg) {
+      ugHousing('ug-out', pts[0][0], pts[0][1], segs[0].dir);
+      hidden.push([-1, 0]);
+    }
+    route = { segs: segs, parts: parts, total: D, hidden: hidden };
+
+    // Ambient items fill the belt on two lanes; crafted gears and inserted crates join them
+    items = items.filter(function (it) {
+      if (it.loop) { it.el.remove(); return false; }
+      it.d = Math.min(it.d, D);
+      return true;
+    });
+    for (var t = 20, k = 0; t < D; t += 58, k++) {
+      addItem(ITEM_KINDS[k % ITEM_KINDS.length], t, k % 2 ? 6 : -6, true);
+    }
+    placeLabels();
+    renderItems();
+  }
+
+  function addItem(cls, d, lane, loop, vars) {
+    var e = el('span', 'bitem ' + cls);
+    if (vars) Object.keys(vars).forEach(function (k) { e.style.setProperty(k, vars[k]); });
+    layer.appendChild(e);
+    var it = { el: e, d: d, lane: lane, loop: loop };
+    items.push(it);
+    return it;
+  }
+  function pointAt(d, lane) {
+    var parts = route.parts;
+    for (var i = 0; i < parts.length; i++) {
+      var pt = parts[i];
+      if (d > pt.d0 + pt.len && i < parts.length - 1) continue;
+      var x, y, tx, ty;
+      if (pt.line) {
+        var t = d - pt.base;
+        tx = pt.dir[0]; ty = pt.dir[1];
+        x = pt.a[0] + tx * t; y = pt.a[1] + ty * t;
+      } else {
+        var th = pt.th0 + pt.sweep * Math.max(0, Math.min(1, (d - pt.d0) / pt.len));
+        var sg = pt.sweep > 0 ? 1 : -1;
+        x = pt.C[0] + pt.r * Math.cos(th); y = pt.C[1] + pt.r * Math.sin(th);
+        tx = -Math.sin(th) * sg; ty = Math.cos(th) * sg;
+      }
+      // lanes sit left/right of the direction of travel, like the game
+      return [x - ty * lane, y + tx * lane];
+    }
+    return [0, 0];
+  }
+  function isHidden(d) {
+    for (var i = 0; i < route.hidden.length; i++) {
+      if (d > route.hidden[i][0] && d < route.hidden[i][1]) return true;
+    }
+    return false;
+  }
+  function renderItems() {
+    var top = -layer.getBoundingClientRect().top - 80, bottom = top + window.innerHeight + 160;
+    items.forEach(function (it) {
+      var p = pointAt(it.d, it.lane);
+      var show = p[1] > top && p[1] < bottom && !isHidden(it.d);
+      it.el.style.display = show ? '' : 'none';
+      if (show) it.el.style.transform = 'translate(' + (p[0] - 7) + 'px,' + (p[1] - 7) + 'px)';
+    });
+  }
+  // Drop an item from an inserter's hand onto the nearest point of the route
+  function spawnOnBelt(held, cls, vars) {
+    if (!route.total) return;
+    var lr = layer.getBoundingClientRect(), hr = held.getBoundingClientRect();
+    var hx = hr.left + hr.width / 2 - lr.left, hy = hr.top + hr.height / 2 - lr.top;
+    var best = 0, bestDist = Infinity;
+    route.parts.forEach(function (pt) {
+      if (!pt.line) return;
+      var t = pt.dir[0] ? (hx - pt.a[0]) * pt.dir[0] : (hy - pt.a[1]) * pt.dir[1];
+      t = Math.max(pt.t0, Math.min(pt.t0 + pt.len, t));
+      var px = pt.a[0] + pt.dir[0] * t, py = pt.a[1] + pt.dir[1] * t;
+      var dist = Math.abs(px - hx) + Math.abs(py - hy);
+      if (dist < bestDist) { bestDist = dist; best = pt.base + t; }
+    });
+    addItem(cls, best, 0, false, vars);
+    renderItems();
+  }
+  // Put each section's belt label beside the belt where it passes through the gap
+  function placeLabels() {
+    var W = layer.clientWidth;
+    document.querySelectorAll('.belt-link').forEach(function (link) {
+      var tag = link.querySelector('.belt-tag');
+      if (!tag) return;
+      var lb = box(link), y = lb.y + lb.h * 0.3, x = null;
+      route.segs.forEach(function (sg) {
+        if (sg.dir[0] !== 0) return;
+        var y0 = Math.min(sg.a[1], sg.a[1] + sg.dir[1] * sg.len), y1 = Math.max(sg.a[1], sg.a[1] + sg.dir[1] * sg.len);
+        if (y >= y0 && y <= y1) x = sg.a[0];
+      });
+      tag.style.display = x === null ? 'none' : '';
+      if (x === null) return;
+      tag.style.left = (x > W * 0.6 ? x - 30 - tag.offsetWidth : x + 30) + 'px';
+    });
   }
 
   /* ===== Hero production loop ===== */
@@ -1812,7 +2102,7 @@
         return;
       }
       barFill.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 2000 }).finished
-        .then(function () { return swing(heroIns, function (held) { rideBelt(heroLine, held, 'gear', 0); }); })
+        .then(function () { return swing(heroIns, function (held) { spawnOnBelt(held, 'gear'); }); })
         .then(cycle);
     })();
   }
@@ -1845,18 +2135,17 @@
     var m = full.match(/^(.*?)\s*\((.+)\)$/);
     if (m) {
       name.textContent = m[1];
-      plate.appendChild(el('span', 'proj-sub', m[2]));
+      // Open source work gets a badge rather than the quiet grey subtitle
+      var oss = /open.source/i.test(m[2]);
+      if (oss) card.dataset.oss = '1';
+      plate.appendChild(el('span', oss ? 'oss-badge' : 'proj-sub', oss ? 'Open source contribution' : m[2]));
     }
     plate.appendChild(el('span', 'plate-hint', 'Click to insert ▸'));
     chest.appendChild(plate);
     card.insertBefore(chest, card.firstChild);
     card.appendChild(makeInserter('crate-mini'));
 
-    var belt = el('div', 'belt-h cell-belt');
-    belt.setAttribute('aria-hidden', 'true');
-    belt.appendChild(el('span', 'bitem lane-a ' + (i % 2 ? 'plate' : 'gear')));
-    belt.appendChild(el('span', 'bitem lane-b ' + (i % 3 ? 'circuit' : 'copper')));
-    card.appendChild(belt);
+    card.appendChild(el('div', 'belt-slot'));
 
     card.tabIndex = 0;
     card.setAttribute('role', 'button');
@@ -1868,22 +2157,6 @@
     });
   });
 
-  // Keep idle belt items moving at belt speed whatever the cell width
-  function syncBeltSpeed() {
-    if (!cards.length) return;
-    grid.style.setProperty('--cell-dur', (cards[0].offsetWidth / BELT_SPEED).toFixed(2) + 's');
-  }
-  syncBeltSpeed();
-  window.addEventListener('resize', syncBeltSpeed, { passive: true });
-
-  function rowRightEdge(card) {
-    var right = 0;
-    cards.forEach(function (c) {
-      if (Math.abs(c.offsetTop - card.offsetTop) < 4) right = Math.max(right, c.offsetLeft + c.offsetWidth);
-    });
-    return right - 6;
-  }
-
   function insertCard(card) {
     if (card.dataset.busy) return;
     if (reduceMotion) { openDetails(card); return; }
@@ -1891,7 +2164,7 @@
     card.classList.add('working');
     var vars = cardVars(card);
     swing(card.querySelector('.inserter'), function (held) {
-      rideBelt(grid, held, 'crate-mini', rowRightEdge(card), vars);
+      spawnOnBelt(held, 'crate-mini', vars);
       setTimeout(function () { openDetails(card); }, 420);
     }).then(function () {
       delete card.dataset.busy;
@@ -1906,6 +2179,7 @@
     dlg.querySelector('.pd-name').textContent = card.dataset.fullName;
     dlg.querySelector('.pd-num').textContent = 'Project #' + card.querySelector('.proj-num').textContent;
     dlg.querySelector('.pd-kind').textContent = card.dataset.kind;
+    dlg.querySelector('.pd-oss').hidden = !card.dataset.oss;
     dlg.querySelector('.pd-desc').textContent = card.querySelector('.proj-desc').textContent;
     var tags = dlg.querySelector('.pd-tags');
     tags.innerHTML = '';
@@ -1928,6 +2202,36 @@
   }
   dlg.querySelector('.fwin-close').addEventListener('click', closeDetails);
   dlg.addEventListener('click', function (e) { if (e.target === dlg) closeDetails(); });
+
+  /* Build the belt route now that the chests exist; rebuild on layout changes */
+  var relayoutTimer = null;
+  function relayout() {
+    clearTimeout(relayoutTimer);
+    relayoutTimer = setTimeout(layoutBelts, 120);
+  }
+  layoutBelts();
+  window.addEventListener('resize', relayout, { passive: true });
+  if (window.ResizeObserver) new ResizeObserver(relayout).observe(mainEl);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+
+  var lastT = null;
+  function beltFrame(t) {
+    var dt = lastT === null ? 0 : Math.min(0.1, (t - lastT) / 1000);
+    lastT = t;
+    var step = BELT_SPEED * dt;
+    items = items.filter(function (it) {
+      it.d += step;
+      if (it.d >= route.total) {
+        if (it.loop) it.d -= route.total;
+        else { it.el.remove(); return false; }   // delivered into the silo
+      }
+      return true;
+    });
+    renderItems();
+    requestAnimationFrame(beltFrame);
+  }
+  if (reduceMotion) window.addEventListener('scroll', renderItems, { passive: true });
+  else requestAnimationFrame(beltFrame);
 
   /* ===== Rocket silo ===== */
   var scene = document.getElementById('silo-scene');
