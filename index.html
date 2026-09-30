@@ -576,19 +576,32 @@
     .belt-layer .bitem { left: 0; top: 0; z-index: 1; will-change: transform; }
     @property --rot { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
     .belt-corner {
+      --r: 16px;      /* centreline radius, set per corner */
+      --per: 57deg;   /* one 16px rib period at that radius */
       position: absolute;
-      width: 32px; height: 32px;
       background:
-        radial-gradient(circle at var(--cx) var(--cy), var(--belt) 0 3px, #5a430c 3px 5px, transparent 5px 27px, #5a430c 27px 29px, var(--belt) 29px 32px, transparent 32px),
-        repeating-conic-gradient(from var(--rot) at var(--cx) var(--cy), #2d2c2b 0deg 19deg, #4d4c4a 19deg 26deg, #1c1b1a 26deg 34deg, #383734 34deg 60deg);
-      -webkit-mask-image: radial-gradient(circle at var(--cx) var(--cy), #000 32px, transparent 32.5px);
-      mask-image: radial-gradient(circle at var(--cx) var(--cy), #000 32px, transparent 32.5px);
-      animation: cornerSpin 0.21s linear infinite;
+        radial-gradient(circle at var(--cx) var(--cy),
+          transparent calc(var(--r) - 16px),
+          var(--belt) calc(var(--r) - 16px) calc(var(--r) - 13px),
+          #5a430c calc(var(--r) - 13px) calc(var(--r) - 11px),
+          transparent calc(var(--r) - 11px) calc(var(--r) + 11px),
+          #5a430c calc(var(--r) + 11px) calc(var(--r) + 13px),
+          var(--belt) calc(var(--r) + 13px) calc(var(--r) + 16px),
+          transparent calc(var(--r) + 16px)),
+        repeating-conic-gradient(from var(--rot) at var(--cx) var(--cy),
+          #2d2c2b 0deg calc(var(--per) * 0.31),
+          #4d4c4a calc(var(--per) * 0.31) calc(var(--per) * 0.44),
+          #1c1b1a calc(var(--per) * 0.44) calc(var(--per) * 0.56),
+          #383734 calc(var(--per) * 0.56) var(--per));
+      -webkit-mask-image: radial-gradient(circle at var(--cx) var(--cy), transparent calc(var(--r) - 16.5px), #000 calc(var(--r) - 16px) calc(var(--r) + 16px), transparent calc(var(--r) + 16.5px));
+      mask-image: radial-gradient(circle at var(--cx) var(--cy), transparent calc(var(--r) - 16.5px), #000 calc(var(--r) - 16px) calc(var(--r) + 16px), transparent calc(var(--r) + 16.5px));
+      filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.4));
+      animation: cornerSpin 0.2s linear infinite;
     }
     .belt-corner.ccw { animation-direction: reverse; }
     @keyframes cornerSpin {
       from { --rot: 0deg; }
-      to   { --rot: 60deg; }
+      to   { --rot: var(--per); }
     }
 
     /* ===== BELT LINK (section transitions; the route runs through these gaps) ===== */
@@ -1772,7 +1785,7 @@
      underground belts where the route passes under content. */
   var mainEl = document.querySelector('main');
   var layer = document.getElementById('belt-layer');
-  var route = { segs: [], total: 0, hidden: [] };
+  var route = { segs: [], parts: [], total: 0, hidden: [] };
   var items = [];
   var ITEM_KINDS = ['gear', 'plate', 'circuit', 'copper'];
 
@@ -1809,10 +1822,16 @@
       if (r && Math.abs(r.y - y) < 4) r.right = Math.max(r.right, b.x + b.w);
       else rows.push({ y: y, right: b.x + b.w });
     });
+    // With enough page margin, U-turn just outside the grid so the curves can sweep
+    // wide without passing under the chests; otherwise turn at the grid edge.
+    var roomy = inner.x >= 40;
+    var rightX = inner.x + inner.w + 24, leftX = inner.x - 24;
     var x = xL;
     rows.forEach(function (r, i) {
       pts.push([x, r.y]);
-      x = i % 2 === 0 ? r.right - 16 : xL;
+      var full = r.right >= inner.x + inner.w - 2;
+      x = i % 2 === 0 ? (roomy && full && i < rows.length - 1 ? rightX : r.right - 16)
+                      : (roomy && i < rows.length - 1 ? leftX : xL);
       pts.push([x, r.y]);
     });
 
@@ -1823,7 +1842,8 @@
     var scene = box(document.getElementById('silo-scene'));
     var yS = scene.y + scene.h - 26 - 36;
     var xS = Math.max(xL, front.x - 40);
-    pts.push([x, yM], [xS, yM], [xS, yS], [front.x + 22, yS]);
+    if (x < front.x - 16 && Math.abs(x - xS) < 160) xS = x;   // skip a tiny jog
+    pts.push([x, yM], [xS, yM], [xS, yS], [front.x + 70, yS]);
 
     // Drop duplicate and collinear points
     var out = [];
@@ -1859,32 +1879,62 @@
     piece('ug ' + kind, x - 23, y - 13, 0, 0, function (e) { e.style.transform = 'rotate(' + rot + 'deg)'; });
   }
 
+  var R_MAX = 96;   // widest belt curve (centreline radius, px)
+  function hits(obs, x0, y0, x1, y1) {
+    var l = Math.min(x0, x1), r = Math.max(x0, x1), t = Math.min(y0, y1), b = Math.max(y0, y1);
+    return obs.some(function (o) { return o.x < r && o.x + o.w > l && o.y < b && o.y + o.h > t; });
+  }
+  function bandHits(obs, p, dir, len) { // a 32px-wide stretch of belt from p along dir
+    var q = [p[0] + dir[0] * len, p[1] + dir[1] * len];
+    return dir[1] === 0 ? hits(obs, p[0], p[1] - 16, q[0], q[1] + 16) : hits(obs, p[0] - 16, p[1], q[0] + 16, q[1]);
+  }
+  // Largest sweep that fits: the curve and a short straight on either side (room
+  // for an underground entrance/exit) must stay clear of content.
+  function cornerRadius(P, A, B, lenIn, lenOut, obs) {
+    for (var r = R_MAX; r > 16; r -= 8) {
+      if (r > lenIn / 2 - 4 || r > lenOut / 2 - 4) continue;
+      var C = [P[0] - r * A[0] + r * B[0], P[1] - r * A[1] + r * B[1]];
+      var Q = [C[0] + (r + 16) * (A[0] - B[0]), C[1] + (r + 16) * (A[1] - B[1])];
+      if (hits(obs, C[0], C[1], Q[0], Q[1])) continue;
+      if (bandHits(obs, [P[0] - r * A[0], P[1] - r * A[1]], [-A[0], -A[1]], 28)) continue;
+      if (bandHits(obs, [P[0] + r * B[0], P[1] + r * B[1]], B, 28)) continue;
+      return r;
+    }
+    return 16;
+  }
+
   function layoutBelts() {
     var wp = waypoints(), pts = wp.pts, obs = obstacles();
     layer.querySelectorAll('.belt-h, .belt-v, .belt-corner, .ug').forEach(function (e) { e.remove(); });
-    var segs = [], hidden = [], d = 0;
+    var segs = [];
     for (var i = 0; i < pts.length - 1; i++) {
       var a = pts[i], b = pts[i + 1];
-      var len = Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]);
-      var dir = [Math.sign(b[0] - a[0]), Math.sign(b[1] - a[1])];
-      segs.push({ a: a, dir: dir, len: len, d0: d });
-      d += len;
+      segs.push({ a: a, dir: [Math.sign(b[0] - a[0]), Math.sign(b[1] - a[1])],
+                  len: Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]) });
     }
+    var radii = [0];
+    for (i = 1; i < pts.length - 1; i++) {
+      radii.push(cornerRadius(pts[i], segs[i - 1].dir, segs[i].dir, segs[i - 1].len, segs[i].len, obs));
+    }
+    radii.push(0);
+
+    var parts = [], hidden = [], D = 0;
     segs.forEach(function (sg, i) {
       var horiz = sg.dir[1] === 0;
-      var startRes = i > 0 ? 16 : 0, endRes = i < segs.length - 1 ? 16 : 0;
+      var startRes = radii[i], endRes = radii[i + 1];
+      var base = D - startRes;   // route distance = base + t for t along this segment
       // Where the 32px belt band crosses an obstacle, in distance along this segment
       var spans = [];
       obs.forEach(function (o) {
-        var lo, hi, crosses;
+        var crosses, s0, s1;
         if (horiz) {
           crosses = o.y < sg.a[1] + 16 && o.y + o.h > sg.a[1] - 16;
-          lo = o.x; hi = o.x + o.w;
-          var s0 = sg.dir[0] > 0 ? lo - sg.a[0] : sg.a[0] - hi, s1 = sg.dir[0] > 0 ? hi - sg.a[0] : sg.a[0] - lo;
+          s0 = sg.dir[0] > 0 ? o.x - sg.a[0] : sg.a[0] - o.x - o.w;
+          s1 = sg.dir[0] > 0 ? o.x + o.w - sg.a[0] : sg.a[0] - o.x;
         } else {
           crosses = o.x < sg.a[0] + 16 && o.x + o.w > sg.a[0] - 16;
-          lo = o.y; hi = o.y + o.h;
-          var s0 = sg.dir[1] > 0 ? lo - sg.a[1] : sg.a[1] - hi, s1 = sg.dir[1] > 0 ? hi - sg.a[1] : sg.a[1] - lo;
+          s0 = sg.dir[1] > 0 ? o.y - sg.a[1] : sg.a[1] - o.y - o.h;
+          s1 = sg.dir[1] > 0 ? o.y + o.h - sg.a[1] : sg.a[1] - o.y;
         }
         if (!crosses || s1 <= 0 || s0 >= sg.len) return;
         spans.push([Math.max(s0, startRes + 26), Math.min(s1, sg.len - endRes - 26)]);
@@ -1898,7 +1948,7 @@
       });
       merged = merged.filter(function (m) { return m[1] > m[0]; });
 
-      // Draw straight belt around the underground pairs
+      // Straight belt around the underground pairs
       var at = function (t) { return [sg.a[0] + sg.dir[0] * t, sg.a[1] + sg.dir[1] * t]; };
       var runs = [], from = startRes;
       merged.forEach(function (m) {
@@ -1907,7 +1957,7 @@
         var pin = at(m[0] - 13), pout = at(m[1] + 13);
         ugHousing('ug-in', pin[0], pin[1], sg.dir);
         ugHousing('ug-out', pout[0], pout[1], sg.dir);
-        hidden.push([sg.d0 + m[0] - 13, sg.d0 + m[1] + 13]);
+        hidden.push([base + m[0] - 13, base + m[1] + 13]);
       });
       runs.push([from, sg.len - endRes]);
       runs.forEach(function (r) {
@@ -1919,25 +1969,42 @@
           piece('belt-v' + (sg.dir[1] < 0 ? ' belt-up' : ''), sg.a[0] - 16, Math.min(p0[1], p1[1]), 32, Math.abs(p1[1] - p0[1]));
         }
       });
+      var lineLen = sg.len - startRes - endRes;
+      parts.push({ line: true, a: sg.a, dir: sg.dir, t0: startRes, base: base, d0: D, len: lineLen });
+      D += lineLen;
 
-      // Curved corner into the next segment
+      // Sweeping curve into the next segment
       var nx = segs[i + 1];
       if (nx) {
-        var P = pts[i + 1], A = sg.dir, B = nx.dir;
-        var c = piece('belt-corner' + (A[0] * B[1] - A[1] * B[0] < 0 ? ' ccw' : ''), P[0] - 16, P[1] - 16);
-        c.style.setProperty('--cx', (16 - 16 * A[0] + 16 * B[0]) + 'px');
-        c.style.setProperty('--cy', (16 - 16 * A[1] + 16 * B[1]) + 'px');
+        var r = radii[i + 1], P = pts[i + 1], A = sg.dir, B = nx.dir;
+        var cross = A[0] * B[1] - A[1] * B[0];
+        var C = [P[0] - r * A[0] + r * B[0], P[1] - r * A[1] + r * B[1]];
+        var Q = [C[0] + (r + 16) * (A[0] - B[0]), C[1] + (r + 16) * (A[1] - B[1])];
+        var left = Math.min(C[0], Q[0]), top = Math.min(C[1], Q[1]);
+        var c = piece('belt-corner' + (cross < 0 ? ' ccw' : ''), left, top, r + 16, r + 16);
+        c.style.setProperty('--cx', (C[0] - left) + 'px');
+        c.style.setProperty('--cy', (C[1] - top) + 'px');
+        c.style.setProperty('--r', r + 'px');
+        c.style.setProperty('--per', (916.7 / r).toFixed(2) + 'deg');
+        var arcLen = Math.PI / 2 * r;
+        parts.push({ line: false, C: C, r: r, th0: Math.atan2(-B[1], -B[0]),
+                     sweep: cross > 0 ? Math.PI / 2 : -Math.PI / 2, d0: D, len: arcLen });
+        D += arcLen;
       }
     });
     if (wp.startUg) {
       ugHousing('ug-out', pts[0][0], pts[0][1], segs[0].dir);
       hidden.push([-1, 0]);
     }
-    route = { segs: segs, total: d, hidden: hidden };
+    route = { segs: segs, parts: parts, total: D, hidden: hidden };
 
     // Ambient items fill the belt on two lanes; crafted gears and inserted crates join them
-    items = items.filter(function (it) { if (it.loop) it.el.remove(); return !it.loop; });
-    for (var t = 20, k = 0; t < d; t += 58, k++) {
+    items = items.filter(function (it) {
+      if (it.loop) { it.el.remove(); return false; }
+      it.d = Math.min(it.d, D);
+      return true;
+    });
+    for (var t = 20, k = 0; t < D; t += 58, k++) {
       addItem(ITEM_KINDS[k % ITEM_KINDS.length], t, k % 2 ? 6 : -6, true);
     }
     placeLabels();
@@ -1953,14 +2020,23 @@
     return it;
   }
   function pointAt(d, lane) {
-    var segs = route.segs;
-    for (var i = 0; i < segs.length; i++) {
-      var sg = segs[i];
-      if (d <= sg.d0 + sg.len || i === segs.length - 1) {
-        var t = d - sg.d0;
-        // lanes sit left/right of the direction of travel, like the game
-        return [sg.a[0] + sg.dir[0] * t - sg.dir[1] * lane, sg.a[1] + sg.dir[1] * t + sg.dir[0] * lane];
+    var parts = route.parts;
+    for (var i = 0; i < parts.length; i++) {
+      var pt = parts[i];
+      if (d > pt.d0 + pt.len && i < parts.length - 1) continue;
+      var x, y, tx, ty;
+      if (pt.line) {
+        var t = d - pt.base;
+        tx = pt.dir[0]; ty = pt.dir[1];
+        x = pt.a[0] + tx * t; y = pt.a[1] + ty * t;
+      } else {
+        var th = pt.th0 + pt.sweep * Math.max(0, Math.min(1, (d - pt.d0) / pt.len));
+        var sg = pt.sweep > 0 ? 1 : -1;
+        x = pt.C[0] + pt.r * Math.cos(th); y = pt.C[1] + pt.r * Math.sin(th);
+        tx = -Math.sin(th) * sg; ty = Math.cos(th) * sg;
       }
+      // lanes sit left/right of the direction of travel, like the game
+      return [x - ty * lane, y + tx * lane];
     }
     return [0, 0];
   }
@@ -1985,12 +2061,13 @@
     var lr = layer.getBoundingClientRect(), hr = held.getBoundingClientRect();
     var hx = hr.left + hr.width / 2 - lr.left, hy = hr.top + hr.height / 2 - lr.top;
     var best = 0, bestDist = Infinity;
-    route.segs.forEach(function (sg) {
-      var t = sg.dir[0] ? (hx - sg.a[0]) * sg.dir[0] : (hy - sg.a[1]) * sg.dir[1];
-      t = Math.max(0, Math.min(sg.len, t));
-      var px = sg.a[0] + sg.dir[0] * t, py = sg.a[1] + sg.dir[1] * t;
+    route.parts.forEach(function (pt) {
+      if (!pt.line) return;
+      var t = pt.dir[0] ? (hx - pt.a[0]) * pt.dir[0] : (hy - pt.a[1]) * pt.dir[1];
+      t = Math.max(pt.t0, Math.min(pt.t0 + pt.len, t));
+      var px = pt.a[0] + pt.dir[0] * t, py = pt.a[1] + pt.dir[1] * t;
       var dist = Math.abs(px - hx) + Math.abs(py - hy);
-      if (dist < bestDist) { bestDist = dist; best = sg.d0 + t; }
+      if (dist < bestDist) { bestDist = dist; best = pt.base + t; }
     });
     addItem(cls, best, 0, false, vars);
     renderItems();
