@@ -847,6 +847,21 @@
       box-shadow: inset 0 0 0 1px #000, inset 0 3px 5px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     .proj-sub { display: block; margin-top: 0.15rem; font-size: 0.76rem; color: var(--text-muted); }
+    .oss-badge {
+      display: inline-block;
+      margin-top: 0.4rem;
+      padding: 0.08rem 0.55rem;
+      border-radius: 2px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #0f1a0b;
+      background: linear-gradient(#8ddc6c, #4f9a3b);
+      box-shadow: 0 0 0 1px #13260e, inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .oss-badge::before { content: '\2605  '; }
+    .pd-oss { margin-top: 0.3rem; }
+    .pd-oss[hidden] { display: none; }
     .plate-hint {
       display: block;
       margin-top: 0.35rem;
@@ -1441,15 +1456,6 @@
       <!-- BEGIN ATS SYNC: projects (generated from docs/masters/ats.md by scripts/sync_index_from_ats.py; do not edit by hand) -->
       <article class="proj-card">
         <p class="proj-num">01</p>
-        <h3 class="proj-name">HostPort Allocator (open source contribution)</h3>
-        <p class="proj-desc">Contributed to HostPort Allocator, an open source Kubernetes host port allocator.</p>
-        <div class="proj-tags">
-          <span class="ptag">Kubernetes</span>
-        </div>
-      </article>
-
-      <article class="proj-card">
-        <p class="proj-num">02</p>
         <h3 class="proj-name">Yo-Yo Mount Visualizer (active development)</h3>
         <p class="proj-desc">3D trick engine that models yo-yo string mounts as graph topologies and aims to discover new tricks through pathfinding. Encodes mounts as schema-validated string traversals with canonical hashing, rendered in an interactive 3D visualizer with a Verlet rope physics simulation.</p>
         <div class="proj-tags">
@@ -1464,7 +1470,7 @@
       </article>
 
       <article class="proj-card">
-        <p class="proj-num">03</p>
+        <p class="proj-num">02</p>
         <h3 class="proj-name">Spin Ledger (closed source)</h3>
         <p class="proj-desc">Single pane of glass for buy/sell/trade activity across skill toy community forums. Ingests unstructured, schemaless forum listings, normalizes them into a taxonomy-aware data model via deterministic rule-based entity extraction, and serves them through an indexed, searchable marketplace dashboard.</p>
         <div class="proj-tags">
@@ -1478,7 +1484,7 @@
       </article>
 
       <article class="proj-card">
-        <p class="proj-num">04</p>
+        <p class="proj-num">03</p>
         <h3 class="proj-name">Self-Hosted Home Lab</h3>
         <p class="proj-desc">Multi-machine home lab orchestrating containerized services with Docker, fronted by Caddy as a reverse proxy with automatic HTTPS; every service is served exclusively over TLS. Hosts a media server, network-attached storage, network-wide DNS-sinkhole ad blocking, secrets vaults, and closed-source project deployments, with private encrypted tunnels for secure remote access.</p>
         <div class="proj-tags">
@@ -1494,7 +1500,7 @@
       </article>
 
       <article class="proj-card">
-        <p class="proj-num">05</p>
+        <p class="proj-num">04</p>
         <h3 class="proj-name">OSS Feed</h3>
         <p class="proj-desc">Self-hosted weekly RSS digest that tracks releases from curated open source projects. A watchlist YAML feeds GitHub Actions to fetch releases, generate an XML feed, and publish via GitHub Pages, with Slack/Discord webhook notifications.</p>
         <div class="proj-tags">
@@ -1507,7 +1513,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">06</p>
+        <p class="proj-num">05</p>
         <h3 class="proj-name">Rubik's Cube Genetic Algorithm Solver</h3>
         <p class="proj-desc">Evolutionary algorithm that solves a fully simulated Rubik's Cube model, exploring genetic computation applied to combinatorial optimization.</p>
         <div class="proj-tags">
@@ -1519,7 +1525,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">07</p>
+        <p class="proj-num">06</p>
         <h3 class="proj-name">SafetyNet</h3>
         <p class="proj-desc">iOS peer-to-peer messaging app requiring no Wi-Fi or cellular data. Uses device-to-device networking with end-to-end encryption for resilient off-grid communication.</p>
         <div class="proj-tags">
@@ -1532,7 +1538,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">08</p>
+        <p class="proj-num">07</p>
         <h3 class="proj-name">Ray Tracing Engine</h3>
         <p class="proj-desc">Browser-based ray tracer in vanilla JavaScript. Renders spheres and triangles with Blinn-Phong lighting, reflections, and a free-moving camera, no GPU required.</p>
         <div class="proj-tags">
@@ -1545,7 +1551,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">09</p>
+        <p class="proj-num">08</p>
         <h3 class="proj-name">Sheet Vision (Senior Design)</h3>
         <p class="proj-desc">Application that reads sheet music, plays it back, and listens to the user in real time, providing feedback to help learners draw parallels between notation and sound.</p>
         <div class="proj-tags">
@@ -1561,7 +1567,7 @@
       </article>
 
       <article class="proj-card site-only">
-        <p class="proj-num">10</p>
+        <p class="proj-num">09</p>
         <h3 class="proj-name">Run Samurai, Run!</h3>
         <p class="proj-desc">Top-down 2D infinite side-scrolling runner for mobile. Players fight through enemy mobs for upgrades and high scores, with single-player and head-to-head multiplayer modes.</p>
         <div class="proj-tags">
@@ -1570,6 +1576,15 @@
           <span class="ptag">PHP</span>
           <span class="ptag">AJAX</span>
           <span class="ptag">game loop development</span>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <p class="proj-num">10</p>
+        <h3 class="proj-name">HostPort Allocator (open source contribution)</h3>
+        <p class="proj-desc">Contributed to HostPort Allocator, an open source Kubernetes host port allocator.</p>
+        <div class="proj-tags">
+          <span class="ptag">Kubernetes</span>
         </div>
       </article>
       <!-- END ATS SYNC: projects -->
@@ -1657,6 +1672,7 @@
       <div>
         <p class="pd-num"></p>
         <p class="pd-kind"></p>
+        <span class="oss-badge pd-oss" hidden>Open source contribution</span>
       </div>
     </div>
     <p class="deep pd-desc"></p>
@@ -1845,7 +1861,10 @@
     var m = full.match(/^(.*?)\s*\((.+)\)$/);
     if (m) {
       name.textContent = m[1];
-      plate.appendChild(el('span', 'proj-sub', m[2]));
+      // Open source work gets a badge rather than the quiet grey subtitle
+      var oss = /open.source/i.test(m[2]);
+      if (oss) card.dataset.oss = '1';
+      plate.appendChild(el('span', oss ? 'oss-badge' : 'proj-sub', oss ? 'Open source contribution' : m[2]));
     }
     plate.appendChild(el('span', 'plate-hint', 'Click to insert ▸'));
     chest.appendChild(plate);
@@ -1906,6 +1925,7 @@
     dlg.querySelector('.pd-name').textContent = card.dataset.fullName;
     dlg.querySelector('.pd-num').textContent = 'Project #' + card.querySelector('.proj-num').textContent;
     dlg.querySelector('.pd-kind').textContent = card.dataset.kind;
+    dlg.querySelector('.pd-oss').hidden = !card.dataset.oss;
     dlg.querySelector('.pd-desc').textContent = card.querySelector('.proj-desc').textContent;
     var tags = dlg.querySelector('.pd-tags');
     tags.innerHTML = '';

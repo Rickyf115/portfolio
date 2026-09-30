@@ -54,12 +54,6 @@ Technologies: Java, Spring Boot, Groovy Spock
 
 ## Projects
 
-### HostPort Allocator (open source contribution)
-
-Contributed to HostPort Allocator, an open source Kubernetes host port allocator.
-
-Technologies: Kubernetes
-
 ### Yo-Yo Mount Visualizer (active development)
 
 3D trick engine that models yo-yo string mounts as graph topologies and aims to discover new tricks through pathfinding. Encodes mounts as schema-validated string traversals with canonical hashing, rendered in an interactive 3D visualizer with a Verlet rope physics simulation.
@@ -129,6 +123,12 @@ Site-Only: true
 Top-down 2D infinite side-scrolling runner for mobile. Players fight through enemy mobs for upgrades and high scores, with single-player and head-to-head multiplayer modes.
 
 Technologies: P5.js, HTML/CSS, PHP, AJAX, game loop development
+
+### HostPort Allocator (open source contribution)
+
+Contributed to HostPort Allocator, an open source Kubernetes host port allocator.
+
+Technologies: Kubernetes
 
 ## Education
 
