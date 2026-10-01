@@ -993,6 +993,9 @@
       text-shadow: 0 1px 2px #000;
     }
     .silo-status { min-height: 1.6em; font-size: 0.92rem; color: var(--text-muted); }
+    .launch-btn { flex-direction: column; gap: 0; padding: 0.45rem 1.3rem 0.5rem; line-height: 1.25; }
+    .launch-main { font-size: 1rem; }
+    .launch-sub { font-size: 0.76rem; font-weight: 600; opacity: 0.75; }
     .silo-direct { font-size: 0.82rem; color: var(--text-muted); text-align: center; }
     .silo-direct:hover { color: var(--accent); }
 
@@ -1597,8 +1600,11 @@
             <div class="fbar"><div class="fbar-fill" id="silo-bar"></div><span class="fbar-label" id="silo-bar-label">100/100</span></div>
           </div>
           <p class="silo-status" id="silo-status" role="status">Ready to launch.</p>
-          <a href="./Misc/resume.pdf" download class="fbtn fbtn-green" id="launch-btn">Launch rocket</a>
-          <a href="./Misc/resume.pdf" download class="silo-direct">or just download the PDF</a>
+          <a href="./Misc/resume.pdf" download class="fbtn fbtn-green launch-btn" id="launch-btn">
+            <span class="launch-main">Launch rocket</span>
+            <span class="launch-sub">Downloads my resume (PDF)</span>
+          </a>
+          <a href="./Misc/resume.pdf" download class="silo-direct">Skip the launch: download the PDF directly</a>
         </div>
       </div>
       <div class="silo-scene" id="silo-scene" aria-hidden="true">
