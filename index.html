@@ -606,21 +606,6 @@
 
     /* ===== BELT LINK (section transitions; the route runs through these gaps) ===== */
     .belt-link { position: relative; height: 210px; }
-    .belt-tag {
-      position: absolute;
-      left: calc(50% + 38px);
-      top: 30%;
-      transform: translateY(-50%);
-      padding: 0.2rem 0.65rem;
-      border-radius: 3px;
-      background: rgba(20, 19, 18, 0.8);
-      box-shadow: 0 0 0 1px #000;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--caption);
-      white-space: nowrap;
-    }
-    .belt-tag::before { content: '\25BC  '; color: var(--accent); font-size: 0.65rem; }
 
     /* ===== SECTION SHARED ===== */
     .section-wrap { padding: 2.5rem 2.5rem 3.5rem; }
@@ -1022,87 +1007,73 @@
         linear-gradient(#5b5b58, #3c3c3a);
       box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.1);
     }
-    .silo-tower {
+    /* Launch bay built from Kenney's CC0 Space Shooter Extension sprites (img/kenney-space) */
+    .silo-scene img { position: absolute; display: block; user-select: none; -webkit-user-drag: none; }
+    .silo-front { left: 50%; bottom: 26px; width: 300px; margin-left: -150px; z-index: 2; }
+    .bay-glow {
       position: absolute;
-      bottom: 26px;
-      width: 30px; height: 330px;
-      background:
-        repeating-linear-gradient(45deg, transparent 0 11px, #6b6e72 11px 13px),
-        repeating-linear-gradient(-45deg, transparent 0 11px, #6b6e72 11px 13px);
-      border-left: 4px solid #83878b;
-      border-right: 4px solid #83878b;
-    }
-    .silo-tower::before { /* warning light */
-      content: '';
-      position: absolute;
-      left: 50%; top: -10px;
-      width: 10px; height: 10px;
-      margin-left: -5px;
-      border-radius: 50%;
-      background: #ff4a3d;
-      box-shadow: 0 0 10px #ff4a3d;
-      animation: blink 1.4s step-end infinite;
-    }
-    .tower-l { left: calc(50% - 158px); }
-    .tower-r { left: calc(50% + 128px); }
-    .rocket-shaft {
-      position: absolute;
-      left: 50%; bottom: 86px;
-      width: 70px; height: 250px;
-      margin-left: -35px;
-      z-index: 1;
-      /* clip only the bottom edge: the rocket can fly out of the top, and hides below the silo floor */
-      clip-path: inset(-500vh -100vw 0 -100vw);
-    }
-    .rocket { position: absolute; inset: 0; will-change: transform; }
-    .rocket svg { display: block; }
-    .rocket-flame {
-      position: absolute;
-      left: 50%; top: 236px;
-      width: 24px; height: 90px;
-      margin-left: -12px;
-      border-radius: 45% 45% 50% 50% / 15% 15% 85% 85%;
-      background: linear-gradient(#fff 0%, #ffe38a 18%, #ff9a2e 50%, rgba(255, 70, 30, 0) 100%);
-      filter: blur(1px);
-      transform-origin: top center;
+      left: 50%; bottom: 60px;
+      width: 520px; height: 300px;
+      margin-left: -260px;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 80%, rgba(255, 170, 60, 0.75), rgba(255, 90, 30, 0.25) 40%, transparent 70%);
       opacity: 0;
     }
-    .firing .rocket-flame { opacity: 1; animation: flame 0.07s infinite alternate; }
-    @keyframes flame { from { transform: scaleY(0.85) scaleX(0.9); } to { transform: scaleY(1.15) scaleX(1.05); } }
-    .silo-front {
-      position: absolute;
-      left: 50%; bottom: 26px;
-      width: 300px; height: 110px;
-      margin-left: -150px;
-      z-index: 2;
-      border-radius: 6px 6px 0 0;
-      background:
-        repeating-linear-gradient(90deg, transparent 0 59px, rgba(0, 0, 0, 0.2) 59px 60px),
-        linear-gradient(#777874, #4b4c49);
-      box-shadow: inset 0 0 0 3px #252524, inset 0 4px 0 rgba(255, 255, 255, 0.14), 0 -2px 10px rgba(0, 0, 0, 0.4);
+    .bay-tower { position: absolute; bottom: 110px; width: 40px; height: 264px; z-index: 1; }
+    .tower-l { left: calc(50% - 118px); }
+    .tower-r { left: calc(50% + 78px); }
+    .tw-spire { left: 0; top: 0; width: 40px; }
+    .tw-pylon { left: 4px; top: 132px; width: 32px; }
+    .beacon {
+      left: 11px; top: -14px;
+      width: 18px;
+      filter: drop-shadow(0 0 6px rgba(255, 80, 50, 0.9));
+      animation: blink 1.4s step-end infinite;
     }
-    .silo-front::before { /* hazard stripe */
-      content: '';
+    .alarm .beacon { animation: blink 0.25s step-end infinite; filter: drop-shadow(0 0 14px #ff4a30) brightness(1.3); }
+    .bay-arm { top: 70px; width: 11px; height: 46px; transform-origin: 50% 100%; transition: transform 0.9s cubic-bezier(.5,0,.3,1); }
+    .tower-l .bay-arm { left: 30px; transform: rotate(90deg) translateY(-2px); }
+    .tower-r .bay-arm { left: -1px; transform: rotate(-90deg) translateY(-2px); }
+    .arms-away .tower-l .bay-arm { transform: rotate(18deg); }
+    .arms-away .tower-r .bay-arm { transform: rotate(-18deg); }
+
+    /* Clips only below ground level: exhaust never shows under the pad, the rocket can still fly out the top */
+    .rocket-clip { position: absolute; inset: 0; z-index: 1; clip-path: inset(-500vh -100vw 26px -100vw); pointer-events: none; }
+    .rocket {
       position: absolute;
-      left: 3px; right: 3px; top: 3px;
-      height: 14px;
-      background: repeating-linear-gradient(-45deg, #e3b422 0 10px, #1a1a1a 10px 20px);
-      border-radius: 3px 3px 0 0;
+      left: 50%; bottom: 108px;
+      width: 96px; height: 262px;
+      margin-left: -48px;
+      z-index: 1;
+      will-change: transform;
     }
-    .silo-front::after { /* vents */
-      content: '';
-      position: absolute;
-      left: 30px; right: 30px; bottom: 18px;
-      height: 34px;
-      background: repeating-linear-gradient(to bottom, #1d1d1c 0 4px, transparent 4px 9px);
-      border-radius: 2px;
-      opacity: 0.8;
+    .rp { width: 57px; left: 19.5px; }
+    .rp-nose   { top: 0; }
+    .rp-win    { top: 65px; }
+    .rp-band   { top: 118.5px; }
+    .rp-panel  { top: 172px; }
+    .rp-engine { top: 225.5px; z-index: 1; }
+    .rp-booster { width: 24.4px; top: 116px; z-index: -1; }
+    .rp-bl { left: 1px; }
+    .rp-br { left: 70.6px; }
+    .flame {
+      opacity: 0;
+      transform-origin: 50% 0;
+      filter: saturate(2.4) brightness(1.9) hue-rotate(-12deg) drop-shadow(0 0 8px rgba(255, 150, 50, 0.9));
     }
+    .flame-core { left: 31px; top: 250px; width: 34px; height: 92px; }
+    .flame-bl { left: 3.5px; top: 252px; width: 20px; height: 56px; }
+    .flame-br { left: 73px; top: 252px; width: 20px; height: 56px; }
+    .firing .flame { opacity: 1; animation: flameFlicker 0.08s infinite alternate; }
+    .firing.full-thrust .flame { transform: scaleY(1.8); }
+    @keyframes flameFlicker { from { scale: 0.92 0.85; } to { scale: 1.06 1.12; } }
+
     .rocket-hit {
       position: absolute;
-      left: 50%; bottom: 140px;
-      width: 96px; height: 205px;
-      margin-left: -48px;
+      left: 50%; bottom: 110px;
+      width: 110px; height: 270px;
+      margin-left: -55px;
       z-index: 3;
       cursor: pointer;
     }
@@ -1124,16 +1095,39 @@
     .rocket-hit:hover::before, .rocket-hit:hover::after { opacity: 1; }
     .rocket-hit:hover::after { inset: -4px; }
     .launching .rocket-hit { pointer-events: none; }
-    .smoke {
+    .fx { position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none; }
+    .countdown {
       position: absolute;
-      left: 50%; bottom: 120px;
-      width: 70px; height: 70px;
-      margin: 0 0 0 -35px;
-      border-radius: 50%;
-      z-index: 3;
+      left: 50%; top: -24px;
+      z-index: 4;
+      transform: translateX(-50%);
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 1;
+      color: #ffd98a;
+      text-shadow: 0 4px 0 #2a1604, 0 0 30px rgba(245, 165, 36, 0.8);
+      white-space: nowrap;
       pointer-events: none;
-      background: radial-gradient(circle, rgba(225, 220, 210, 0.9), rgba(160, 155, 148, 0.55) 45%, transparent 70%);
     }
+
+    /* Achievement toast shown after a launch */
+    .achievement {
+      position: fixed;
+      right: 20px; bottom: 20px;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      width: min(360px, calc(100vw - 40px));
+      padding: 0.8rem 1rem;
+      transform: translateY(140%);
+      transition: transform 0.45s cubic-bezier(.2,.9,.3,1.2);
+    }
+    .achievement.show { transform: none; }
+    .achievement img { width: 34px; flex-shrink: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,.6)); }
+    .ach-kicker { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green); }
+    .ach-title { font-weight: 700; color: var(--caption); line-height: 1.3; }
+    .ach-text { font-size: 0.85rem; color: var(--text-muted); }
 
     /* ===== FOOTER ===== */
     footer {
@@ -1153,6 +1147,7 @@
     .foot-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.15s; }
     .foot-links a:hover { color: var(--accent); }
     footer p { color: var(--text-dim); font-size: 0.8rem; }
+    footer .foot-credit { margin-top: 0.3rem; font-size: 0.7rem; }
 
     /* ===== SCROLL ANIMATIONS ===== */
     @keyframes fadeUp {
@@ -1297,7 +1292,6 @@
 </section>
 
 <div class="belt-link" aria-hidden="true">
-  <span class="belt-tag">Technologies</span>
 </div>
 
 <!-- ===== SKILLS ===== -->
@@ -1351,7 +1345,6 @@
 </div>
 
 <div class="belt-link" aria-hidden="true">
-  <span class="belt-tag">Experience</span>
 </div>
 
 <!-- ===== EXPERIENCE ===== -->
@@ -1424,7 +1417,6 @@
 </section>
 
 <div class="belt-link" aria-hidden="true">
-  <span class="belt-tag">Projects</span>
 </div>
 
 <!-- ===== PROJECTS ===== -->
@@ -1579,7 +1571,6 @@
 </section>
 
 <div class="belt-link" aria-hidden="true">
-  <span class="belt-tag">Rocket silo</span>
 </div>
 
 <!-- ===== RESUME (rocket silo) ===== -->
@@ -1611,28 +1602,36 @@
         </div>
       </div>
       <div class="silo-scene" id="silo-scene" aria-hidden="true">
-        <div class="silo-tower tower-l"></div>
-        <div class="silo-tower tower-r"></div>
-        <div class="rocket-shaft">
+        <div class="bay-glow"></div>
+        <div class="bay-tower tower-l">
+          <img class="tw-spire" src="img/kenney-space/spire.png" alt="">
+          <img class="tw-pylon" src="img/kenney-space/pylon.png" alt="">
+          <img class="beacon" src="img/kenney-space/beacon.png" alt="">
+          <img class="bay-arm" src="img/kenney-space/pylon.png" alt="">
+        </div>
+        <div class="bay-tower tower-r">
+          <img class="tw-spire" src="img/kenney-space/spire.png" alt="">
+          <img class="tw-pylon" src="img/kenney-space/pylon.png" alt="">
+          <img class="beacon" src="img/kenney-space/beacon.png" alt="">
+          <img class="bay-arm" src="img/kenney-space/pylon.png" alt="">
+        </div>
+        <div class="rocket-clip">
           <div class="rocket" id="rocket">
-            <span class="rocket-flame"></span>
-            <svg viewBox="0 0 70 250" width="70" height="250">
-              <path d="M19 184 L3 228 L3 244 L20 232 Z" fill="#5d5f63"/>
-              <path d="M51 184 L67 228 L67 244 L50 232 Z" fill="#4b4d51"/>
-              <path d="M35 2 C22 22 18 50 18 80 L18 236 L52 236 L52 80 C52 50 48 22 35 2 Z" fill="#ebe7df"/>
-              <path d="M35 2 C44 22 46 50 46 80 L46 236 L52 236 L52 80 C52 50 48 22 35 2 Z" fill="#c7c2b8"/>
-              <path d="M35 2 C28 12 25 22 23.5 32 L46.5 32 C45 22 42 12 35 2 Z" fill="#8b8f95"/>
-              <rect x="18" y="96" width="34" height="6" fill="#3a3c40"/>
-              <rect x="18" y="168" width="34" height="6" fill="#3a3c40"/>
-              <rect x="18" y="102" width="34" height="3" fill="#e0a526"/>
-              <circle cx="35" cy="60" r="6" fill="#2b3a4a" stroke="#8b8f95" stroke-width="2"/>
-              <rect x="33" y="196" width="4" height="44" fill="#4b4d51"/>
-              <path d="M22 236 L48 236 L52 248 L18 248 Z" fill="#3a3c40"/>
-            </svg>
+            <img class="rp rp-booster rp-bl" src="img/kenney-space/booster.png" alt="">
+            <img class="rp rp-booster rp-br" src="img/kenney-space/booster.png" alt="">
+            <img class="rp rp-nose" src="img/kenney-space/nose.png" alt="">
+            <img class="rp rp-win" src="img/kenney-space/body-window.png" alt="">
+            <img class="rp rp-band" src="img/kenney-space/body-band.png" alt="">
+            <img class="rp rp-panel" src="img/kenney-space/body-panel.png" alt="">
+            <img class="rp rp-engine" src="img/kenney-space/engine.png" alt="">
+            <img class="flame flame-core" src="img/kenney-space/flame-hot.png" alt="">
+            <img class="flame flame-bl" src="img/kenney-space/flame.png" alt="">
+            <img class="flame flame-br" src="img/kenney-space/flame.png" alt="">
           </div>
         </div>
-        <div class="silo-front"></div>
+        <img class="silo-front" src="img/kenney-space/pad.png" alt="">
         <div class="silo-ground"></div>
+        <div class="countdown" id="countdown"></div>
         <div class="rocket-hit selectable" id="rocket-hit"></div>
       </div>
     </div>
@@ -1664,6 +1663,16 @@
   </div>
 </dialog>
 
+<!-- Achievement toast after a rocket launch -->
+<div class="fwin achievement" id="achievement" role="status" aria-live="polite">
+  <img src="img/kenney-space/rocket-icon.png" alt="">
+  <div>
+    <p class="ach-kicker">Achievement unlocked</p>
+    <p class="ach-title">Rocket launched</p>
+    <p class="ach-text">Resume delivered to your downloads.</p>
+  </div>
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="foot-links">
@@ -1673,6 +1682,7 @@
     <a href="./Misc/resume.pdf" download>Resume</a>
   </div>
   <p>Ricky Faure &mdash; Principal Software Engineer</p>
+  <p class="foot-credit">Rocket and launch bay art: Space Shooter Extension by Kenney (CC0)</p>
 </footer>
 
 <script>
@@ -2007,7 +2017,6 @@
     for (var t = 20, k = 0; t < D; t += 58, k++) {
       addItem(ITEM_KINDS[k % ITEM_KINDS.length], t, k % 2 ? 6 : -6, true);
     }
-    placeLabels();
     renderItems();
   }
 
@@ -2072,24 +2081,6 @@
     addItem(cls, best, 0, false, vars);
     renderItems();
   }
-  // Put each section's belt label beside the belt where it passes through the gap
-  function placeLabels() {
-    var W = layer.clientWidth;
-    document.querySelectorAll('.belt-link').forEach(function (link) {
-      var tag = link.querySelector('.belt-tag');
-      if (!tag) return;
-      var lb = box(link), y = lb.y + lb.h * 0.3, x = null;
-      route.segs.forEach(function (sg) {
-        if (sg.dir[0] !== 0) return;
-        var y0 = Math.min(sg.a[1], sg.a[1] + sg.dir[1] * sg.len), y1 = Math.max(sg.a[1], sg.a[1] + sg.dir[1] * sg.len);
-        if (y >= y0 && y <= y1) x = sg.a[0];
-      });
-      tag.style.display = x === null ? 'none' : '';
-      if (x === null) return;
-      tag.style.left = (x > W * 0.6 ? x - 30 - tag.offsetWidth : x + 30) + 'px';
-    });
-  }
-
   /* ===== Hero production loop ===== */
   var heroLine = document.querySelector('.hero-line');
   if (heroLine && !reduceMotion) {
@@ -2251,18 +2242,107 @@
     a.click();
     a.remove();
   }
-  function smoke(n, spread) {
+  var countdownEl = document.getElementById('countdown');
+  var toast = document.getElementById('achievement');
+  var glow = scene.querySelector('.bay-glow');
+  var SMOKE = ['smoke-a', 'smoke-b', 'smoke-c'];
+  var toastTimer = null;
+
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function inScene(node) { // box of a node in scene coordinates
+    var sr = scene.getBoundingClientRect(), r = node.getBoundingClientRect();
+    return { x: r.left - sr.left, y: r.top - sr.top, w: r.width, h: r.height };
+  }
+  // One sprite smoke puff at scene coordinates, drifting by (dx, dy) as it grows and fades
+  function puff(x, y, size, dx, dy, grow, dur, delay) {
+    var img = el('img', 'fx');
+    img.src = 'img/kenney-space/' + SMOKE[(Math.random() * SMOKE.length) | 0] + '.png';
+    img.alt = '';
+    img.style.width = size + 'px';
+    img.style.left = (x - size / 2) + 'px';
+    img.style.top = (y - size / 2) + 'px';
+    scene.appendChild(img);
+    img.animate([
+      { transform: 'translate(0,0) scale(.35) rotate(0deg)', opacity: 0.95 },
+      { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + grow + ') rotate(' + rnd(-90, 90) + 'deg)', opacity: 0 },
+    ], { duration: dur, delay: delay || 0, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'backwards' })
+      .finished.then(function () { img.remove(); });
+  }
+  // Exhaust billowing out sideways across the pad
+  function padSmoke(n) {
+    var r = inScene(rocket), x = r.x + r.w / 2, y = r.y + r.h + 4;
     for (var i = 0; i < n; i++) {
-      var s = el('span', 'smoke');
-      scene.appendChild(s);
-      var dx = (Math.random() - 0.5) * spread;
-      var dy = -Math.random() * 60;
-      s.animate([
-        { transform: 'translate(0,0) scale(.3)', opacity: 0.9 },
-        { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + (2.2 + Math.random() * 1.6) + ')', opacity: 0 },
-      ], { duration: 1800 + Math.random() * 1400, easing: 'cubic-bezier(.2,.7,.3,1)', delay: Math.random() * 300 })
-        .finished.then(function (anim) { anim.effect.target.remove(); });
+      var side = i % 2 ? 1 : -1;
+      puff(x + rnd(-20, 20), y + rnd(-6, 10), rnd(44, 70), side * rnd(90, 280), rnd(-70, 5), rnd(2, 3.6), rnd(1800, 3000), rnd(0, 500));
     }
+  }
+  function shake(dur, amp) {
+    var frames = [];
+    for (var k = 0; k < 14; k++) frames.push({ transform: 'translate(' + rnd(-amp, amp) + 'px,' + rnd(-amp, amp) + 'px)' });
+    frames.push({ transform: 'none' });
+    return scene.animate(frames, { duration: dur }).finished;
+  }
+  function count(label, dur) {
+    countdownEl.textContent = label;
+    return countdownEl.animate([
+      { transform: 'translateX(-50%) scale(1.9)', opacity: 0 },
+      { transform: 'translateX(-50%) scale(1)', opacity: 1, offset: 0.25 },
+      { transform: 'translateX(-50%) scale(1)', opacity: 1, offset: 0.8 },
+      { transform: 'translateX(-50%) scale(.9)', opacity: 0 },
+    ], { duration: dur || 800, fill: 'forwards' }).finished;
+  }
+  function showToast() {
+    clearTimeout(toastTimer);
+    toast.classList.add('show');
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 5500);
+  }
+  // Strap-on boosters detach mid-flight and tumble away
+  function separateBoosters() {
+    rocket.querySelectorAll('.rp-booster').forEach(function (b, i) {
+      var r = inScene(b), dir = i ? 1 : -1;
+      var clone = el('img', 'fx');
+      clone.src = b.src; clone.alt = '';
+      clone.style.left = r.x + 'px'; clone.style.top = r.y + 'px'; clone.style.width = r.w + 'px';
+      scene.appendChild(clone);
+      b.style.visibility = 'hidden';
+      rocket.querySelector(i ? '.flame-br' : '.flame-bl').style.visibility = 'hidden';
+      puff(r.x + r.w / 2, r.y + r.h * 0.4, 36, dir * 30, 10, 2.2, 900);
+      clone.animate([
+        { transform: 'none', opacity: 1 },
+        { transform: 'translate(' + dir * 90 + 'px, 320px) rotate(' + dir * 110 + 'deg)', opacity: 0 },
+      ], { duration: 2400, easing: 'cubic-bezier(.3,0,.8,.6)' }).finished.then(function () { clone.remove(); });
+    });
+  }
+  // The next rocket is assembled part by part while the parts bar fills
+  function rebuild() {
+    setStatus('Assembling the next rocket...');
+    rocket.getAnimations().forEach(function (a) { a.cancel(); });
+    rocket.style.transform = '';
+    scene.classList.remove('arms-away');
+    var order = ['.rp-engine', '.rp-panel', '.rp-bl', '.rp-br', '.rp-band', '.rp-win', '.rp-nose'];
+    var parts = order.map(function (sel) { return rocket.querySelector(sel); });
+    parts.forEach(function (pt) { pt.style.visibility = 'hidden'; });
+    rocket.querySelectorAll('.flame').forEach(function (f) { f.style.visibility = ''; });
+    var step = 460, dur = step * parts.length;
+    parts.forEach(function (pt, i) {
+      setTimeout(function () {
+        pt.style.visibility = '';
+        pt.animate([
+          { transform: 'translateY(-150px)', opacity: 0 },
+          { transform: 'translateY(3px)', opacity: 1, offset: 0.8 },
+          { transform: 'none', opacity: 1 },
+        ], { duration: 420, easing: 'ease-in' });
+      }, i * step);
+    });
+    var t0 = performance.now();
+    return new Promise(function (done) {
+      (function tick(now) {
+        var p = Math.min(1, (now - t0) / dur);
+        bar.style.transform = 'scaleX(' + p + ')';
+        barLabel.textContent = Math.round(p * 100) + '/100';
+        if (p < 1) requestAnimationFrame(tick); else done();
+      })(t0);
+    });
   }
 
   function launch(e) {
@@ -2271,50 +2351,60 @@
     if (reduceMotion) {
       setStatus('Rocket launched. Resume delivered to your downloads.');
       downloadResume();
+      showToast();
       return;
     }
     launching = true;
-    scene.classList.add('launching', 'firing');
+    scene.classList.add('launching', 'alarm');
     launchBtn.setAttribute('aria-disabled', 'true');
-    setStatus('Launch sequence initiated...');
-    smoke(10, 160);
-    scene.animate(
-      [0, 1, 2, 3, 4, 5, 6, 7, 8].map(function (k) {
-        return { transform: 'translate(' + (k % 2 ? 2 : -2) + 'px,' + (k % 3 - 1) + 'px)' };
-      }).concat([{ transform: 'none' }]),
-      { duration: 1000 }
-    ).finished
+    setStatus('Launch sequence initiated. Clear the pad!');
+    // Bring the pad into view for the show (on phones the button sits below it)
+    var sr = scene.getBoundingClientRect();
+    if (sr.top < 60 || sr.bottom > window.innerHeight) scene.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    var trail = null;
+    count('3')
+      .then(function () {
+        scene.classList.add('arms-away');
+        return count('2');
+      })
+      .then(function () {
+        setStatus('Ignition...');
+        scene.classList.add('firing');
+        glow.animate([{ opacity: 0 }, { opacity: 0.55 }], { duration: 700, fill: 'forwards' });
+        padSmoke(10);
+        shake(800, 1.5);
+        return count('1');
+      })
       .then(function () {
         setStatus('Liftoff! Resume delivered to your downloads.');
         downloadResume();
-        smoke(22, 360);
-        return rocket.animate([
-          { transform: 'translateY(0)' },
-          { transform: 'translateY(-40px)', offset: 0.22 },
-          { transform: 'translateY(-170vh)' },
-        ], { duration: 2400, easing: 'cubic-bezier(.6,0,.85,.5)', fill: 'forwards' }).finished;
+        count('LIFTOFF!', 1400);
+        scene.classList.add('full-thrust');
+        glow.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 2600, fill: 'forwards' });
+        padSmoke(28);
+        shake(1600, 4);
+        var FLIGHT = 3600;
+        var flight = rocket.animate([
+          { transform: 'translateY(0)', easing: 'ease-in' },
+          { transform: 'translateY(-40px)', offset: 0.25, easing: 'cubic-bezier(.3,0,.7,1)' },
+          { transform: 'translateY(-360px)', offset: 0.6, easing: 'ease-in' },
+          { transform: 'translateY(-190vh)' },
+        ], { duration: FLIGHT });
+        // Smoke trail left hanging in the air behind the rocket
+        trail = setInterval(function () {
+          var r = inScene(rocket.querySelector('.rp-engine'));
+          puff(r.x + r.w / 2 + rnd(-6, 6), r.y + r.h + 30, rnd(30, 46), rnd(-25, 25), rnd(20, 60), rnd(2, 3), rnd(1400, 2200));
+        }, 60);
+        setTimeout(separateBoosters, FLIGHT * 0.55);
+        return flight.finished.then(function () { rocket.style.transform = 'translateY(-190vh)'; });
       })
       .then(function () {
-        scene.classList.remove('firing');
-        return wait(700);
+        clearInterval(trail);
+        scene.classList.remove('firing', 'full-thrust', 'alarm');
+        showToast();
+        return wait(900);
       })
-      .then(function () {
-        // Build the next rocket: parts bar fills while it rises out of the silo
-        setStatus('Building next rocket...');
-        rocket.getAnimations().forEach(function (a) { a.cancel(); });
-        var dur = 3200;
-        rocket.animate([{ transform: 'translateY(260px)' }, { transform: 'translateY(0)' }],
-                       { duration: dur, easing: 'ease-out' });
-        var t0 = performance.now();
-        return new Promise(function (done) {
-          (function step(now) {
-            var p = Math.min(1, (now - t0) / dur);
-            bar.style.transform = 'scaleX(' + p + ')';
-            barLabel.textContent = Math.round(p * 100) + '/100';
-            if (p < 1) requestAnimationFrame(step); else done();
-          })(t0);
-        });
-      })
+      .then(rebuild)
       .then(function () {
         launching = false;
         scene.classList.remove('launching');
