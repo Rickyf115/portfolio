@@ -1604,7 +1604,7 @@
           <p class="silo-status" id="silo-status" role="status">Ready to launch.</p>
           <a href="./Misc/resume.pdf" download class="fbtn fbtn-green launch-btn" id="launch-btn">
             <span class="launch-main">Launch rocket</span>
-            <span class="launch-sub">Downloads my resume (PDF)</span>
+            <span class="launch-sub">Downloads and opens my resume (PDF)</span>
           </a>
           <a href="./Misc/resume.pdf" download class="silo-direct">Skip the launch: download the PDF directly</a>
         </div>
@@ -1677,7 +1677,7 @@
   <div>
     <p class="ach-kicker">Achievement unlocked</p>
     <p class="ach-title">Rocket launched</p>
-    <p class="ach-text">Resume delivered to your downloads.</p>
+    <p class="ach-text">Downloading and opening your resume...</p>
   </div>
 </div>
 
@@ -2250,6 +2250,11 @@
     a.click();
     a.remove();
   }
+  // Payload delivery: download the PDF, then take the visitor to it
+  function deliverResume() {
+    downloadResume();
+    setTimeout(function () { window.location.href = './Misc/resume.pdf'; }, 1500);
+  }
   var countdownEl = document.getElementById('countdown');
   var toast = document.getElementById('achievement');
   var glow = scene.querySelector('.bay-glow');
@@ -2357,9 +2362,9 @@
     if (e) e.preventDefault();
     if (launching) return;
     if (reduceMotion) {
-      setStatus('Rocket launched. Resume delivered to your downloads.');
-      downloadResume();
+      setStatus('Rocket launched. Downloading and opening your resume...');
       showToast();
+      deliverResume();
       return;
     }
     launching = true;
@@ -2384,8 +2389,7 @@
         return count('1');
       })
       .then(function () {
-        setStatus('Liftoff! Resume delivered to your downloads.');
-        downloadResume();
+        setStatus('Liftoff!');
         count('LIFTOFF!', 1400);
         scene.classList.add('full-thrust');
         glow.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 2600, fill: 'forwards' });
@@ -2409,7 +2413,13 @@
       .then(function () {
         clearInterval(trail);
         scene.classList.remove('firing', 'full-thrust', 'alarm');
+        setStatus('Rocket launched! Downloading and opening your resume...');
         showToast();
+        // Let the achievement land before delivering the payload
+        return wait(1200);
+      })
+      .then(function () {
+        deliverResume();
         return wait(900);
       })
       .then(rebuild)
