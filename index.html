@@ -562,7 +562,9 @@
     /* ===== BELT NETWORK =====
        One continuous belt route is laid out by JS from the page layout: straight
        pieces, curved corners, and underground pairs wherever it crosses content. */
-    main { position: relative; z-index: 0; }
+    /* overflow-x: clip keeps wide effects (launch glow, smoke) from widening the page on phones,
+       which made mobile browsers zoom the whole layout out; vertical overflow stays visible. */
+    main { position: relative; z-index: 0; overflow-x: clip; }
     .belt-layer {
       position: absolute;
       inset: 0;
@@ -1016,8 +1018,8 @@
     .bay-glow {
       position: absolute;
       left: 50%; bottom: 60px;
-      width: 520px; height: 300px;
-      margin-left: -260px;
+      width: min(520px, 100%); height: 300px;
+      transform: translateX(-50%);
       z-index: 0;
       pointer-events: none;
       background: radial-gradient(ellipse at 50% 80%, rgba(255, 170, 60, 0.75), rgba(255, 90, 30, 0.25) 40%, transparent 70%);
